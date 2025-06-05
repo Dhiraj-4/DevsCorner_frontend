@@ -1,0 +1,44 @@
+import { useSignupStore } from "../store/signupStore"
+
+export const validatePassword = () => {
+    const {
+        newPassword,
+        setError,
+        clearError
+    } = useSignupStore.getState();
+
+    if (newPassword.match(/[a-z]/g) && newPassword.match(
+                /[A-Z]/g) && newPassword.match(
+                    /[0-9]/g) && newPassword.match(
+                        /[^a-zA-Z\d]/g) && newPassword.length >= 8)
+        {
+            console.log("Password validation true");
+            clearError();
+            return true;
+        }
+    else
+        {
+            console.log("Password validation false");
+            setError({ message: "weak password" });
+            return false;
+        }
+}
+export const checkPasswords = () => {
+
+    const {
+        newPassword,
+        confirmPassword,
+        setError,
+        clearError
+    } = useSignupStore.getState();
+    if(
+        newPassword === confirmPassword   
+    ) {
+        if(!validatePassword()) return false;
+        clearError();
+        return true;
+    } else {
+        setError({ message: `Both passwords doesn't match`});
+        return false;
+    }
+}
