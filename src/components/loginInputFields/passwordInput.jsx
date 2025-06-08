@@ -49,7 +49,7 @@ export function PasswordInput() {
     <button
     onClick={handleForget}
     className="text-blue-500 min-w-full flex font-bold hover:underline">
-        forget password
+        forgot password
     </button>
     </>
   );

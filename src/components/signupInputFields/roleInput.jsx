@@ -23,6 +23,7 @@ export function RoleSelect() {
         <option value="" disabled hidden>Select Role</option>
         <option value="developer">Developer</option>
         <option value="employer">Employer</option>
+        <option value="both">Employer & Developer</option>
       </motion.select>
 
       <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
