@@ -1,6 +1,6 @@
-import { useSignupStore } from "../../store/signupStore";
 import { motion } from "framer-motion";
 import { Eye, EyeOff } from "lucide-react"; // or "react-icons/fa"
+import { useAuthStore } from "../../store/authStore.js";
 
 export function NewPasswordInput() {
   const {
@@ -8,7 +8,7 @@ export function NewPasswordInput() {
     setNewPassword,
     newPasswordShow,
     setNewPasswordShow,
-  } = useSignupStore();
+  } = useAuthStore();
 
   return (
     <div className="relative w-full">

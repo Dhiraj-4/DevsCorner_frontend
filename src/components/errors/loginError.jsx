@@ -1,8 +1,8 @@
-import { useLoginStore } from "../../store/loginStore.js"
+import { useAuthStore } from "../../store/authStore.js";
 
 export function LoginError() {
 
-    const { error } = useLoginStore();
+    const { error } = useAuthStore();
     
     return (
         <>

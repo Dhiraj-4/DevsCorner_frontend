@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
-import { useSignupStore } from "../../store/signupStore.js";
+import { useAuthStore } from "../../store/authStore.js";
 
 export function RoleSelect() {
-  const { role, setRole } = useSignupStore();
+  const { role, setRole } = useAuthStore();
 
   return (
     <div className="relative w-full">

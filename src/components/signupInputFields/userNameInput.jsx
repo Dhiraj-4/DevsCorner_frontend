@@ -1,8 +1,8 @@
-import { useSignupStore } from "../../store/signupStore";
+import { useAuthStore } from "../../store/authStore.js";
 import { motion } from "framer-motion";
 
 export function UserNameInput() {
-    const { userName, setUserName } = useSignupStore();
+    const { userName, setUserName } = useAuthStore();
 
     return (
         <motion.input

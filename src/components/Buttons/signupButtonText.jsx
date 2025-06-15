@@ -1,8 +1,8 @@
-import { useSignupStore } from "../../store/signupStore"
+import { useAuthStore } from "../../store/authStore.js";
 
 export function ButtonText() {
 
-    const { isLoading, otpVerificationToken } = useSignupStore();
+    const { isLoading, otpVerificationToken } = useAuthStore();
 
     return(
         <>

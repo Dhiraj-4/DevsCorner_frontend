@@ -1,8 +1,8 @@
-import { useSignupStore } from "../../store/signupStore";
+import { useAuthStore } from "../../store/authStore.js";
 import { motion } from "framer-motion";
 
 export function EmailInput() {
-    const { email, setEmail } = useSignupStore();
+    const { email, setEmail } = useAuthStore();
 
     return (
         <motion.input

@@ -1,6 +1,4 @@
-import axios from "axios";
 import { useAuthStore } from "../store/authStore.js";
-import { useLoginStore } from "../store/loginStore.js";
 import api from "../../config/axiosConfig.js";
 
 export const validatePassword = () => {
@@ -8,7 +6,7 @@ export const validatePassword = () => {
         password,
         setError,
         clearError
-    } = useLoginStore.getState();
+    } = useAuthStore.getState();
 
     if (password.match(/[a-z]/g) && password.match(
                 /[A-Z]/g) && password.match(
@@ -35,10 +33,7 @@ export async function loginHandler() {
         identifier,
         setError,
         clearError,
-        setIsLoading
-    } = useLoginStore.getState();
-
-    const {
+        setIsLoading,
         setAccessToken
     } = useAuthStore.getState();
 

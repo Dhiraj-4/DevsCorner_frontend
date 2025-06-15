@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { useSignupStore } from "../../store/signupStore";
+import { useAuthStore } from "../../store/authStore.js";
 
 export function Timer() {
   const [timer, setTimer] = useState(2 * 60 * 1000); // 2 Minutes
-  const { setResending } = useSignupStore();
+  const { setResending } = useAuthStore();
 
   useEffect(() => {
     const interval = setInterval(() => {

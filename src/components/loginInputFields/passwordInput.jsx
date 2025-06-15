@@ -1,7 +1,7 @@
-import { useLoginStore } from "../../store/loginStore.js";
 import { motion } from "framer-motion";
 import { Eye, EyeOff } from "lucide-react"; // or "react-icons/fa"
 import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "../../store/authStore.js";
 
 export function PasswordInput() {
   const {
@@ -9,7 +9,7 @@ export function PasswordInput() {
     setPassword,
     passwordShow,
     setPasswordShow,
-  } = useLoginStore();
+  } = useAuthStore();
 
   const navigate = useNavigate();
 

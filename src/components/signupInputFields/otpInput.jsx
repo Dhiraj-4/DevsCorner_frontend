@@ -1,11 +1,11 @@
-import { useSignupStore } from '../../store/signupStore.js';
 import { motion } from "framer-motion";
 import { Timer } from '../Timer/timer.jsx';
 import { getOtpHandler } from '../../utils/signupPageHandlers.js';
+import { useAuthStore } from "../../store/authStore.js";
 
 export function OtpInput() {
 
-  const { otpVerificationToken, otp, setOtp, resending, setResending } = useSignupStore();
+  const { otpVerificationToken, otp, setOtp, resending, setResending } = useAuthStore();
 
   const classes = resending
     ? 'text-blue-500 px-2 font-bold'

@@ -1,8 +1,8 @@
-import { useLoginStore } from "../../store/loginStore.js";
+import { useAuthStore } from "../../store/authStore.js";
 import { motion } from "framer-motion";
 
 export function IdentifierInput() {
-    const { identifier, setIdentifier } = useLoginStore();
+    const { identifier, setIdentifier } = useAuthStore();
 
     return (
         <motion.input

@@ -8,14 +8,14 @@ import { CoolButton } from "../components/Buttons/button.jsx";
 import { RoleSelect } from "../components/signupInputFields/roleInput.jsx";
 import { getOtpHandler, submitHandler } from "../utils/signupPageHandlers.js";
 import { ButtonText } from "../components/Buttons/signupButtonText.jsx";
-import { useSignupStore } from "../store/signupStore.js";
 import { SignupError } from "../components/errors/signupError.jsx";
 import { useNavigate } from "react-router-dom";
 import { SignupHeader } from "../components/headers/signupPageHeader.jsx";
+import { useAuthStore } from "../store/authStore.js";
 
 export function SignupPage() {
 
-  const { otpVerificationToken } = useSignupStore();
+  const { otpVerificationToken } = useAuthStore();
   const navigate = useNavigate();
   
   return (

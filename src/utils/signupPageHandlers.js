@@ -1,6 +1,6 @@
 import axios from "axios";
-import { checkPasswords } from "./checkFieldsHelper"
-import { useSignupStore } from "../store/signupStore";
+import { checkPasswords } from "./checkFieldsHelper.js"
+import { useAuthStore } from "../store/authStore.js";
 
 export const getOtpHandler = async() => {
     if(!checkPasswords()) return;
@@ -16,7 +16,7 @@ export const getOtpHandler = async() => {
         clearError,
         reset_signup,
         setOtp
-    } = useSignupStore.getState();
+    } = useAuthStore.getState();
     setOtp('');
     setOtpVerificationToken('');
 
@@ -50,6 +50,7 @@ export const getOtpHandler = async() => {
     } catch (error) {
         console.log(error);
         if(error.response?.data) setError(error.response.data);
+        if(error.response?.data.message == "Validation failed") setError(error.response.data.error)
         else setError(error.message);
     } finally {
         setIsLoading(false);
@@ -65,7 +66,7 @@ export const submitHandler = async() => {
         clearError,
         setError,
         reset_signup
-    } = useSignupStore.getState();
+    } = useAuthStore.getState();
 
     const body = {
         otp

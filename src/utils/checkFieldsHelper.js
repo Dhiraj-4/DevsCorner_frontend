@@ -1,11 +1,11 @@
-import { useSignupStore } from "../store/signupStore"
+import { useAuthStore } from "../store/authStore.js";
 
 export const validatePassword = () => {
     const {
         newPassword,
         setError,
         clearError
-    } = useSignupStore.getState();
+    } = useAuthStore.getState();
 
     if (newPassword.match(/[a-z]/g) && newPassword.match(
                 /[A-Z]/g) && newPassword.match(
@@ -30,7 +30,7 @@ export const checkPasswords = () => {
         confirmPassword,
         setError,
         clearError
-    } = useSignupStore.getState();
+    } = useAuthStore.getState();
     if(
         newPassword === confirmPassword   
     ) {
