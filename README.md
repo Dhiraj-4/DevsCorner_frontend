@@ -135,7 +135,6 @@ yarn dev
 * 👤 User Profile Dashboard
 * 💬 Real-time Chat with WebSocket
 * 📹 Video Calling with WebRTC
-* 🛒 Premium Membership Integration
 * 📄 Resume Upload/Display Features
 
 ---
@@ -148,7 +147,7 @@ Feel free to fork the repo and submit PRs once the project stabilizes.
 
 ## 📄 License
 
-I don't know by whom
+I don't know by me i guess
 
 ---
 
