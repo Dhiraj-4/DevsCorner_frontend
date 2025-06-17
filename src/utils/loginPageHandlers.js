@@ -34,7 +34,8 @@ export async function loginHandler() {
         setError,
         clearError,
         setIsLoading,
-        setAccessToken
+        setAccessToken,
+        reset_authStore,
     } = useAuthStore.getState();
 
     const body = {
@@ -54,18 +55,20 @@ export async function loginHandler() {
             setAccessToken(info);
             console.log("Access token received");
             clearError();
+            reset_authStore();
             return true;
         } else {
             console.error("No accessToken info in response.");
             setError({ message: 'Access token not received.'});
             setTimeout(()=> {
-                reset_signup();
+                reset_authStore();
             },2000)
             return false;
         }
     } catch (error) {
         console.log(error);
-        if(error.response?.data) {setError(error.response.data);}
+        if(error.response?.data.message == "Validation failed") setError(error.response.data.error)
+        else if(error.response?.data) setError(error.response.data);
         else setError(error.message);
     } finally {
         setIsLoading(false);

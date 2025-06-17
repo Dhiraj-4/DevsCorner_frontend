@@ -8,13 +8,12 @@ export const getOtpHandler = async() => {
         fullName,
         userName,
         email,
-        role,
         newPassword,
         setOtpVerificationToken,
         setIsLoading,
         setError,
         clearError,
-        reset_signup,
+        reset_authStore,
         setOtp
     } = useAuthStore.getState();
     setOtp('');
@@ -25,7 +24,6 @@ export const getOtpHandler = async() => {
         fullName,
         userName,
         email,
-        role,
         password: newPassword
     }
     try {
@@ -42,15 +40,15 @@ export const getOtpHandler = async() => {
           clearError();
         } else {
             console.error("No OTP info in response.");
-            setError({ message: 'OTP token not received.'});
+            setError({ message: 'OTP token not received. try again'});
             setTimeout(()=> {
-                reset_signup();
+                reset_authStore();
             },2000)
         }
     } catch (error) {
         console.log(error);
-        if(error.response?.data) setError(error.response.data);
         if(error.response?.data.message == "Validation failed") setError(error.response.data.error)
+        else if(error.response?.data) setError(error.response.data);
         else setError(error.message);
     } finally {
         setIsLoading(false);
@@ -65,7 +63,7 @@ export const submitHandler = async() => {
         setIsLoading,
         clearError,
         setError,
-        reset_signup
+        reset_authStore
     } = useAuthStore.getState();
 
     const body = {
@@ -85,11 +83,12 @@ export const submitHandler = async() => {
 
         console.log(response.data);
         clearError();
-        reset_signup();
+        reset_authStore();
         return true;
     } catch(error) {
         console.log(error);
-        if(error.response?.data) setError(error.response.data);
+        if(error.response?.data.message == "Validation failed") setError(error.response.data.error);
+        else if(error.response?.data) setError(error.response.data);
         else setError(error.message);
     } finally {
         setIsLoading(false);

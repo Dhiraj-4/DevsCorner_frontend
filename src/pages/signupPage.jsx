@@ -5,13 +5,12 @@ import { NewPasswordInput } from "../components/signupInputFields/newPasswordInp
 import { ConfirmPasswordInput } from "../components/signupInputFields/confirmPasswordInput.jsx";
 import { OtpInput } from "../components/signupInputFields/otpInput.jsx";
 import { CoolButton } from "../components/Buttons/button.jsx";
-import { RoleSelect } from "../components/signupInputFields/roleInput.jsx";
 import { getOtpHandler, submitHandler } from "../utils/signupPageHandlers.js";
 import { ButtonText } from "../components/Buttons/signupButtonText.jsx";
-import { SignupError } from "../components/errors/signupError.jsx";
 import { useNavigate } from "react-router-dom";
 import { SignupHeader } from "../components/headers/signupPageHeader.jsx";
 import { useAuthStore } from "../store/authStore.js";
+import { Error } from "../components/errors/error.jsx";
 
 export function SignupPage() {
 
@@ -34,11 +33,10 @@ export function SignupPage() {
       }}
         className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-3xl flex flex-col justify-center items-center gap-4 p-6 sm:p-8 md:p-10 bg-zinc-900 border border-zinc-800 rounded-xl shadow-[0_0_12px_#0ea5e9]"
       >
-        <SignupError/>
+        <Error/>
         <FullNameInput />
         <UserNameInput />
         <EmailInput />
-        <RoleSelect />
         <NewPasswordInput />
         <ConfirmPasswordInput />
         <OtpInput />

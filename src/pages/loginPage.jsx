@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { CoolButton } from "../components/Buttons/button.jsx";
 import { ButtonText } from "../components/Buttons/loginButtonText.jsx";
-import { LoginError } from "../components/errors/loginError.jsx";
 import { LoginHeader } from "../components/headers/loginPageHeader.jsx";
 import { IdentifierInput } from "../components/loginInputFields/identifierInput.jsx";
 import { PasswordInput } from "../components/loginInputFields/passwordInput.jsx";
 import { loginHandler } from "../utils/loginPageHandlers.js";
+import { Error } from "../components/errors/error.jsx";
 
 export function LoginPage() {
 
@@ -24,7 +24,7 @@ export function LoginPage() {
           }}
             className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-3xl flex flex-col justify-center items-center gap-4 p-6 sm:p-8 md:p-10 bg-zinc-900 border border-zinc-800 rounded-xl shadow-[0_0_12px_#0ea5e9]"
           >
-            <LoginError/>
+            <Error/>
             <IdentifierInput/>
             <PasswordInput/>
             <CoolButton text={<ButtonText/>}/>

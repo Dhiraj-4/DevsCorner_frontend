@@ -24,9 +24,6 @@ export const useAuthStore = create((set) => ({
     email: '',
     setEmail: (mail) => set({ email: mail }),
 
-    role: '',
-    setRole: (role) => set({ role: role }),
-
     newPassword: '',
     setNewPassword: (passwd) => set({ newPassword: passwd }),
 
@@ -48,23 +45,29 @@ export const useAuthStore = create((set) => ({
     otpVerificationToken: '',
     setOtpVerificationToken: (token) => set({ otpVerificationToken: token }),
 
+    passwordResetToken: '',
+    setPasswordResetToken: (token) => set({ passwordResetToken: token }),
+
     error: null,
     setError: (error) => set({ error }),
     clearError: () => set({ error: null }),
     
     // Reset signup and clear errors
-    reset_signup: () => set({
+    reset_authStore: () => set({
       fullName: '',
       userName: '',
+      identifier: '',
       email: '',
       newPassword: '',
       confirmPassword: '',
-      role: '',
+      password: '',
+      accessToken: '',
       isPasswordMatch: true,
       isLoading: false,
       resending: false,
       otp: '',
       otpVerificationToken: '',
+      passwordResetToken: '',
       error: null
     })
 })

@@ -14,7 +14,7 @@ export function PasswordInput() {
   const navigate = useNavigate();
 
   function handleForget() {
-    navigate('/forget')
+    navigate('/forgot-password')
   }
   return (
     <>

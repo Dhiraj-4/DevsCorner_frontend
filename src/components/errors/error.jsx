@@ -1,6 +1,6 @@
 import { useAuthStore } from "../../store/authStore.js";
 
-export function LoginError() {
+export function Error() {
 
     const { error } = useAuthStore();
     

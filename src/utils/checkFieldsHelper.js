@@ -1,8 +1,7 @@
 import { useAuthStore } from "../store/authStore.js";
 
-export const validatePassword = () => {
+export const validatePassword = (newPassword) => {
     const {
-        newPassword,
         setError,
         clearError
     } = useAuthStore.getState();
@@ -34,7 +33,7 @@ export const checkPasswords = () => {
     if(
         newPassword === confirmPassword   
     ) {
-        if(!validatePassword()) return false;
+        if(!validatePassword(newPassword)) return false;
         clearError();
         return true;
     } else {

@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Timer } from '../Timer/timer.jsx';
+import { Timer } from '../loaders/timer.jsx';
 import { getOtpHandler } from '../../utils/signupPageHandlers.js';
 import { useAuthStore } from "../../store/authStore.js";
 
