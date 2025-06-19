@@ -1,6 +1,7 @@
 import axios from "axios";
 import { checkPasswords } from "./checkFieldsHelper.js"
 import { useAuthStore } from "../store/authStore.js";
+import { BACKEND_URL } from "../../config/envConfig.js";
 
 export const getOtpHandler = async() => {
     if(!checkPasswords()) return;
@@ -28,7 +29,7 @@ export const getOtpHandler = async() => {
     }
     try {
         const response = await axios.post(
-            'http://localhost:8080/api/auth/signup/initiate',
+            `${BACKEND_URL}/auth/signup/initiate`,
             body
         );
 
@@ -72,7 +73,7 @@ export const submitHandler = async() => {
     setIsLoading(true);
     try {
         const response = await axios.post(
-            'http://localhost:8080/api/auth/signup/verify',
+            `${BACKEND_URL}/auth/signup/verify`,
             body,
             {
                 headers: {

@@ -20,7 +20,7 @@ export function NewPasswordInput() {
         placeholder="New Password"
         value={newPassword}
         onChange={(e) => setNewPassword(e.target.value)}
-        className="w-full px-4 py-2 pr-10 rounded-lg bg-zinc-800 text-white placeholder-zinc-500 border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-sky-500 ring-offset-2 ring-offset-zinc-900 transition duration-200"
+        className="primary-input"
         autoComplete="new-password"
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}

@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Typewriter } from "react-simple-typewriter";
 
-export function LoginHeader() {
+export function HomeHeader() {
   return (
     <motion.header
       initial={{ opacity: 0, y: -30 }}
@@ -16,7 +16,7 @@ export function LoginHeader() {
         transition={{ delay: 0.3, duration: 0.6 }}
         className="text-sm md:text-base text-gray-500 tracking-wide uppercase mb-2"
       >
-        Welcome back to DevsCorner
+        Show. Connect. Grow.
       </motion.p>
 
       {/* Title */}
@@ -26,7 +26,7 @@ export function LoginHeader() {
         transition={{ delay: 0.5, duration: 0.7 }}
         className="text-4xl md:text-5xl font-semibold text-white tracking-tight"
       >
-        Log in to your account
+        Welcome to DevsCorner
       </motion.h1>
 
       {/* Typing effect */}
@@ -37,7 +37,7 @@ export function LoginHeader() {
         className="text-[#7f5af0] mt-6 text-2xl md:text-4xl font-mono font-semibold tracking-wide"
       >
         <Typewriter
-          words={['Continue your journey.', 'Access your dashboard.']}
+          words={['Showcase your skills.', "Show. Connect. Grow.","Real Talent. Real Connections."]}
           loop={0}
           cursor
           cursorStyle="|"

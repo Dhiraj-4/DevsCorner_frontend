@@ -1,5 +1,6 @@
 import { useAuthStore } from "../store/authStore.js";
 import api from "../../config/axiosConfig.js";
+import { BACKEND_URL } from "../../config/envConfig.js";
 
 export const validatePassword = () => {
     const {
@@ -45,7 +46,7 @@ export async function loginHandler() {
     setIsLoading(true);
     try {
         const response = await api.post(
-            'http://localhost:8080/api/auth/login',
+            `${BACKEND_URL}/auth/login`,
             body
         );
 
@@ -53,9 +54,8 @@ export async function loginHandler() {
 
         if (info) {
             setAccessToken(info);
-            console.log("Access token received");
+            console.log("Access token received: ", info);
             clearError();
-            reset_authStore();
             return true;
         } else {
             console.error("No accessToken info in response.");
@@ -72,17 +72,5 @@ export async function loginHandler() {
         else setError(error.message);
     } finally {
         setIsLoading(false);
-    }
-}
-
-export async function refreshToken() {
-    try {
-        const response = await api.post(
-            'http:localhost:8080/api/auth/refresh'
-        );
-
-        console.log(response.data);
-    } catch (error) {
-        console.log("failed: ", error.response);
     }
 }
