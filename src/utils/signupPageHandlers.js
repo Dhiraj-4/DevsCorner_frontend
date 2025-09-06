@@ -29,7 +29,7 @@ export const getOtpHandler = async() => {
     }
     try {
         const response = await axios.post(
-            `${BACKEND_URL}/auth/signup/initiate`,
+            `${BACKEND_URL}auth/signup/initiate`,
             body
         );
 
@@ -73,7 +73,7 @@ export const submitHandler = async() => {
     setIsLoading(true);
     try {
         const response = await axios.post(
-            `${BACKEND_URL}/auth/signup/verify`,
+            `${BACKEND_URL}auth/signup/verify`,
             body,
             {
                 headers: {

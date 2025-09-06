@@ -46,7 +46,7 @@ export async function loginHandler() {
     setIsLoading(true);
     try {
         const response = await api.post(
-            `${BACKEND_URL}/auth/login`,
+            `${BACKEND_URL}auth/login`,
             body
         );
 

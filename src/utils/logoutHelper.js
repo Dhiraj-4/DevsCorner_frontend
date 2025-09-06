@@ -3,7 +3,7 @@ import { BACKEND_URL } from "../../config/envConfig.js";
 
 async function logoutHelper() {
     const response = await api.post(
-        `${BACKEND_URL}/auth/logout`
+        `${BACKEND_URL}auth/logout`
     );
     console.log(response);
     return;

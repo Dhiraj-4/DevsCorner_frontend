@@ -24,7 +24,7 @@ export const forgotPasswordHandler = async() => {
     setOtpVerificationToken('');
     try {
         const response = await axios.post(
-            `${BACKEND_URL}/auth/forgot-password`,
+            `${BACKEND_URL}auth/forgot-password`,
             body
         );
 
@@ -75,7 +75,7 @@ export const resetPasswordInitiate = async() => {
     setIsLoading(true);
     try {
         const response = await axios.post(
-            `${BACKEND_URL}/auth/reset-password/initiate`,
+            `${BACKEND_URL}auth/reset-password/initiate`,
             body,
             {
                 headers: {
@@ -133,7 +133,7 @@ export const updatePassword = async() => {
 
     try {
         const response = await axios.post(
-            `${BACKEND_URL}/auth/update-password`,
+            `${BACKEND_URL}auth/update-password`,
             body,
             {
                 headers: {

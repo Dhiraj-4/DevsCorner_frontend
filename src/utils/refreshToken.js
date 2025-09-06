@@ -13,7 +13,7 @@ export async function refreshToken({navigate,route}) {
     setIsLoading(true);
     try {
         const response = await api.post(
-            `${BACKEND_URL}/auth/refresh`
+            `${BACKEND_URL}auth/refresh`
         );
 
         const { info } = response.data;
