@@ -27,8 +27,8 @@ export default function HomePage() {
         <div className="primary-bg">
         <HomeHeader/>
         <div className="flex gap-4 h-12 min-w-3xs ">
-          <CoolButton text={"Sign-up"} onClick={() => navigate('/signup')}/>
-          <CoolButton text={"Login"} onClick={() => navigate('/login')}/>
+          <CoolButton text={"Sign-up"} clickHandler={() => navigate('/signup')}/>
+          <CoolButton text={"Login"} clickHandler={() => navigate('/login')}/>
         </div>
 
         <div className="text-white flex flex-wrap justify-center items-center gap-5">

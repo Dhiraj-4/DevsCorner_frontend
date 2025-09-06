@@ -52,17 +52,15 @@ export async function loginHandler() {
 
         const { info } = response.data;
 
+        reset_authStore();
         if (info) {
             setAccessToken(info);
-            console.log("Access token received: ", info);
+            console.log("Access token received");
             clearError();
             return true;
         } else {
             console.error("No accessToken info in response.");
             setError({ message: 'Access token not received.'});
-            setTimeout(()=> {
-                reset_authStore();
-            },2000)
             return false;
         }
     } catch (error) {

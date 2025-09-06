@@ -11,30 +11,33 @@ import {
   X,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { CoolButton } from "../components/Buttons/button";
+import { logoutHelper } from "../utils/logoutHelper";
 
 export default function UserNavbar() {
   const [isOpen, setIsOpen] = useState(false);
-
   const toggleMenu = () => setIsOpen(!isOpen);
 
   return (
     <nav className="fixed top-0 left-0 w-full z-50 backdrop-blur-md bg-white/10 text-white shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center h-16 gap-5">
           {/* Logo or brand area */}
-          <Link to="/" className="flex items-center space-x-1 text-lg font-bold hover:text-blue-300 transition-colors duration-300">
+          <Link to="/feed" className="flex items-center space-x-1 text-lg font-bold hover:text-blue-300 transition-colors duration-300">
             <Home className="w-5 h-5" />
             <span>Home</span>
           </Link>
 
           {/* Desktop menu */}
           <div className="hidden md:flex space-x-6 items-center text-lg font-bold">
-            <NavItem to="/network" icon={<Users className="w-5 h-5" />} label="My Network" />
             <NavItem to="/jobs" icon={<Briefcase className="w-5 h-5" />} label="Jobs" />
             <NavItem to="/post" icon={<PlusSquare className="w-5 h-5" />} label="Post" />
             <NavItem to="/chat" icon={<MessageCircle className="w-5 h-5" />} label="Chat" />
             <NavItem to="/notifications" icon={<Bell className="w-5 h-5" />} label="Notifications" />
             <NavItem to="/me" icon={<User className="w-5 h-5" />} label="Profile" />
+            <Link to='/login'>
+            <CoolButton text={"Logout"} clickHandler={logoutHelper}/>
+            </Link>
           </div>
 
           {/* Mobile hamburger */}
@@ -48,13 +51,15 @@ export default function UserNavbar() {
 
       {/* Mobile dropdown menu */}
       {isOpen && (
-        <div className="md:hidden bg-white/10 backdrop-blur-md px-4 py-4 space-y-4 text-sm font-medium shadow-md">
-          <NavItem to="/network" icon={<Users className="w-5 h-5" />} label="My Network" />
+        <div className="md:hidden bg-black backdrop-blur-md px-4 py-4 space-y-4 text-sm font-medium shadow-md">
           <NavItem to="/jobs" icon={<Briefcase className="w-5 h-5" />} label="Jobs" />
           <NavItem to="/post" icon={<PlusSquare className="w-5 h-5" />} label="Post" />
           <NavItem to="/chat" icon={<MessageCircle className="w-5 h-5" />} label="Chat" />
           <NavItem to="/notifications" icon={<Bell className="w-5 h-5" />} label="Notifications" />
           <NavItem to="/me" icon={<User className="w-5 h-5" />} label="Profile" />
+          <Link to='/login'>
+            <CoolButton text={"Logout"} clickHandler={logoutHelper}/>
+          </Link>
         </div>
       )}
     </nav>
