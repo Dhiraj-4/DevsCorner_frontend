@@ -1,28 +1,145 @@
-import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { checkAccessToken } from "../utils/checkAccessToken.js";
+import { useAuthStore } from "../store/authStore.js";
+import { useUserStore } from "../store/userStore.js";
+import { User, Mail, Globe, Building2, FileText } from "lucide-react";
 
-export default function userProfilePage() {
-  const navigate = useNavigate();
-  const [ isLogin, setIsLogin ] = useState(false);
+export default function ProfilePage() {
+  const { accessToken } = useAuthStore();
+  const { user } = useUserStore();
 
-  useEffect( () => {
-    const fetchUser = async() => {
-      const success = await checkAccessToken({navigate});
-      setIsLogin(success);
-    }
-    fetchUser();
-  },[]);
+  if (!accessToken) return null;
 
   return (
-    <>
-      {
-        isLogin &&
-        <div className="text-white font-bold absolute top-16">
-          Welcome
+    <div className="flex justify-center items-center h-screen pt-16 bg-black">
+      <div className="max-w-4xl w-full mx-auto p-8 rounded-2xl bg-zinc-900 shadow-xl">
+        {/* Top Section */}
+        <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
+          {/* Profile Image */}
+          <div className="w-32 h-32 md:w-40 md:h-40 rounded-full bg-zinc-800 overflow-hidden flex items-center justify-center shadow-md">
+            {user?.profileImage ? (
+              <img
+                src={user.profileImage}
+                alt="profile"
+                className="w-full h-full object-cover rounded-full"
+              />
+            ) : (
+              <User className="w-16 h-16 text-gray-500" />
+            )}
+          </div>
+
+          {/* User Info */}
+          <div className="flex-1 text-center md:text-left">
+            <h1 className="text-3xl font-bold text-white">{user.fullName}</h1>
+            <p className="text-gray-400">@{user.userName}</p>
+            <p className="text-sm text-gray-500 mt-1">
+              Joined {new Date(user.createdAt).toLocaleDateString()}
+            </p>
+
+            {/* Followers / Following */}
+            <div className="flex justify-center md:justify-start gap-6 mt-3">
+              <div className="text-center">
+                <p className="text-lg font-semibold text-white">
+                  {user.countFollowers ?? 0}
+                </p>
+                <p className="text-sm text-gray-400">Followers</p>
+              </div>
+              <div className="text-center">
+                <p className="text-lg font-semibold text-white">
+                  {user.countFollowing ?? 0}
+                </p>
+                <p className="text-sm text-gray-400">Following</p>
+              </div>
+            </div>
+
+            {/* Company */}
+            <div className="flex items-center justify-center md:justify-start gap-2 mt-3 text-gray-300">
+              <Building2 className="w-4 h-4 text-gray-400" />
+              {user.companyName ? (
+                <span>{user.companyName}</span>
+              ) : (
+                <span className="italic text-gray-500">Add company</span>
+              )}
+            </div>
+          </div>
         </div>
-        
-      }
-    </>
-  )
+
+        {/* Bio */}
+        <div className="mt-6">
+          {user.bio ? (
+            <p className="text-gray-200 text-lg leading-relaxed text-center md:text-left">
+              {user.bio}
+            </p>
+          ) : (
+            <p className="italic text-gray-500 text-center md:text-left">
+              Add a bio to tell people about yourself
+            </p>
+          )}
+        </div>
+
+        {/* Contact + Links */}
+        <div className="mt-8 space-y-3">
+          {/* Email */}
+          <div className="flex items-center gap-3 text-gray-300">
+            <Mail className="w-5 h-5 text-gray-400" />
+            <span>{user.email}</span>
+          </div>
+
+          {/* Website */}
+          <div className="flex items-center gap-3 text-gray-300">
+            <Globe className="w-5 h-5 text-gray-400" />
+            {user.website ? (
+              <a
+                href={user.website}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-indigo-400 hover:text-indigo-300 transition"
+              >
+                {user.website}
+              </a>
+            ) : (
+              <span className="italic text-gray-500">Add website</span>
+            )}
+          </div>
+
+          {/* Resume */}
+          <div className="flex items-center gap-3 text-gray-300">
+            <FileText className="w-5 h-5 text-gray-400" />
+            {user.resume ? (
+              <a
+                href={user.resume}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-indigo-400 hover:text-indigo-300 transition"
+              >
+                View Resume
+              </a>
+            ) : (
+              <span className="italic text-gray-500">Upload your resume</span>
+            )}
+          </div>
+        </div>
+
+        {/* Skills */}
+        <div className="mt-10">
+          <h2 className="text-xl font-semibold text-white mb-3">Skills</h2>
+          {user.skills?.length > 0 ? (
+            <div className="flex flex-wrap gap-2">
+              {user.skills.map((skill, idx) => (
+                <span
+                  key={idx}
+                  className="px-3 py-1 bg-indigo-500/10 text-indigo-300 border border-indigo-500/30 rounded-full text-sm shadow-sm"
+                >
+                  {skill}
+                </span>
+              ))}
+            </div>
+          ) : (
+            <p className="italic text-gray-500">Add your skills</p>
+          )}
+        </div>
+
+        {/* Footer Spacer */}
+        <div className="h-10"></div>
+      </div>
+    </div>
+  );
 }

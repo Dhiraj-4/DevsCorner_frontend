@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Home,
   User,
@@ -10,13 +10,31 @@ import {
   Menu,
   X,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { CoolButton } from "../components/Buttons/button";
 import { logoutHelper } from "../utils/logoutHelper";
+import { useUserStore } from "../store/userStore.js";
+import { useAuthStore } from "../store/authStore.js";
+import { checkAccessToken } from "../utils/checkAccessToken.js";
 
 export default function UserNavbar() {
   const [isOpen, setIsOpen] = useState(false);
   const toggleMenu = () => setIsOpen(!isOpen);
+  
+  const {
+    user,
+    hydrateUser
+  } = useUserStore();
+  
+  const navigate = useNavigate();
+  useEffect( () => {
+    
+    const checkUserLogin = async() => {
+      await checkAccessToken({navigate});
+      if(!user.userName) hydrateUser();
+    }
+    checkUserLogin();
+  },[]);
 
   return (
     <nav className="fixed top-0 left-0 w-full z-50 backdrop-blur-md bg-white/10 text-white shadow-md">
