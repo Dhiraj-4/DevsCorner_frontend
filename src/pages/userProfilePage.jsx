@@ -1,6 +1,8 @@
+import { CoolButton } from "../components/Buttons/button.jsx";
+import { ProfileImage } from "../components/profile image/profileImage.jsx";
 import { useAuthStore } from "../store/authStore.js";
 import { useUserStore } from "../store/userStore.js";
-import { User, Mail, Globe, Building2, FileText } from "lucide-react";
+import { Mail, Globe, Building2, FileText } from "lucide-react";
 
 export default function ProfilePage() {
   const { accessToken } = useAuthStore();
@@ -14,17 +16,7 @@ export default function ProfilePage() {
         {/* Top Section */}
         <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
           {/* Profile Image */}
-          <div className="w-32 h-32 md:w-40 md:h-40 rounded-full bg-zinc-800 overflow-hidden flex items-center justify-center shadow-md">
-            {user?.profileImage ? (
-              <img
-                src={user.profileImage}
-                alt="profile"
-                className="w-full h-full object-cover rounded-full"
-              />
-            ) : (
-              <User className="w-16 h-16 text-gray-500" />
-            )}
-          </div>
+          <ProfileImage />
 
           {/* User Info */}
           <div className="flex-1 text-center md:text-left">
