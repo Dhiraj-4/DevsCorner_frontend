@@ -1,9 +1,12 @@
 import axios from "axios";
 import { useAuthStore } from "../../store/authStore";
 import { BACKEND_URL } from "../../../config/envConfig";
+import { refreshToken } from "../../utils/refreshToken";
+import { useUserStore } from "../../store/userStore";
 
 export async function uploadProfileImage(file) {
     const { accessToken } = useAuthStore.getState();
+    const { hydrateUser } = useUserStore.getState();
   try {
     // 1. Ask backend for a pre-signed URL
     const res = await axios.post(
@@ -23,15 +26,30 @@ export async function uploadProfileImage(file) {
     const fileUrl = res.data.info.fileUrl;
 
     // 2. Upload directly to storage (PUT request)
-    const uploadResponse = await axios.put(uploadUrl, file, {
+    await axios.put(uploadUrl, file, {
         headers: { "Content-Type": file.type },
     });
-    console.log(uploadResponse);
 
-    // 3. Get the public URL (depends on your bucket setup)
-    const imageUrl = uploadUrl.split("?")[0]; // strip query params
-    return imageUrl;
+    // 3. Get the public URL
+    const response = await axios.patch(
+      `${BACKEND_URL}user/upload-profile-image`,
+      {
+        fileUrl 
+      },
+      {
+      headers: {
+        Authorization: `Bearer ${accessToken}`, // standard convention
+      },
+    }
+    );
+    await hydrateUser();
+    console.log(response);
+    
   } catch (err) {
+    if(err.response?.status == 403) {
+      let res = await refreshToken();
+      if(res) await uploadProfileImage(file);
+    }
     console.error("Upload failed:", err);
     throw err;
   }

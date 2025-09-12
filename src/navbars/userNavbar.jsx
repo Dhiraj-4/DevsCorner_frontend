@@ -22,19 +22,27 @@ export default function UserNavbar() {
   const toggleMenu = () => setIsOpen(!isOpen);
   
   const {
-    user,
     hydrateUser
   } = useUserStore();
+
+  const {
+    isLoggedIn
+  } = useAuthStore();
   
-  const navigate = useNavigate();
+  const naviagte = useNavigate();
   useEffect( () => {
     
     const checkUserLogin = async() => {
-      await checkAccessToken({navigate});
-      if(!user.userName) hydrateUser();
+      await checkAccessToken();
+      hydrateUser();
     }
     checkUserLogin();
   },[]);
+
+  if(!isLoggedIn) {
+      naviagte("/login");
+  }
+
 
   return (
     <nav className="fixed top-0 left-0 w-full z-50 backdrop-blur-md bg-white/10 text-white shadow-md">

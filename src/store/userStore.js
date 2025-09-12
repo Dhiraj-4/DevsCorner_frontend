@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { BACKEND_URL } from "../../config/envConfig.js";
 import axios from "axios";
 import { useAuthStore } from "./authStore.js";
+import { refreshToken } from "../utils/refreshToken.js";
 
 export const useUserStore = create((set) => ({
   user: {
@@ -29,13 +30,21 @@ export const useUserStore = create((set) => ({
     const {
         accessToken
     } = useAuthStore.getState();
-    const response = await axios.get(`${BACKEND_URL}user/me`, {
+    
+    try{
+      const response = await axios.get(`${BACKEND_URL}user/me`, {
     headers: {
     Authorization: `Bearer ${accessToken}`, // standard convention
     },
     });
     console.log(response.data.info);
     set({ user: response.data.info });
+    }catch(err) {
+      if(err.status == 401) {
+        let res = await refreshToken();
+        if(res) hydrateUser();
+      }
+    }
   },
   clearUser: () =>
     set({

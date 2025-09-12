@@ -42,15 +42,6 @@ export default function ProfilePage() {
               </div>
             </div>
 
-            {/* Company */}
-            <div className="flex items-center justify-center md:justify-start gap-2 mt-3 text-gray-300">
-              <Building2 className="w-4 h-4 text-gray-400" />
-              {user.companyName ? (
-                <span>{user.companyName}</span>
-              ) : (
-                <span className="italic text-gray-500">Add company</span>
-              )}
-            </div>
           </div>
         </div>
 
