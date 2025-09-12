@@ -10,12 +10,7 @@ export function PasswordInput() {
     passwordShow,
     setPasswordShow,
   } = useAuthStore();
-
-  const navigate = useNavigate();
-
-  function handleForget() {
-    navigate('/forgot-password')
-  }
+  
   return (
     <>
     <div className="relative w-full">
@@ -45,12 +40,6 @@ export function PasswordInput() {
       </button>
 
     </div>
-
-    <button
-    onClick={handleForget}
-    className="text-blue-500 min-w-full flex font-bold hover:underline">
-        forgot password
-    </button>
     </>
   );
 }

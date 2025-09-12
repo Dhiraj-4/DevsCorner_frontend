@@ -6,6 +6,7 @@ import { IdentifierInput } from "../components/loginInputFields/identifierInput.
 import { PasswordInput } from "../components/loginInputFields/passwordInput.jsx";
 import { loginHandler } from "../utils/loginPageHandlers.js";
 import { Error } from "../components/errors/error.jsx";
+import { ForgotPassword } from "../components/loginInputFields/forgotPassword.jsx";
 
 export function LoginPage() {
 
@@ -27,6 +28,7 @@ export function LoginPage() {
             <Error/>
             <IdentifierInput/>
             <PasswordInput/>
+            <ForgotPassword/>
             <CoolButton text={<ButtonText/>}/>
 
             <a href="/signup" className="text-white font-bold text-sm sm:text-base mt-2">
