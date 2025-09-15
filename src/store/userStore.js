@@ -23,6 +23,12 @@ export const useUserStore = create((set) => ({
     companyName: "",
   },
   setUserName: (usrName) => set({ userName: usrName }),
+  setResume: (url) => set((state) => ({
+  user: {
+    ...state.user,
+    resume: url
+  }
+})),
   setUser: (newUser) => set({ user: newUser }),
   updateUser: (updates) =>
     set((state) => ({ user: { ...state.user, ...updates } })),
