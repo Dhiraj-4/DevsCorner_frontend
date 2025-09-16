@@ -24,7 +24,7 @@ export function Timer() {
   const seconds = Math.floor((timer / 1000) % 60);
 
   return (
-    <div className="inline">
+    <div className="inline text-white">
       {minutes}:{seconds.toString().padStart(2, "0")}
     </div>
   );

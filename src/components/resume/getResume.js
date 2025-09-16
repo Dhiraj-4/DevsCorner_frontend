@@ -20,7 +20,7 @@ export const getResume = async() => {
         window.open(res.data.info, "_blank");
 
     } catch (err) {
-        if(err.response?.status == 403) {
+        if(err.response?.status == 403 || err.response?.status == 401) {
               let res = await refreshToken();
               if(res) await getResume();
         }

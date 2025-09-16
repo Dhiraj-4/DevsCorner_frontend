@@ -5,7 +5,7 @@ import { useAuthStore } from "../store/authStore.js";
 async function logoutHelper() {
     const {
         reset_authStore,
-        setIsLogggedIn
+        setIsLogggedIn,
     } = useAuthStore.getState();
 
     const response = await api.post(

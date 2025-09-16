@@ -9,7 +9,7 @@ export function Error() {
         {
             error &&
             <div className="text-red-500 font-bold">
-                {error.message}
+                {error}
             </div>
         }
         </>

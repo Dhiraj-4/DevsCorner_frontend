@@ -53,7 +53,6 @@ export async function loginHandler() {
 
         const { info } = response.data;
 
-        reset_authStore();
         if (info) {
             setAccessToken(info);
             setIsLoggedIn(true);
@@ -69,10 +68,11 @@ export async function loginHandler() {
         }
     } catch (error) {
         console.log(error);
-        if(error.response?.data.message == "Validation failed") setError(error.response.data.error)
-        else if(error.response?.data) setError(error.response.data);
-        else setError(error.message);
+        console.log(error.response.data.message);
         reset_authStore();
+        if(error.response?.data?.message == "Validation failed") setError(error.response.data.message);
+        else if(error.response?.data) setError(error.response.data.message);
+        else setError(error.message);
         setIsLoggedIn(false);
     } finally {
         setIsLoading(false);

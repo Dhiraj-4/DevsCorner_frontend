@@ -48,8 +48,8 @@ export const getOtpHandler = async() => {
         }
     } catch (error) {
         console.log(error);
-        if(error.response?.data.message == "Validation failed") setError(error.response.data.error)
-        else if(error.response?.data) setError(error.response.data);
+        if(error.response?.data.message == "Validation failed") setError(error.response.data.message)
+        else if(error.response?.data) setError(error.response.data.message);
         else setError(error.message);
     } finally {
         setIsLoading(false);
@@ -88,8 +88,9 @@ export const submitHandler = async() => {
         return true;
     } catch(error) {
         console.log(error);
-        if(error.response?.data.message == "Validation failed") setError(error.response.data.error);
-        else if(error.response?.data) setError(error.response.data);
+        reset_authStore();
+        if(error.response?.data?.message == "Validation failed") setError(error.response.data.message);
+        else if(error.response?.data) setError(error.response.data.message);
         else setError(error.message);
     } finally {
         setIsLoading(false);

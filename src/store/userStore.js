@@ -3,6 +3,7 @@ import { BACKEND_URL } from "../../config/envConfig.js";
 import axios from "axios";
 import { useAuthStore } from "./authStore.js";
 import { refreshToken } from "../utils/refreshToken.js";
+import { logoutHelper } from "../utils/logoutHelper.js";
 
 export const useUserStore = create((set) => ({
   user: {
@@ -22,13 +23,10 @@ export const useUserStore = create((set) => ({
     resume: "",
     companyName: "",
   },
-  setUserName: (usrName) => set({ userName: usrName }),
-  setResume: (url) => set((state) => ({
-  user: {
-    ...state.user,
-    resume: url
-  }
-})),
+  error: null,
+  setError: (error) => set({ error }),
+  clearError: () => set({ error: null }),
+
   setUser: (newUser) => set({ user: newUser }),
   updateUser: (updates) =>
     set((state) => ({ user: { ...state.user, ...updates } })),
@@ -49,6 +47,8 @@ export const useUserStore = create((set) => ({
       if(err.status == 401) {
         let res = await refreshToken();
         if(res) hydrateUser();
+      }else if(err.status == 404) {
+        logoutHelper();
       }
     }
   },
