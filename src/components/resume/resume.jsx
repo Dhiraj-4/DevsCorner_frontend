@@ -16,7 +16,7 @@ export function Resume() {
           <div className="flex items-center gap-3 text-gray-300">
             <FileText className="w-5 h-5 text-gray-400" />
             {user.resume ? (
-              <div className="flex gap-2">
+              <div className="flex gap-2 text-xl justify-center items-center">
                 <a
                 href="#"
                 onClick={async(e) => {
@@ -37,7 +37,7 @@ export function Resume() {
               />
               </div>
             ) : (
-              <span className="italic text-gray-500">
+              <span className="italic text-gray-500 text-xl">
                 <button
                 type="button"
                 onClick={ () => document.getElementById("resumeUploader").click() }

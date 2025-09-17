@@ -16,6 +16,7 @@ import { logoutHelper } from "../utils/logoutHelper";
 import { useUserStore } from "../store/userStore.js";
 import { useAuthStore } from "../store/authStore.js";
 import { checkAccessToken } from "../utils/checkAccessToken.js";
+import { NavbarProfileImage } from "../components/profile image/navbarProfileImage.jsx";
 
 export default function UserNavbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -45,7 +46,7 @@ export default function UserNavbar() {
 
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 backdrop-blur-md bg-white/10 text-white shadow-md">
+    <nav className="fixed top-0 left-0 w-full z-50 backdrop-blur-md bg-white/10 text-white py-2 shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16 gap-5">
           {/* Logo or brand area */}
@@ -61,9 +62,7 @@ export default function UserNavbar() {
             <NavItem to="/chat" icon={<MessageCircle className="w-5 h-5" />} label="Chat" />
             <NavItem to="/notifications" icon={<Bell className="w-5 h-5" />} label="Notifications" />
             <NavItem to="/me" icon={<User className="w-5 h-5" />} label="Profile" />
-            <Link to='/login'>
-            <CoolButton text={"Logout"} clickHandler={logoutHelper}/>
-            </Link>
+            <NavbarProfileImage />
           </div>
 
           {/* Mobile hamburger */}
@@ -78,14 +77,12 @@ export default function UserNavbar() {
       {/* Mobile dropdown menu */}
       {isOpen && (
         <div className="md:hidden bg-black backdrop-blur-md px-4 py-4 space-y-4 text-sm font-medium shadow-md">
+          <NavbarProfileImage />
           <NavItem to="/jobs" icon={<Briefcase className="w-5 h-5" />} label="Jobs" />
           <NavItem to="/post" icon={<PlusSquare className="w-5 h-5" />} label="Post" />
           <NavItem to="/chat" icon={<MessageCircle className="w-5 h-5" />} label="Chat" />
           <NavItem to="/notifications" icon={<Bell className="w-5 h-5" />} label="Notifications" />
           <NavItem to="/me" icon={<User className="w-5 h-5" />} label="Profile" />
-          <Link to='/login'>
-            <CoolButton text={"Logout"} clickHandler={logoutHelper}/>
-          </Link>
         </div>
       )}
     </nav>

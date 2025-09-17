@@ -8,7 +8,7 @@ import { deleteLinkedinLink } from "./deleteLinkedinLink.js";
 import { uploadLinkedinLink } from "./uploadLinkedinLink.js";
 
 export function SocialLinks() {
-  const { user, error } = useUserStore();
+  const { user } = useUserStore();
   const { socialLinks = {} } = user || {};
   const { github = "", linkedin = "", twitter = "" } = socialLinks;
 
