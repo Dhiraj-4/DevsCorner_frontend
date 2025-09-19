@@ -2,6 +2,7 @@ import axios from "axios";
 import { useAuthStore } from "../../store/authStore"
 import { BACKEND_URL } from "../../../config/envConfig";
 import { useUserStore } from "../../store/userStore";
+import { refreshToken } from "../../utils/refreshToken";
 
 export const deleteProfileImage = async() => {
     const {

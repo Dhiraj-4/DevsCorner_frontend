@@ -89,7 +89,10 @@ export const submitHandler = async() => {
     } catch(error) {
         console.log(error);
         reset_authStore();
-        if(error.response?.data?.message == "Validation failed") setError(error.response.data.message);
+        if(error.status == 429) {
+            setError(error.response?.data);
+        }
+        else if(error.response?.data?.message == "Validation failed") setError(error.response.data.message);
         else if(error.response?.data) setError(error.response.data.message);
         else setError(error.message);
     } finally {

@@ -36,6 +36,7 @@ export function OtpInput() {
             whileFocus={{ scale: 1.01 }}
           />
           <button
+          type="button"
           onClick={handleResend}
           disabled={!resending}
           className={`${classes}`}>

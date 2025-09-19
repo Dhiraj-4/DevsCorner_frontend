@@ -12,7 +12,8 @@ export const forgotPasswordHandler = async() => {
         setOtp,
         reset_authStore,
         setError,
-        clearError
+        clearError,
+        setIsLoggedIn
     } = useAuthStore.getState();
 
     if(!identifier) return;
@@ -38,19 +39,21 @@ export const forgotPasswordHandler = async() => {
         } else {
             console.error("No OTP info in response.");
             setError({ message: 'OTP token not received. try again'});
-            setTimeout(()=> {
-                reset_authStore();
-            },2000)
+            reset_authStore();
+            setIsLoggedIn(false);
             return false;
         }
     } catch (error) {
-        console.log(error, 'here is the error');
-        if(error.response?.data.message == "Validation failed") {
-            console.log(error.response.data.error);
-            setError(error.response.data.error);
+        console.log(error);
+        console.log(error.response.data.message);
+        reset_authStore();
+        if(error.status == 429) {
+            setError(error.response?.data);
         }
-        else if(error.response?.data) setError(error.response.data);
+        else if(error.response?.data?.message == "Validation failed") setError(error.response.data.message);
+        else if(error.response?.data) setError(error.response.data.message);
         else setError(error.message);
+        setIsLoggedIn(false);
     } finally {
         setIsLoading(false);
     }
@@ -59,14 +62,13 @@ export const forgotPasswordHandler = async() => {
 export const resetPasswordInitiate = async() => {
     const {
         otp,
-        setOtp,
         otpVerificationToken,
-        setOtpVerificationToken,
         setIsLoading,
         clearError,
         setError,
         reset_authStore,
-        setPasswordResetToken
+        setPasswordResetToken,
+        setIsLoggedIn
     } = useAuthStore.getState();
 
     const body = {
@@ -94,22 +96,22 @@ export const resetPasswordInitiate = async() => {
         } else {
             console.error("No password reset token info in response.");
             setError({ message: 'Reset token not received. try again'});
-            setTimeout(()=> {
-                reset_authStore();
-            },2000);
+            reset_authStore();
+            setIsLoggedIn(false);
             return false;
         }
-    } catch(error) {
+    } catch (error) {
         console.log(error);
-        if(error.response?.data.message == "Validation failed") {
-            console.log(error.resonse?.data.error);
-            setError(error.response.data.error);
+        console.log(error.response.data.message);
+        reset_authStore();
+        if(error.status == 429) {
+            setError(error.response?.data);
         }
-        else if(error.response?.data) setError(error.response.data);
+        else if(error.response?.data?.message == "Validation failed") setError(error.response.data.message);
+        else if(error.response?.data) setError(error.response.data.message);
         else setError(error.message);
+        setIsLoggedIn(false);
     } finally {
-        setOtpVerificationToken('');
-        setOtp('');
         setIsLoading(false);
     }
 }
@@ -121,7 +123,8 @@ export const updatePassword = async() => {
         setError,
         reset_authStore,
         clearError,
-        setIsLoading
+        setIsLoading,
+        setIsLoggedIn
     } = useAuthStore.getState();
 
     if(!checkPasswords()) return;
@@ -149,16 +152,21 @@ export const updatePassword = async() => {
             return true;
         } else {
             setError({ message: "Something went wrong, try again"});
-            setTimeout(() => {
                 reset_authStore();
-            },2000);
+            setIsLoggedIn(false);
             return false;
         }
     } catch (error) {
         console.log(error);
-        if(error.response?.data.message == "Validation failed") setError(error.response.data.error);
-        else if(error.response?.data) setError(error.response.data);
+        console.log(error.response.data.message);
+        reset_authStore();
+        if(error.status == 429) {
+            setError(error.response?.data);
+        }
+        else if(error.response?.data?.message == "Validation failed") setError(error.response.data.message);
+        else if(error.response?.data) setError(error.response.data.message);
         else setError(error.message);
+        setIsLoggedIn(false);
     } finally {
         setIsLoading(false);
     }

@@ -22,6 +22,11 @@ export async function uploadSkill(skill) {
     return { status: 200, message: "Skill added successfully" };
   } catch (err) {
     console.log(err);
+    if(err.response?.status == 403 || err.response?.status == 401) {
+              let res = await refreshToken();
+              if(res) await uploadSkill(skill);
+            }
+            console.error("deletion failed:", err);
     return { status: err.response?.status || 500, message: err.message };
   }
 }

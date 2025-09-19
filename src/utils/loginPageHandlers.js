@@ -70,7 +70,10 @@ export async function loginHandler() {
         console.log(error);
         console.log(error.response.data.message);
         reset_authStore();
-        if(error.response?.data?.message == "Validation failed") setError(error.response.data.message);
+        if(error.status == 429) {
+            setError(error.response?.data);
+        }
+        else if(error.response?.data?.message == "Validation failed") setError(error.response.data.message);
         else if(error.response?.data) setError(error.response.data.message);
         else setError(error.message);
         setIsLoggedIn(false);

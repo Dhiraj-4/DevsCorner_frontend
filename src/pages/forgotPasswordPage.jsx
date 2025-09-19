@@ -51,6 +51,10 @@ export function ForgotPasswordPage() {
             
             <CoolButton text={<ButtonText/>}/>
 
+          <a href="/login" className="text-white font-bold text-sm sm:text-base mt-2">
+          Already have an account?{" "}
+          <li className="inline text-blue-500 font-bold hover:underline">Login</li>
+        </a>
           </form>
         </div>
     )

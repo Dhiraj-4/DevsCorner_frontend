@@ -1,6 +1,7 @@
 import axios from "axios"
 import { BACKEND_URL } from "../../../config/envConfig"
 import { useAuthStore } from "../../store/authStore";
+import { refreshToken } from "../../utils/refreshToken";
 
 export const getResume = async() => {
     const {
