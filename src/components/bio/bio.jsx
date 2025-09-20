@@ -24,6 +24,8 @@ export function Bio() {
         setIsInput(false);
     }else if(res.status == 400) {
         setError(res.message);
+    }else {
+      setError( res.message || "Failed to updated bio");
     }
   };
 
@@ -41,9 +43,7 @@ export function Bio() {
             className="w-full px-3 py-2 rounded-lg bg-gray-800 text-gray-200 border border-gray-600 focus:border-indigo-400 focus:ring focus:ring-indigo-400/50 outline-none resize-none"
             placeholder="Write something about yourself..."
           />
-          {error && (
-            <p className="text-red-500 text-xl">{error}</p>
-          )}
+          {error && <span className="text-red-400 text-base font-bold">{error}</span>}
           <div className="flex gap-2 justify-end">
             <button
               onClick={handleSave}

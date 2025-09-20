@@ -48,7 +48,7 @@ export function FullName() {
             onChange={(e) => setFullName(e.target.value)}
             className="px-3 py-1 rounded-lg bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
-          {error && <p className="text-sm text-red-400">{error}</p>}
+          {error && <span className="text-red-400 text-base font-bold">{error}</span>}
           <div className="flex gap-2">
             <button
               onClick={handleSave}

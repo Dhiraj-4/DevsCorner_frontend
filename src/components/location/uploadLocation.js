@@ -28,9 +28,13 @@ export async function uploadLocation(location) {
         return { status: 200, message: "location uploaded" };
     } catch (error) {
         console.log(error);
-        if(error.response?.status == 403 || error.response?.status == 401) {
-            let res = await refreshToken();
-            if(res) await uploadLocation(location);
-        }
+    if(err.response?.status == 403 || err.response?.status == 401) {
+      let res = await refreshToken();
+      if(res) await uploadLocation(location);
+    }else if(err.response?.status == 400) {
+      return { status: err.response?.status, message: err.response?.data.message }
+    }else {
+      return { status: err.response?.status || 500, message: err.message };
+    }
     }
 }

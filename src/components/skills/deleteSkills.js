@@ -22,8 +22,11 @@ export async function deleteSkill(skill) {
     if(err.response?.status == 403 || err.response?.status == 401) {
           let res = await refreshToken();
           if(res) await deleteSkill(skill);
-        }
-        console.error("deletion failed:", err);
-    return { status: err.response?.status || 500, message: err.message };
+    }else if(err.response?.status == 400) {
+      return { status: err.response?.status, message: err.response?.data.message }
+    }else {
+      return { status: err.response?.status || 500, message: err.message };
+    }
+      console.error("deletion failed:", err);
   }
 }

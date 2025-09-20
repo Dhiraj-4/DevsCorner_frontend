@@ -48,7 +48,7 @@ export function SkillItem({ skillKey, onSave, onDelete }) {
       ) : (
         <div className="flex flex-col">
           {isInput ? (
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               <input
                 id={`skill-input-${skillKey || "new"}`}
                 required
@@ -56,7 +56,8 @@ export function SkillItem({ skillKey, onSave, onDelete }) {
                 placeholder="Enter skill"
                 onChange={() => setError("")}
               />
-              <CoolButton text="save" clickHandler={handleSave} />
+              <div className="flex gap-2">
+                <CoolButton text="save" clickHandler={handleSave} />
               <CoolButton
                 text="cancel"
                 clickHandler={() => {
@@ -64,11 +65,12 @@ export function SkillItem({ skillKey, onSave, onDelete }) {
                   setError("");
                 }}
               />
+              </div>
             </div>
           ) : (
             <CoolButton text="Add Skill" clickHandler={() => setIsInput(true)} />
           )}
-          {error && <span className="text-red-400 text-xs">{error}</span>}
+          {error && <span className="text-red-400 text-base font-bold">{error}</span>}
         </div>
       )}
     </div>

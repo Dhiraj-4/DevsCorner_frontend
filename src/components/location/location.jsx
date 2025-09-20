@@ -49,7 +49,7 @@ export function Location({ onSave }) {
         </div>
       ) : isInput ? (
         <div className="flex flex-col gap-1">
-          <div className="flex gap-2 items-center">
+          <div className="flex gap-2 flex-wrap items-center">
             <input
               type="text"
               value={inputValue}
@@ -60,7 +60,8 @@ export function Location({ onSave }) {
               placeholder="Enter location"
               className="px-2 py-1 rounded bg-gray-900 text-white text-sm border border-gray-700 focus:outline-none"
             />
-            <CoolButton text="save" clickHandler={handleSave} />
+            <div className="flex gap-2">
+              <CoolButton text="save" clickHandler={handleSave} />
             <CoolButton
               text="cancel"
               clickHandler={() => {
@@ -68,8 +69,9 @@ export function Location({ onSave }) {
                 setError("");
               }}
             />
+            </div>
           </div>
-          {error && <span className="text-red-400 text-xs">{error}</span>}
+          {error && <span className="text-red-400 text-base font-bold">{error}</span>}
         </div>
       ) : (
         <span className="italic text-gray-500">
