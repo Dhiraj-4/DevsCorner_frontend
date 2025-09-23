@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { SignupHeader } from "../components/headers/signupPageHeader.jsx";
 import { useAuthStore } from "../store/authStore.js";
 import { Error } from "../components/errors/error.jsx";
+import { GoogleAuth } from "../components/googleAuth/googleLogin.jsx";
 
 export function SignupPage() {
 
@@ -46,6 +47,12 @@ export function SignupPage() {
           Already have an account?{" "}
           <li className="inline text-blue-500 font-bold hover:underline">Login</li>
         </a>
+
+        <div className="flex text-white">
+            or 
+          </div>
+
+        <GoogleAuth/>
       </form>
     </div>
     </>

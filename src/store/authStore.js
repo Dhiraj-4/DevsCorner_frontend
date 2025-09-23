@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-export const useAuthStore = create((set) => ({
+export const useAuthStore = create((set, get) => ({
     isLoggedIn: true,
     setIsLoggedIn: (bool) => set({ isLoggedIn: bool }),
     accessToken: '',
@@ -51,7 +51,12 @@ export const useAuthStore = create((set) => ({
     setPasswordResetToken: (token) => set({ passwordResetToken: token }),
 
     error: null,
-    setError: (error) => set({ error }),
+    setError: (error) => {
+      set({ error });
+      setTimeout(() => {
+        get().clearError();
+      },2500);
+    },
     clearError: () => set({ error: null }),
     
     // Reset signup and clear errors

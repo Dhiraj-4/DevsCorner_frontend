@@ -7,6 +7,7 @@ import { PasswordInput } from "../components/loginInputFields/passwordInput.jsx"
 import { loginHandler } from "../utils/loginPageHandlers.js";
 import { Error } from "../components/errors/error.jsx";
 import { ForgotPassword } from "../components/loginInputFields/forgotPassword.jsx";
+import { GoogleAuth } from "../components/googleAuth/googleLogin.jsx";
 
 export function LoginPage() {
 
@@ -35,6 +36,12 @@ export function LoginPage() {
               Don't have an account?{" "}
               <li className="inline text-blue-500 font-bold hover:underline">Signup</li>
             </a>
+
+            <div className="flex text-white">
+              or 
+            </div>
+
+            <GoogleAuth/>
           </form>
         </div>
     )
