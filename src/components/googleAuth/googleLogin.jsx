@@ -21,11 +21,8 @@ export function GoogleAuth() {
             const { data } = await api.post(`${BACKEND_URL}auth/google`, {
               token: credentialResponse.credential,
             });
-
-            console.log(data);
-            console.log(data.info);
             console.log("Backend response good");
-
+            console.log("Access token received.")
             setAccessToken(data.info);
             setIsLoggedIn(true);
             navigate('/me');
