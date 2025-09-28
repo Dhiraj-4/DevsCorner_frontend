@@ -44,6 +44,7 @@ export const useUserStore = create((set) => ({
     console.log(response.data.info);
     set({ user: response.data.info });
     }catch(err) {
+      console.log(err);
       if(err.status == 401) {
         let res = await refreshToken();
         if(res) hydrateUser();

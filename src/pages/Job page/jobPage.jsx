@@ -1,13 +1,18 @@
+import { useState } from "react";
 import JobNavbar from "../../navbars/jobNavbar";
+import { MyJobsPage } from "./myJobsPage";
 
 export function JobPage() {
+    const [activeTab, setActiveTab] = useState("my-jobs");
+
     return (
-        <div className="flex justify-center items-center h-screen pt-20 bg-black">
-            <div className="max-w-4xl w-full m-auto p-8 rounded-2xl bg-zinc-900 shadow-xl">
-                
+        <>
                 {/* Navbar */}
-                <JobNavbar />
-            </div>
-        </div>
+                <JobNavbar activeTab={activeTab} setActiveTab={setActiveTab}/>
+
+                {
+                    (activeTab == "my-jobs") ? <MyJobsPage /> : ""
+                }
+        </>
     )
 }
