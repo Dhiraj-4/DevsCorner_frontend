@@ -1,6 +1,3 @@
-"use client";
-
-import { useState } from "react";
 import { Briefcase } from "lucide-react";
 
 export default function JobNavbar({ activeTab, setActiveTab }) {
