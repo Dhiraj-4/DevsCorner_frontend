@@ -9,6 +9,7 @@ import UserProfile from './pages/userProfilePage.jsx';
 import UserLayout from './layouts/userLayout.jsx';
 import { MyJobsPage } from './pages/Job page/myJobsPage.jsx';
 import { JobPage } from './pages/Job page/jobPage.jsx';
+import { PostJobPage } from './pages/Job page/postJobPage.jsx';
 
 function App() {
 
@@ -27,6 +28,7 @@ function App() {
    <Route element={<UserLayout />}>
        {/* <Route index element={<UserHome />} /> */}
        <Route path="/jobs" element={<JobPage />} />
+       <Route path="/post-job" element={<PostJobPage/>} />
        {/* <Route path="chat" element={<UserChat />} /> */}
        <Route path="/me" element={<UserProfile />} />
        {/* add more sub-routes here */}

@@ -1,6 +1,9 @@
 import { create } from "zustand";
 
 export const useJobStore = create((set,get) => ({
+    jobsArray: [],
+    setJobs: (jobs) => set((state) => ({ jobsArray: [...state.jobsArray, ...jobs] })),
+
     role: "",
     setRole: (role) => set({ role }),
 
