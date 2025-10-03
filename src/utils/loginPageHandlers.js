@@ -21,7 +21,7 @@ export const validatePassword = () => {
     else
         {
             console.log("Password validation false");
-            setError({ message: "weak password" });
+            setError("weak password");
             return false;
         }
 }
@@ -61,7 +61,7 @@ export async function loginHandler() {
             return true;
         } else {
             console.error("No accessToken info in response.");
-            setError({ message: 'Access token not received.'});
+            setError('Access token not received.');
             reset_authStore();
             setIsLoggedIn(false);
             return false;

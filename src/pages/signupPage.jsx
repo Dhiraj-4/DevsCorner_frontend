@@ -12,10 +12,23 @@ import { SignupHeader } from "../components/headers/signupPageHeader.jsx";
 import { useAuthStore } from "../store/authStore.js";
 import { Error } from "../components/errors/error.jsx";
 import { GoogleAuth } from "../components/googleAuth/googleLogin.jsx";
+import { Input } from "../components/Inputs/input.jsx";
 
 export function SignupPage() {
 
-  const { otpVerificationToken } = useAuthStore();
+  const { 
+    otpVerificationToken, 
+
+    userName, 
+    setUserName,
+
+    email,
+    setEmail,
+
+    fullName,
+    setFullName
+
+  } = useAuthStore();
   const navigate = useNavigate();
   
   return (
@@ -35,9 +48,39 @@ export function SignupPage() {
         className="primary-form"
       >
         <Error/>
-        <FullNameInput />
-        <UserNameInput />
-        <EmailInput />
+        {/* Full Name */}
+        <Input 
+          type={"text"} 
+          name={"fullName"} 
+          minLength={3} 
+          placeholder={"Full Name"}
+          value={fullName}
+          set={setFullName}
+          autoComplete={"fullName"}
+        />
+
+        {/* User Name */}
+        <Input 
+          type={"text"} 
+          name={"userName"} 
+          minLength={3} 
+          placeholder={"User Name"}
+          value={userName}
+          set={setUserName}
+          autoComplete={"userName"}
+        />
+
+        {/* Email */}
+        <Input 
+          type={"email"} 
+          name={"email"} 
+          minLength={0} 
+          placeholder={"Email"}
+          value={email}
+          set={setEmail}
+          autoComplete={"email"}
+        />
+        
         <NewPasswordInput />
         <ConfirmPasswordInput />
         <OtpInput />

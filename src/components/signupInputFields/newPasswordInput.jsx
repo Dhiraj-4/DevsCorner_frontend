@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Eye, EyeOff } from "lucide-react"; // or "react-icons/fa"
 import { useAuthStore } from "../../store/authStore.js";
+import { Input } from "../Inputs/input.jsx";
 
 export function NewPasswordInput() {
   const {
@@ -12,20 +13,15 @@ export function NewPasswordInput() {
 
   return (
     <div className="relative w-full">
-      <motion.input
+      <Input
         type={newPasswordShow ? "text" : "password"}
-        name="newPassword"
+        name={"newPassword"}
         required
         minLength={8}
-        placeholder="New Password"
+        placeholder={"New Password"}
         value={newPassword}
-        onChange={(e) => setNewPassword(e.target.value)}
-        className="primary-input"
-        autoComplete="new-password"
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.1, ease: "easeOut" }}
-        whileFocus={{ scale: 1.01 }}
+        set={setNewPassword}
+        autoComplete={"new-password"}
       />
 
       <button

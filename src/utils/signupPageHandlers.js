@@ -33,6 +33,7 @@ export const getOtpHandler = async() => {
             body
         );
 
+        console.log(response);
         const { info } = response.data;
 
         if (info) {
@@ -41,7 +42,7 @@ export const getOtpHandler = async() => {
           clearError();
         } else {
             console.error("No OTP info in response.");
-            setError({ message: 'OTP token not received. try again'});
+            setError('OTP token not received. try again');
             setTimeout(()=> {
                 reset_authStore();
             },2000)

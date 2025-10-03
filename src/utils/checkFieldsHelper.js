@@ -18,7 +18,7 @@ export const validatePassword = (newPassword) => {
     else
         {
             console.log("Password validation false");
-            setError({ message: "weak password" });
+            setError("weak password");
             return false;
         }
 }
@@ -37,7 +37,7 @@ export const checkPasswords = () => {
         clearError();
         return true;
     } else {
-        setError({ message: `Both passwords doesn't match`});
+        setError(`Both passwords doesn't match`);
         return false;
     }
 }
