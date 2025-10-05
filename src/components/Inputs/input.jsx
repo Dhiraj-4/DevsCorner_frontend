@@ -1,12 +1,12 @@
 import { motion } from "framer-motion";
 
-export function Input({type, name, minLength, placeholder, value, set, autoComplete}) {
+export function Input({type, name, minLength, placeholder, value, set, autoComplete, required = true}) {
 
     return (
         <motion.input
             type={type}
             name={name}
-            required
+            required={required}
             minLength={minLength}
             placeholder={placeholder}
             value={value}

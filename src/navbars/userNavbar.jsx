@@ -11,8 +11,6 @@ import {
   X,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import { CoolButton } from "../components/Buttons/button";
-import { logoutHelper } from "../utils/logoutHelper";
 import { useUserStore } from "../store/userStore.js";
 import { useAuthStore } from "../store/authStore.js";
 import { checkAccessToken } from "../utils/checkAccessToken.js";
@@ -76,7 +74,7 @@ export default function UserNavbar() {
 
       {/* Mobile dropdown menu */}
       {isOpen && (
-        <div className="md:hidden bg-black backdrop-blur-md px-4 py-4 space-y-4 text-sm font-medium shadow-md">
+        <div className="md:hidden z-10 bg-black backdrop-blur-md px-4 py-4 space-y-4 text-sm font-medium shadow-md">
           <NavbarProfileImage />
           <NavItem to="/jobs" icon={<Briefcase className="w-5 h-5" />} label="Jobs" />
           <NavItem to="/post" icon={<PlusSquare className="w-5 h-5" />} label="Post" />

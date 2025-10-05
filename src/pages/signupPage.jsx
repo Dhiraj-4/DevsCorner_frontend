@@ -1,6 +1,3 @@
-import { FullNameInput } from "../components/signupInputFields/fullNameInput.jsx";
-import { UserNameInput } from "../components/signupInputFields/userNameInput.jsx";
-import { EmailInput } from "../components/signupInputFields/emailInput.jsx";
 import { NewPasswordInput } from "../components/signupInputFields/newPasswordInput.jsx";
 import { ConfirmPasswordInput } from "../components/signupInputFields/confirmPasswordInput.jsx";
 import { OtpInput } from "../components/signupInputFields/otpInput.jsx";

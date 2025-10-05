@@ -8,7 +8,7 @@ export default function JobNavbar({ activeTab, setActiveTab }) {
   const inactiveBtn = "text-white hover:bg-white/20 hover:scale-105";
 
   return (
-    <nav className="fixed top-20 left-0 w-full z-50 backdrop-blur-md text-white shadow-md">
+    <nav className="fixed top-20 left-0 w-full z-5 backdrop-blur-md text-white shadow-md">
       <div className="max-w-4xl mx-auto px-3 sm:px-6 lg:px-8">
         {/* 👇 Added gap-6 here so buttons never touch */}
         <div className="flex justify-between items-center gap-6 font-bold h-16">
