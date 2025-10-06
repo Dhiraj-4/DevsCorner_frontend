@@ -48,7 +48,7 @@ export async function uploadProfileImage(file) {
   } catch (err) {
     if(err.response?.status == 403 || err.response?.status == 401) {
       let res = await refreshToken();
-      if(res) await uploadProfileImage(file);
+      if(res) return await uploadProfileImage(file);
     }
     console.error("Upload failed:", err);
     throw err;

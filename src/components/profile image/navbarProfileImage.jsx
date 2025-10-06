@@ -1,15 +1,13 @@
 import { User } from "lucide-react";
-import { useUserStore } from "../../store/userStore"
 
-export function NavbarProfileImage() {
+export function NavbarProfileImage({ profileImage }) {
 
-    const { user } = useUserStore();
     return (
         <div className="w-16 h-16 relative rounded-full bg-zinc-800 overflow-hidden flex items-center justify-center shadow-md">
 
-            {user?.profileImage ? (
+            {profileImage ? (
                 <img
-                    src={user.profileImage}
+                    src={profileImage}
                     alt="profile"
                     className="w-full h-full object-cover rounded-full"
                 />

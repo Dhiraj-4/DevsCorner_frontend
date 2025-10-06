@@ -30,7 +30,7 @@ export async function uploadLocation(location) {
         console.log(error);
     if(err.response?.status == 403 || err.response?.status == 401) {
       let res = await refreshToken();
-      if(res) await uploadLocation(location);
+      if(res) return await uploadLocation(location);
     }else if(err.response?.status == 400) {
       return { status: err.response?.status, message: err.response?.data.message }
     }else {

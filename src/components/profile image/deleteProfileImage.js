@@ -27,7 +27,7 @@ export const deleteProfileImage = async() => {
     } catch (err) {
         if(err.response?.status == 403) {
               let res = await refreshToken();
-              if(res) await deleteProfileImage();
+              if(res) return await deleteProfileImage();
         }
         console.error("deletion failed:", err);
         throw err;

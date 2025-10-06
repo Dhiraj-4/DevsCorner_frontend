@@ -1,18 +1,17 @@
 import axios from "axios";
-import { useAuthStore } from "../../store/authStore";
-import { useUserStore } from "../../store/userStore";
-import { BACKEND_URL } from "../../../config/envConfig";
-import { refreshToken } from "../../utils/refreshToken";
+import { useAuthStore } from "../../../../store/authStore";
+import { BACKEND_URL } from "../../../../../config/envConfig";
+import { refreshToken } from "../../../../utils/refreshToken";
 
-export async function uploadBio(bio) {
+export async function uploadRole(roleState, jobId) {
     try {
         const { accessToken } = useAuthStore.getState();
-        const { hydrateUser } = useUserStore.getState();
 
         await axios.patch(
-            `${BACKEND_URL}user/update-bio-fullname`,
+            `${BACKEND_URL}job/update-role`,
             {
-                bio
+                role: roleState,
+                jobId
             },
             {
                 headers: {
@@ -21,13 +20,12 @@ export async function uploadBio(bio) {
             }
         );
 
-        await hydrateUser();
-        return { status: 200 }
+        return { status: 200, roleState }
     } catch (error) {
         console.log(error);
         if(error.response?.status == 403 || error.response?.status == 401) {
             let res = refreshToken();
-            if (res) return uploadBio(bio);
+            if (res) return uploadRole(roleState, jobId);
         }else if(error.response?.status == 400) {
             return {
                 status: 400,

@@ -21,7 +21,8 @@ export default function UserNavbar() {
   const toggleMenu = () => setIsOpen(!isOpen);
   
   const {
-    hydrateUser
+    hydrateUser,
+    user
   } = useUserStore();
 
   const {
@@ -60,7 +61,7 @@ export default function UserNavbar() {
             <NavItem to="/chat" icon={<MessageCircle className="w-5 h-5" />} label="Chat" />
             <NavItem to="/notifications" icon={<Bell className="w-5 h-5" />} label="Notifications" />
             <NavItem to="/me" icon={<User className="w-5 h-5" />} label="Profile" />
-            <NavbarProfileImage />
+            <NavbarProfileImage profileImage={user?.profileImage}/>
           </div>
 
           {/* Mobile hamburger */}
@@ -75,7 +76,7 @@ export default function UserNavbar() {
       {/* Mobile dropdown menu */}
       {isOpen && (
         <div className="md:hidden z-10 bg-black backdrop-blur-md px-4 py-4 space-y-4 text-sm font-medium shadow-md">
-          <NavbarProfileImage />
+          <NavbarProfileImage profileImage={user?.profileImage} />
           <NavItem to="/jobs" icon={<Briefcase className="w-5 h-5" />} label="Jobs" />
           <NavItem to="/post" icon={<PlusSquare className="w-5 h-5" />} label="Post" />
           <NavItem to="/chat" icon={<MessageCircle className="w-5 h-5" />} label="Chat" />

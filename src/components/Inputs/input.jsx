@@ -11,7 +11,7 @@ export function Input({type, name, minLength, placeholder, value, set, autoCompl
             placeholder={placeholder}
             value={value}
             onChange={(e) => set(e.target.value)}
-            className="primary-input"
+            className="primary-input mb-2"
             autoComplete={autoComplete}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}

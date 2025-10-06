@@ -27,7 +27,7 @@ export async function uploadFullname(fullName) {
         console.log(error);
         if(error.response?.status == 403 || error.response?.status == 401) {
             let res = refreshToken();
-            if (res) uploadFullname(fullName);
+            if (res) return uploadFullname(fullName);
         }else if(error.response?.status == 400) {
             return {
                 status: 400,

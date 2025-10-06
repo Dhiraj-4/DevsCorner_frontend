@@ -27,7 +27,7 @@ export async function deleteLocation() {
         console.log(error);
         if(error.response?.status == 403 || error.response?.status == 401) {
             let res = await refreshToken();
-            if(res) await deleteLocation();
+            if(res) return await deleteLocation();
         }
     }
 }
