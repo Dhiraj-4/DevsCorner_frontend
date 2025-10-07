@@ -30,7 +30,7 @@ export function CompanyName({ companyName, owner, jobId }) {
         }
         
       } catch (err) {
-        setError("Failed to update full name. Try again.");
+        setError("Failed to update company name. Try again.");
       }
     };
 
@@ -69,12 +69,16 @@ export function CompanyName({ companyName, owner, jobId }) {
                 
                     <div className="text-lg font-semibold text-gray-800">Company : {company}</div>
 
-                    <div
+                    {
+                        (owner == "YOU") &&
+
+                        <div
                         className=" flex cursor-pointer rounded-full w-[30px] h-[30px] bg-black/60 hover:bg-black/80 items-center justify-center shadow-md"
                         onClick={() => { setIsEditing(true) }}
-                    >
-                        <Pencil size={20} color="white" />
-                    </div>
+                        >
+                            <Pencil size={20} color="white" />
+                        </div>
+                    }
                 </div>
             }
         </div>

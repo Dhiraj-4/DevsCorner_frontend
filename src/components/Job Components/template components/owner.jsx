@@ -4,10 +4,11 @@ export function Owner({ owner }) {
 
     return (
         <div 
-        className="flex justify-around items-center gap-2"
+        className="flex items-center gap-2"
         key={owner._id}
         >
-            <NavbarProfileImage profileImage={owner?.profileImage}/>
+            <div className="flex items-center gap-2">
+                <NavbarProfileImage profileImage={owner?.profileImage}/>
 
             <div className="flex flex-col">
                 <span className="font-bold">
@@ -16,6 +17,7 @@ export function Owner({ owner }) {
                 <span>
                     @{owner.userName}
                 </span>
+            </div>
             </div>
         </div>
     )

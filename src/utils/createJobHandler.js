@@ -9,8 +9,12 @@ export async function createJobHandler() {
         text,
         role,
         applyLink,
+<<<<<<< HEAD
         companyName,
         resetJobStore
+=======
+        companyName
+>>>>>>> d724ff7 (whole basic job's CRUD flow is done, today added udpate to applyLink and description and delete button to delete job)
     } = useJobStore.getState();
 
     const {
@@ -44,7 +48,10 @@ export async function createJobHandler() {
         if(response.status == 201) {
             console.log("job created success", response);
             clearError();
+<<<<<<< HEAD
             resetJobStore();
+=======
+>>>>>>> d724ff7 (whole basic job's CRUD flow is done, today added udpate to applyLink and description and delete button to delete job)
             return true;
         }else {
             return false;
@@ -56,7 +63,11 @@ export async function createJobHandler() {
             if (res) createJobHandler();
         }
         else if(error.response?.status == 400) {
+<<<<<<< HEAD
             setError(error.response.data.message);
+=======
+            setError( error.response.data?.error?.issues[0].code || error.response.data.message);
+>>>>>>> d724ff7 (whole basic job's CRUD flow is done, today added udpate to applyLink and description and delete button to delete job)
         }
         return false;
     }finally {

@@ -7,6 +7,10 @@ import { Error } from "../../components/errors/error.jsx";
 import { useAuthStore } from "../../store/authStore.js";
 import { IsLoadingSvg } from "../../components/loaders/isLoadingSvg.jsx";
 import { useNavigate } from "react-router-dom";
+<<<<<<< HEAD
+=======
+import { TextArea } from "../../components/Inputs/textArea.jsx";
+>>>>>>> d724ff7 (whole basic job's CRUD flow is done, today added udpate to applyLink and description and delete button to delete job)
 
 export function PostJobPage() {
 
@@ -49,6 +53,7 @@ export function PostJobPage() {
                 {/* Error */}
                 <Error />
 
+<<<<<<< HEAD
                 {/* Description */}
                 <Input 
                     placeholder={"Description"}
@@ -58,6 +63,18 @@ export function PostJobPage() {
                     name={"Description"}
                     type={"text"}
                     autoComplete={"Description"}
+=======
+                {/* Company Name */}
+                <Input 
+                    placeholder={"Company Name (optional)"}
+                    value={companyName}
+                    set={setCompanyName}
+                    required={false}
+                    minLength={1}
+                    name={"companyName"}
+                    type={"text"}
+                    autoComplete={"companyName"}
+>>>>>>> d724ff7 (whole basic job's CRUD flow is done, today added udpate to applyLink and description and delete button to delete job)
                 />
 
                 {/* Role */}
@@ -83,6 +100,7 @@ export function PostJobPage() {
                     autoComplete={"applyLink"}
                 />
 
+<<<<<<< HEAD
                 {/* Company Name */}
                 <Input 
                     placeholder={"Company Name (optional)"}
@@ -93,6 +111,18 @@ export function PostJobPage() {
                     name={"companyName"}
                     type={"text"}
                     autoComplete={"companyName"}
+=======
+
+                {/* Description */}
+                <TextArea 
+                    placeholder={"Description"}
+                    value={text}
+                    set={setText}
+                    minLength={50}
+                    name={"Description"}
+                    type={"text"}
+                    autoComplete={"Description"}
+>>>>>>> d724ff7 (whole basic job's CRUD flow is done, today added udpate to applyLink and description and delete button to delete job)
                 />
 
                 <CoolButton text={

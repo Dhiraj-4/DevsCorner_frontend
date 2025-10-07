@@ -2,7 +2,10 @@ import { useEffect, useState } from "react";
 import {
   Home,
   User,
+<<<<<<< HEAD
   Users,
+=======
+>>>>>>> d724ff7 (whole basic job's CRUD flow is done, today added udpate to applyLink and description and delete button to delete job)
   Briefcase,
   PlusSquare,
   Bell,
@@ -45,7 +48,11 @@ export default function UserNavbar() {
 
 
   return (
+<<<<<<< HEAD
     <nav className="fixed top-0 left-0 w-full z-50 backdrop-blur-md bg-white/10 text-white py-2 shadow-md">
+=======
+    <nav className="fixed top-0 left-0 w-full z-50 bg-gray-800 backdrop-blur-md text-white py-2 shadow-md">
+>>>>>>> d724ff7 (whole basic job's CRUD flow is done, today added udpate to applyLink and description and delete button to delete job)
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16 gap-5">
           {/* Logo or brand area */}
