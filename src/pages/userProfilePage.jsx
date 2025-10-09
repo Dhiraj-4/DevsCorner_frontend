@@ -10,7 +10,7 @@ import { Skills } from "../components/skills/skills.jsx";
 import { SocialLinks } from "../components/social links/socialLinks.jsx";
 import { useAuthStore } from "../store/authStore.js";
 import { useUserStore } from "../store/userStore.js";
-import { Mail, Globe, MapPin, FileText } from "lucide-react";
+import { Mail } from "lucide-react";
 import { CoolButton } from "../components/Buttons/button.jsx";
 import { logoutHelper } from "../utils/logoutHelper.js";
 

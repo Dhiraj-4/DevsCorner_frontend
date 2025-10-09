@@ -70,11 +70,11 @@ export function FullName() {
             {user.fullName}
           </h1>
           <div
-          className=" flex cursor-pointer rounded-full w-[35px] h-[35px] bg-black/60 hover:bg-black/80 items-center justify-center shadow-md"
-          onClick={() => { setIsEditing(true) }}
-        >
-          <Pencil size={20} color="white" />
-        </div>
+            className=" flex cursor-pointer rounded-full w-[35px] h-[35px] bg-black/60 hover:bg-black/80 items-center justify-center shadow-md"
+            onClick={() => { setIsEditing(true) }}
+          >
+            <Pencil size={20} color="white" />
+          </div>
         </div>
       )}
     </div>

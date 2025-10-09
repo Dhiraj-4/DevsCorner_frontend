@@ -7,14 +7,14 @@ import { Owner } from "./template components/owner.jsx";
 import { Role } from "./template components/role.jsx";
 import { deleteJob } from "./template components/utils/deleteJob.js";
 
-export function JobTemplate({ applyLink = "", companyName = "Indie", text, role, owner, jobId, refresh}) {
+export function JobTemplate({ applyLink = "", companyName = "Indie", text, role, owner, jobId, refresh, isFollowing}) {
 
 
   return (
     <div className="flex flex-col gap-4 max-w-md mx-auto p-6 mb-4 bg-white shadow-md rounded-2xl border border-gray-200">
       
         {(owner != "YOU") ? (
-            <Owner owner={owner} />
+            <Owner owner={owner} isFollowing={isFollowing}/>
         ) : (
             <div className="flex justify-between items-center gap-2 mb-2">
             <span className="px-3 py-2 text-xs font-bold text-white bg-blue-600 rounded-full">

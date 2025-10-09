@@ -7,7 +7,6 @@ import HomePage from './pages/Home page/homePage.jsx';
 import PublicLayout from './layouts/publicLayout.jsx';
 import UserProfile from './pages/userProfilePage.jsx';
 import UserLayout from './layouts/userLayout.jsx';
-import { MyJobsPage } from './pages/Job page/myJobsPage.jsx';
 import { JobPage } from './pages/Job page/jobPage.jsx';
 import { PostJobPage } from './pages/Job page/postJobPage.jsx';
 

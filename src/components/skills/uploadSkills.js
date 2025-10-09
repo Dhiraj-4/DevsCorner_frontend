@@ -24,7 +24,7 @@ export async function uploadSkill(skill) {
   } catch (err) {
     if(err.response?.status == 403 || err.response?.status == 401) {
           let res = await refreshToken();
-          if(res) await deleteSkill(skill);
+          if(res) await uploadSkill(skill);
     }else if(err.response?.status == 400) {
       return { status: err.response?.status, message: err.response?.data.message }
     }else {

@@ -63,8 +63,9 @@ export function AllJobsPage() {
           className="fixed top-40 left-1/2 -translate-x-1/2 max-w-4xl w-full h-[calc(100vh-13rem)] overflow-y-auto 
           p-8 rounded-2xl bg-zinc-900 shadow-xl"
         >
-          {jobsArray.map((job, idx) => (
+          {jobsArray.map((job) => (
             <JobTemplate
+              isFollowing={user.following.some( (id) => id.toString() === job.owner._id.toString())}
               refresh={getAllJobsHandler}
               key={job.jobId + "1"}
               text={job.text}
