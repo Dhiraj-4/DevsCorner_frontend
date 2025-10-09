@@ -5,7 +5,7 @@ export const useJobStore = create((set,get) => ({
     setJobs: (jobs) => set(() => ({ jobsArray: [...get().jobsArray, ...jobs] })),
 
     pageNumber: 1,
-    setPageNumber: (num) => set({ pageNumber: num }),
+    setPageNumber: () => set({ pageNumber: get().pageNumber + 1 }),
 
     role: "",
     setRole: (role) => set({ role }),
@@ -19,6 +19,9 @@ export const useJobStore = create((set,get) => ({
     text: "",
     setText: (text) => set({ text }),
 
+    hasMore: true,
+    setHasMore: (bool) => set({ hasMore: bool }),
+
     reset_jobStore: () => {
         set({
             applyLink: "",
@@ -26,7 +29,8 @@ export const useJobStore = create((set,get) => ({
             text: "",
             companyName: "",
             role: "",
-            jobsArray: []
+            jobsArray: [],
+            hasMore: true
         });
     }
 }));

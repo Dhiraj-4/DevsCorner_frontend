@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import { getMyJobsHandler } from "../../utils/getMyJobsHandler.js";
 import { useJobStore } from "../../store/jobPostStore.js";
 import { useUserStore } from "../../store/userStore.js";
@@ -6,26 +6,57 @@ import { JobTemplate } from "../../components/Job Components/jobTemplate.jsx";
 
 export function MyJobsPage() {
     const {
-        pageNumber,
         setPageNumber,
         jobsArray,
-        reset_jobStore
+        reset_jobStore,
+        hasMore
     } = useJobStore();
 
     const {
         user
     } = useUserStore();
 
-    
+    const targetRef = useRef(null);
+    const isLoadingRef = useRef(false);
+
+    async function loadMore(entries, observer) {
+        if(isLoadingRef.current || !hasMore) return;
+
+        for(let entry of entries) {
+            if(entry.isIntersecting) {
+                console.log("loaded more");
+                isLoadingRef.current = true;
+                await getMyJobsHandler();
+                setPageNumber();
+                isLoadingRef.current = false;
+            }
+        }
+    } 
+
     async function handler() {
         reset_jobStore();
         await getMyJobsHandler();
-        // setPageNumber(pageNumber+1);
+        setPageNumber();
     }
 
     useEffect( () => {
         handler();
     },[]);
+
+    useEffect( () => {
+        if(!targetRef.current) return;
+
+        const options = {
+            root: document.querySelector("scrollArea"),
+            rootMargin: "0px",
+            threshold: 0,
+        }
+
+        const observer = new IntersectionObserver(loadMore, options);
+        observer.observe(targetRef.current);
+
+        return () => observer.disconnect();
+    },[jobsArray, hasMore])
     
     return (
         <div className="flex justify-center items-center h-full min-h-screen mt-20 pt-20 bg-black">
@@ -48,6 +79,15 @@ export function MyJobsPage() {
                         />
                     })
                 }
+
+                <div
+                  id="target"
+                  ref={targetRef}
+                  className="flex justify-center text-white font-bold text-xl"
+                >
+                  {hasMore ? "Loading..." : "No more jobs"}
+                </div>
+        
             </div>
 
             :
