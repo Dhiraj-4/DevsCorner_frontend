@@ -1,12 +1,14 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { toggleFollow } from "../../../utils/toggleFollow.js";
 import { CoolButton } from "../../Buttons/button.jsx";
 import { NavbarProfileImage } from "../../profile image/navbarProfileImage.jsx";
+import { useNavigate } from "react-router-dom";
 
 export function Owner({ owner, isFollowing }) {
 
     const [isFollowingState, setIsFollowingState] = useState(isFollowing);
     const [error, setError] = useState("");
+    const navigate = useNavigate();
 
     async function toggleHelper() {
         let res = await toggleFollow(owner.userName);
@@ -26,7 +28,9 @@ export function Owner({ owner, isFollowing }) {
         key={owner._id}
         >
             {/* Profile image, full name and @username */}
-            <div className="flex flex-wrap items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2 cursor-pointer"
+                onClick={() => navigate(`/user/${owner.userName}`)}
+            >
                 <NavbarProfileImage profileImage={owner?.profileImage}/>
 
             <div className="flex flex-col">

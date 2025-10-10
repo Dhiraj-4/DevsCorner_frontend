@@ -9,23 +9,17 @@ import UserProfile from './pages/userProfilePage.jsx';
 import UserLayout from './layouts/userLayout.jsx';
 import { JobPage } from './pages/Job page/jobPage.jsx';
 import { PostJobPage } from './pages/Job page/postJobPage.jsx';
+import PublicProfilePage from './pages/publicProfilePage.jsx';
 
 function App() {
 
   return (
    <Routes>
-      {/* Public routes */}
-      <Route element={<PublicLayout/>}>
-        <Route path="/" element={<HomePage />} />
-        <Route path="login" element={<LoginPage />} />
-        <Route path="signup" element={<SignupPage />} />
-        <Route path="forgot-password" element={<ForgotPasswordPage />} />
-      </Route>
-      {/* Private/User routes (with shared layout) */}
-      {/* <Route path='/me' element={<UserProfile/>} /> */}
 
+    {/* Private/User routes (with shared layout) */}
    <Route element={<UserLayout />}>
        {/* <Route index element={<UserHome />} /> */}
+      <Route path="/user/:userName" element={<PublicProfilePage />} />
        <Route path="/jobs" element={<JobPage />} />
        <Route path="/post-job" element={<PostJobPage/>} />
        {/* <Route path="chat" element={<UserChat />} /> */}
@@ -33,6 +27,13 @@ function App() {
        {/* add more sub-routes here */}
     </Route>
 
+      {/* Public routes */}
+      <Route element={<PublicLayout/>}>
+        <Route path="/" element={<HomePage />} />
+        <Route path="login" element={<LoginPage />} />
+        <Route path="signup" element={<SignupPage />} />
+        <Route path="forgot-password" element={<ForgotPasswordPage />} />
+      </Route>
     </Routes>
   );
 }

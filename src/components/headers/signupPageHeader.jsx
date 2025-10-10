@@ -7,17 +7,8 @@ export function SignupHeader() {
       initial={{ opacity: 0, y: -30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
-      className="text-center mb-12"
+      className="text-center"
     >
-      {/* Tagline */}
-      <motion.p
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3, duration: 0.6 }}
-        className="text-sm md:text-base text-gray-500 tracking-wide uppercase mb-2"
-      >
-        Empowering developers and employers to connect meaningfully.
-      </motion.p>
 
       {/* Main Title */}
       <motion.h1
