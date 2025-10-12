@@ -1,26 +1,26 @@
 import axios from "axios";
-import { useAuthStore } from "../../../../store/authStore";
-import { BACKEND_URL } from "../../../../../config/envConfig";
-import { refreshToken } from "../../../../utils/refreshToken";
-import { useJobStore } from "../../../../store/jobPostStore";
+import { useAuthStore } from "../../../store/authStore.js";
+import { usePostStore } from "../../../store/postStore.js";
+import { BACKEND_URL } from "../../../../config/envConfig.js";
+import { refreshToken } from "../../../utils/refreshToken.js";
 
-export async function deleteJob(jobId, refresh) {
+export async function deletePost(postId, refresh) {
     try {
         const { accessToken } = useAuthStore.getState();
 
-        const { reset_jobStore } = useJobStore.getState();
+        const { reset_postStore } = usePostStore.getState();
 
         await axios.delete(
-            `${BACKEND_URL}job/delete`,
+            `${BACKEND_URL}post/delete`,
             {
                 headers: {
                     Authorization: `Bearer ${accessToken}`
                 },
-                data: { jobId }
+                data: { postId }
             }
         );
 
-        reset_jobStore();
+        reset_postStore();
         refresh();
         return { status: 200 }
 
@@ -28,7 +28,7 @@ export async function deleteJob(jobId, refresh) {
         console.log(error);
         if(error.response?.status == 401) {
             let res = refreshToken();
-            if (res) return deleteJob(jobId, refresh);
+            if (res) return deletePost(postId, refresh);
         }else if(error.response?.status == 400) {
             return {
                 status: 400,

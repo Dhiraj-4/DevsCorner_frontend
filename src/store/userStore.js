@@ -7,6 +7,7 @@ import { logoutHelper } from "../utils/logoutHelper.js";
 
 export const useUserStore = create((set) => ({
   user: {
+    _id: "",
     userName: "",
     fullName: "",
     skills: [],

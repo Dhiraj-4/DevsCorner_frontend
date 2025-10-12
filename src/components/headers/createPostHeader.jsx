@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 
-export function CreateJobHeader() {
+export function CreatePostHeader() {
   return (
     <motion.header
       initial={{ opacity: 0, y: -30 }}
@@ -16,7 +16,7 @@ export function CreateJobHeader() {
         transition={{ delay: 0.5, duration: 0.7 }}
         className="text-4xl md:text-5xl font-semibold text-white tracking-tight"
       >
-        Create Job Post
+        Create Post
       </motion.h1>
 
     </motion.header>
