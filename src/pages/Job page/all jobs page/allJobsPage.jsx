@@ -7,7 +7,7 @@ import { JobTemplate } from "../../../components/Job Components/jobTemplate.jsx"
 export function AllJobsPage() {
   const {
     setPageNumber,
-    jobsArray,
+    allJobsArray,
     reset_jobStore,
     hasMore
   } = useJobStore();
@@ -53,20 +53,19 @@ export function AllJobsPage() {
     observer.observe(targetRef.current);
 
     return () => observer.disconnect();
-  }, [jobsArray, hasMore]);
+  }, [allJobsArray, hasMore]);
 
   return (
     <div className="flex justify-center items-center h-full min-h-screen mt-20 pt-20 bg-black">
-      {jobsArray.length !== 0 ? (
+      {allJobsArray.length !== 0 ? (
         <div
           id="scrollArea"
           className="fixed top-40 left-1/2 -translate-x-1/2 max-w-4xl w-full h-[calc(100vh-13rem)] overflow-y-auto 
           p-8 rounded-2xl bg-zinc-900 shadow-xl"
         >
-          {jobsArray.map((job) => (
+          {allJobsArray.map((job) => (
             <JobTemplate
               isFollowing={user.following.some( (id) => id.toString() === job.owner._id.toString())}
-              refresh={getAllJobsHandler}
               key={job.jobId + "1"}
               text={job.text}
               companyName={job.companyName}

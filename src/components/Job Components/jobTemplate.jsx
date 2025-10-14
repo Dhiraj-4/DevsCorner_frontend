@@ -7,11 +7,12 @@ import { Owner } from "./template components/owner.jsx";
 import { Role } from "./template components/role.jsx";
 import { deleteJob } from "./template components/utils/deleteJob.js";
 
-export function JobTemplate({ applyLink = "", companyName = "Indie", text, role, owner, jobId, refresh, isFollowing}) {
+export function JobTemplate({ applyLink = "", companyName = "Indie", text, role, owner, jobId, isFollowing}) {
 
 
   return (
-    <div className="flex flex-col gap-4 max-w-md mx-auto p-6 mb-4 bg-white shadow-md rounded-2xl border border-gray-200">
+    <div id={jobId}
+    className="flex flex-col gap-4 max-w-md mx-auto p-6 mb-4 bg-white shadow-md rounded-2xl border border-gray-200">
       
         {(owner != "YOU") ? (
             <Owner owner={owner} isFollowing={isFollowing}/>
@@ -23,7 +24,7 @@ export function JobTemplate({ applyLink = "", companyName = "Indie", text, role,
 
             <Trash2 
                 className="w-7 h-7 text-gray-400 hover:text-red-400 cursor-pointer" 
-                onClick={async() => deleteJob(jobId, refresh)}
+                onClick={async() => deleteJob(jobId)}
             />
             </div>
         )}

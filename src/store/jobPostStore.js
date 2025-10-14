@@ -1,8 +1,12 @@
 import { create } from "zustand";
 
 export const useJobStore = create((set,get) => ({
-    jobsArray: [],
-    setJobs: (jobs) => set(() => ({ jobsArray: [...get().jobsArray, ...jobs] })),
+
+    allJobsArray: [],
+    setAllJobs: (jobs) => set(() => ({ allJobsArray: [...get().allJobsArray, ...jobs] })),
+
+    myJobsArray: [],
+    setMyJobs: (jobs) => set(() => ({ myJobsArray: [...get().myJobsArray, ...jobs] })),
 
     pageNumber: 1,
     setPageNumber: () => set({ pageNumber: get().pageNumber + 1 }),
@@ -29,8 +33,9 @@ export const useJobStore = create((set,get) => ({
             text: "",
             companyName: "",
             role: "",
-            jobsArray: [],
-            hasMore: true
+            allJobsArray: [],
+            myJobsArray: [],
+            hasMore: true,
         });
     }
 }));

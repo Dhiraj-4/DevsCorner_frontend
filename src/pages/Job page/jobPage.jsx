@@ -1,10 +1,10 @@
 import { useState } from "react";
 import JobNavbar from "../../navbars/jobNavbar";
-import { MyJobsPage } from "./myJobsPage";
 import { CoolButton } from "../../components/Buttons/button.jsx";
 import { useNavigate } from "react-router-dom";
 import { AllJobsPage } from "./all jobs page/allJobsPage.jsx";
 import { useJobStore } from "../../store/jobPostStore.js";
+import { MyJobsPage } from "../My job page/myJobsPage.jsx";
 
 export function JobPage() {
     const [activeTab, setActiveTab] = useState("jobs");

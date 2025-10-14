@@ -6,14 +6,16 @@ import { useState } from "react";
 import { toggleLikeHandler } from "./toggleLikeHandler.js";
 import { toggleDislikeHandler } from "./toggleDislikedHandler.js";
 
-export function PostTemplate({ text, owner, postId, refresh, isFollowing, likes, dislikes, isLiked, isDisliked}) {
+export function PostTemplate({ text, owner, postId, isFollowing, likes, dislikes, isLiked, isDisliked}) {
 
   const [isLikedState, setIsLikedState] = useState(isLiked);
   const [isDislikedState, setIsDislikedState] = useState(isDisliked);
-
+  const [likesCount, setLikesCount] = useState(likes);
+  const [dislikesCount, setDislikesCount] = useState(dislikes);
 
   return (
-    <div className="flex flex-col gap-4 max-w-md mx-auto p-6 mb-4 bg-white shadow-md rounded-2xl border border-gray-200">
+    <div id={postId}
+    className="flex flex-col gap-4 max-w-md mx-auto p-6 mb-4 bg-white shadow-md rounded-2xl border border-gray-200">
       
         {(owner != "YOU") ? (
             <Owner owner={owner} isFollowing={isFollowing}/>
@@ -25,7 +27,7 @@ export function PostTemplate({ text, owner, postId, refresh, isFollowing, likes,
 
             <Trash2 
                 className="w-7 h-7 text-gray-400 hover:text-red-400 cursor-pointer" 
-                onClick={async() => deletePost(postId, refresh)}
+                onClick={async() => deletePost(postId)}
             />
             </div>
         )}
@@ -39,34 +41,48 @@ export function PostTemplate({ text, owner, postId, refresh, isFollowing, likes,
               fill={isLikedState ? "black" : "white"} 
 
               onClick={async() => {
-                let res = await toggleLikeHandler(postId, refresh);
+                let res = await toggleLikeHandler(postId);
                 if(res.status == 200) {
                   if(res.isLiked) {
                     setIsLikedState(true);
-                    setIsDislikedState(false);
+                    setLikesCount(likesCount+1);
+                    if(isDislikedState) {
+                      setDislikesCount(dislikesCount-1);
+                      setIsDislikedState(false);
+                    }
+                  }else {
+                    setIsLikedState(false);
+                    setLikesCount(likesCount-1);
                   }
                 }
               }} 
             />
 
-            {likes}</span>
+            {likesCount}</span>
 
           <span className="flex flex-col justify-center items-center">
 
             <ThumbsDown 
               className="w-5 h-5" fill={isDislikedState ? "black" : "white"} 
               onClick={async() => {
-                let res = await toggleDislikeHandler(postId, refresh);
+                let res = await toggleDislikeHandler(postId);
                 if(res.status == 200) {
                   if(res.isDisliked) {
+                    setDislikesCount(dislikesCount+1);
                     setIsDislikedState(true);
-                    setIsLikedState(false);
+                    if(isLikedState) {
+                      setIsLikedState(false);
+                      setLikesCount(likesCount-1);
+                    }
+                  }else {
+                    setDislikesCount(dislikesCount-1);
+                    setIsDislikedState(false);
                   }
                 }
               }} 
             />
 
-            {dislikes}</span>
+            {dislikesCount}</span>
         </div>
     </div>
   );

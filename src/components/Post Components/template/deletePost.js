@@ -1,14 +1,11 @@
 import axios from "axios";
 import { useAuthStore } from "../../../store/authStore.js";
-import { usePostStore } from "../../../store/postStore.js";
 import { BACKEND_URL } from "../../../../config/envConfig.js";
 import { refreshToken } from "../../../utils/refreshToken.js";
 
-export async function deletePost(postId, refresh) {
+export async function deletePost(postId) {
     try {
         const { accessToken } = useAuthStore.getState();
-
-        const { reset_postStore } = usePostStore.getState();
 
         await axios.delete(
             `${BACKEND_URL}post/delete`,
@@ -20,15 +17,18 @@ export async function deletePost(postId, refresh) {
             }
         );
 
-        reset_postStore();
-        refresh();
+        
+        let post = document.getElementById(postId);
+        console.log("remove a post");
+        if(post) post.remove();
+    
         return { status: 200 }
 
     } catch (error) {
         console.log(error);
         if(error.response?.status == 401) {
             let res = refreshToken();
-            if (res) return deletePost(postId, refresh);
+            if (res) return deletePost(postId);
         }else if(error.response?.status == 400) {
             return {
                 status: 400,

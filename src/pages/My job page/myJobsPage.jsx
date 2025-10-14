@@ -1,15 +1,15 @@
 import { useEffect, useRef } from "react"
-import { getMyJobsHandler } from "../../utils/getMyJobsHandler.js";
-import { useJobStore } from "../../store/jobPostStore.js";
-import { useUserStore } from "../../store/userStore.js";
 import { JobTemplate } from "../../components/Job Components/jobTemplate.jsx";
+import { useUserStore } from "../../store/userStore.js";
+import { useJobStore } from "../../store/jobPostStore.js";
+import { getMyJobsHandler } from "./getMyJobsHandler.js";
 
 export function MyJobsPage() {
     const {
         setPageNumber,
-        jobsArray,
         reset_jobStore,
-        hasMore
+        hasMore,
+        myJobsArray
     } = useJobStore();
 
     const {
@@ -56,17 +56,17 @@ export function MyJobsPage() {
         observer.observe(targetRef.current);
 
         return () => observer.disconnect();
-    },[jobsArray, hasMore])
+    },[myJobsArray, hasMore])
     
     return (
         <div className="flex justify-center items-center h-full min-h-screen mt-20 pt-20 bg-black">
             {
-                (jobsArray.length != 0) ?
+                (myJobsArray.length != 0) ?
 
                 <div className="fixed top-40 left-1/2 -translate-x-1/2 max-w-4xl w-full h-[calc(100vh-13rem)] overflow-y-auto 
              p-8 rounded-2xl bg-zinc-900 shadow-xl">
                 {
-                    jobsArray.map( (job) => {
+                    myJobsArray.map( (job) => {
                         return <JobTemplate
                             refresh={getMyJobsHandler}
                             key={job.jobId}

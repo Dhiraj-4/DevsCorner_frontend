@@ -1,8 +1,8 @@
 import axios from "axios";
-import { BACKEND_URL } from "../../config/envConfig";
-import { useAuthStore } from "../store/authStore";
-import { refreshToken } from "./refreshToken";
-import { useJobStore } from "../store/jobPostStore";
+import { BACKEND_URL } from "../../../config/envConfig";
+import { useAuthStore } from "../../store/authStore";
+import { refreshToken } from "../../utils/refreshToken";
+import { useJobStore } from "../../store/jobPostStore";
 
 export async function getMyJobsHandler() {
     const {
@@ -10,9 +10,9 @@ export async function getMyJobsHandler() {
     } = useAuthStore.getState();
 
     const {
-        setJobs,
         pageNumber,
-        setHasMore
+        setHasMore,
+        setMyJobs
     } = useJobStore.getState();
     try {
         const response = await axios.get(
@@ -22,13 +22,12 @@ export async function getMyJobsHandler() {
                     Authorization: `Bearer ${accessToken}`
                 }
             }
-        );
-
+        );  
         if(response.status == 200) {
             console.log(response);
-            
-            setJobs(response.data.info[0]);
+            setMyJobs(response.data.info[0]);
             setHasMore(response.data.info[1]);
+            
         }
     } catch (error) {
         console.log(error);

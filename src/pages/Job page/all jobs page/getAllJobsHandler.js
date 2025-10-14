@@ -10,9 +10,9 @@ export async function getAllJobsHandler() {
     } = useAuthStore.getState();
 
     const {
-        setJobs,
         pageNumber,
-        setHasMore
+        setHasMore,
+        setAllJobs
     } = useJobStore.getState();
     try {
         const response = await axios.get(
@@ -23,11 +23,9 @@ export async function getAllJobsHandler() {
                 }
             }
         );
-
         if(response.status == 200) {
             console.log(response);
-            
-            setJobs(response.data.info[0]);
+            setAllJobs(response.data.info[0]);
             setHasMore(response.data.info[1]);
         }
     } catch (error) {
