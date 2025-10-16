@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react"
-import { JobTemplate } from "../../components/Job Components/jobTemplate.jsx";
-import { useUserStore } from "../../store/userStore.js";
-import { useJobStore } from "../../store/jobPostStore.js";
+import { JobTemplate } from "../../../components/Job Components/jobTemplate.jsx";
+import { useUserStore } from "../../../store/userStore.js";
+import { useJobStore } from "../../../store/jobPostStore.js";
 import { getMyJobsHandler } from "./getMyJobsHandler.js";
 
 export function MyJobsPage() {

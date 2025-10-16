@@ -12,6 +12,7 @@ import { PostJobPage } from './pages/Job page/postJobPage.jsx';
 import PublicProfilePage from './pages/publicProfilePage.jsx';
 import { PostPage } from './pages/posts page/Get All Posts page/postPage.jsx';
 import { UploadPostPage } from './pages/posts page/upload post page/upload post page.jsx';
+import { ChatPage } from './pages/chat page/chatPage.jsx';
 
 function App() {
 
@@ -19,14 +20,14 @@ function App() {
    <Routes>
 
     {/* Private/User routes (with shared layout) */}
-   <Route element={<UserLayout />}>
+    <Route element={<UserLayout />}>
        {/* <Route index element={<UserHome />} /> */}
        <Route path='/feed' element={<PostPage />} />
        <Route path='/post' element={<UploadPostPage />} />
        <Route path="/user/:userName" element={<PublicProfilePage />} />
        <Route path="/jobs" element={<JobPage />} />
        <Route path="/post-job" element={<PostJobPage/>} />
-       {/* <Route path="chat" element={<UserChat />} /> */}
+       <Route path="/chat" element={<ChatPage />} />
        <Route path="/me" element={<UserProfile />} />
        {/* add more sub-routes here */}
     </Route>

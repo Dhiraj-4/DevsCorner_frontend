@@ -1,7 +1,10 @@
 import { create } from 'zustand';
+
 export const useAuthStore = create((set, get) => ({
+  
     isLoggedIn: true,
     setIsLoggedIn: (bool) => set({ isLoggedIn: bool }),
+
     accessToken: '',
     setAccessToken: (token) => set({ accessToken: token }),
 

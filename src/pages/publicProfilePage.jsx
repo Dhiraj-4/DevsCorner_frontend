@@ -1,24 +1,24 @@
 import { Mail, MapPin, User } from "lucide-react";
 import { PublicSkillItem } from "../components/skills/public skill items.jsx";
 import { PublicSocialLinkItem } from "../components/social links/public socialLink item.jsx";
-import { useParams } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { BACKEND_URL } from "../../config/envConfig.js";
 import axios from "axios";
 import { CoolButton } from "../components/Buttons/button.jsx";
 import { useUserStore } from "../store/userStore.js";
 import { toggleFollow } from "../utils/toggleFollow.js";
 import { IsLoadingSvg } from "../components/loaders/isLoadingSvg.jsx";
-import { refreshToken } from "../utils/refreshToken.js";
 import { useAuthStore } from "../store/authStore.js";
+import { createConversation } from "../utils/createConversation.js";
 
 export default function PublicProfilePage() {
   const { userName } = useParams();
   const [otherUser, setotherUser] = useState(null);
   const [error, setError] = useState("Loading..");
   const [isLoading, setIsLoading] = useState(false);
-  // const flag = useRef(false);
   const [isFollowing, setIsFollowing] = useState(false);
+  const navigate = useNavigate();
   
   const {
     user
@@ -28,12 +28,15 @@ export default function PublicProfilePage() {
     accessToken
   } = useAuthStore();
   
-  
+  async function startConversation() { 
+    let response = await createConversation({ receiverId: otherUser._id }); 
+    if(response.status == 200) navigate("/chat"); 
+  }
   useEffect( () => {
     if(!otherUser) return ;
     let flag = user.following.some( (id) => id.toString() === otherUser._id.toString());
     setIsFollowing(flag);
-}, [otherUser, user]);
+  }, [otherUser, user]);
   
   useEffect(() => {
     if (!userName) return;
@@ -55,7 +58,7 @@ export default function PublicProfilePage() {
         console.log(res);
       } catch (err) {
         console.error("Error fetching user:", err); 
-        if(err.response.status == 403 || err.response.status == 401) {
+        if(err.response.status == 401) {
           // let x = refreshToken();
           // if(x) fetchUser();
         }
@@ -149,7 +152,7 @@ export default function PublicProfilePage() {
               }
             }}
             /></span>
-          <span><CoolButton text={"Message"} /></span>
+          <span><CoolButton text={"Message"} clickHandler={() => startConversation()}/></span>
           </div>
         }
 

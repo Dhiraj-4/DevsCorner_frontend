@@ -1,8 +1,8 @@
 import axios from "axios";
-import { BACKEND_URL } from "../../../config/envConfig";
-import { useAuthStore } from "../../store/authStore";
-import { refreshToken } from "../../utils/refreshToken";
-import { useJobStore } from "../../store/jobPostStore";
+import { BACKEND_URL } from "../../../../config/envConfig.js";
+import { useAuthStore } from "../../../store/authStore.js";
+import { refreshToken } from "../../../utils/refreshToken.js";
+import { useJobStore } from "../../../store/jobPostStore.js";
 
 export async function getMyJobsHandler() {
     const {
@@ -31,7 +31,7 @@ export async function getMyJobsHandler() {
         }
     } catch (error) {
         console.log(error);
-        if(error.response?.status == 403 || error.response?.status == 401) {
+        if(error.response?.status == 401) {
             let res = await refreshToken();
             if(res) getMyJobsHandler();
         }
