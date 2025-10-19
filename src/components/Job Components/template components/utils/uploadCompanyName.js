@@ -23,7 +23,7 @@ export async function uploadCompanyName(company, jobId) {
         return { status: 200, company }
     } catch (error) {
         console.log(error);
-        if(error.response?.status == 403 || error.response?.status == 401) {
+        if(error.response?.status == 401) {
             let res = refreshToken();
             if (res) return uploadCompanyName(company, jobId);
         }else if(error.response?.status == 400) {

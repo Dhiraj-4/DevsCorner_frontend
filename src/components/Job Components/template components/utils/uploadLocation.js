@@ -1,16 +1,16 @@
 import axios from "axios";
-import { useAuthStore } from "../../../../store/authStore";
-import { BACKEND_URL } from "../../../../../config/envConfig";
-import { refreshToken } from "../../../../utils/refreshToken";
+import { useAuthStore } from "../../../../store/authStore.js";
+import { BACKEND_URL } from "../../../../../config/envConfig.js";
+import { refreshToken } from "../../../../utils/refreshToken.js";
 
-export async function uploadRole(roleState, jobId) {
+export async function uploadLocation(locationState, jobId) {
     try {
         const { accessToken } = useAuthStore.getState();
 
         await axios.patch(
-            `${BACKEND_URL}job/update-role`,
+            `${BACKEND_URL}job/update-location`,
             {
-                role: roleState,
+                location: locationState,
                 jobId
             },
             {
@@ -20,16 +20,16 @@ export async function uploadRole(roleState, jobId) {
             }
         );
 
-        return { status: 200, roleState }
+        return { status: 200, locationState }
     } catch (error) {
         console.log(error);
         if(error.response?.status == 401) {
             let res = refreshToken();
-            if (res) return uploadRole(roleState, jobId);
+            if (res) return uploadLocation(locationState, jobId);
         }else if(error.response?.status == 400) {
             return {
                 status: 400,
-                message: error.response.data.error.issues[0].code
+                message: error.response.data.error.issues[0].message || error.response.data.error.issues[0].code || error.response.data.message
             }
         }else {
             return { status: 500 }

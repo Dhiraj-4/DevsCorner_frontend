@@ -22,7 +22,19 @@ export function PostJobPage() {
         setCompanyName,
 
         applyLink,
-        setApplyLink
+        setApplyLink,
+
+        experience,
+        setExperience,
+
+        salary,
+        setSalary,
+
+        location,
+        setLocation,
+
+        locationType,
+        setLocationType
     } = useJobStore();
 
     const {
@@ -71,6 +83,53 @@ export function PostJobPage() {
                     name={"Role"}
                     type={"text"}
                     autoComplete={"Role"}
+                />
+
+                {/* experience */}
+                <Input 
+                    placeholder={"Experience"}
+                    value={experience}
+                    set={setExperience}
+                    minLength={1}
+                    name={"Experience"}
+                    type={"number"}
+                    autoComplete={"Experience"}
+                    required={false}
+                />
+
+                {/* location */}
+                <Input 
+                    placeholder={"City, State, Country"}
+                    value={location}
+                    set={setLocation}
+                    minLength={1}
+                    name={"Location"}
+                    type={"text"}
+                    autoComplete={"Location"}
+                />
+
+
+                {/* location type */}
+                <Input 
+                    placeholder={"fulltime / remote / hybrid"}
+                    value={locationType}
+                    set={setLocationType}
+                    minLength={6}
+                    name={"Location type"}
+                    type={"text"}
+                    autoComplete={"Location type"}
+                />
+
+                {/* salary */}
+                <Input 
+                    placeholder={"Salary"}
+                    value={salary}
+                    set={setSalary}
+                    minLength={1}
+                    name={"Salary"}
+                    type={"text"}
+                    autoComplete={"Salary"}
+                    required={false}
                 />
 
                 {/* Apply Link */}

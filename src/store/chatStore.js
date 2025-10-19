@@ -10,8 +10,21 @@ export const useChatStore = create((set, get) => ({
   messages: [],
   activeConversation: null,
   conversations: [],
+  onlineMembers: 0,
+  setOnlineMembers: (number) => set({ onlineMembers: number }),
   setConversations: (array) => set({ conversations: array }),
   isConnected: false,
+  pageNumber: 1,
+  setPageNumber: () => set({ pageNumber: get().pageNumber + 1 }),
+  reset_pageNumber: () => set({ pageNumber: 1 }), 
+
+  chatParticipants: new Set(),
+
+  setChatParticipants: (participants) => set({ chatParticipants: new Set(participants) }),
+
+  isParticipantOnline: (receiverId) => {
+    return get().chatParticipants.has(receiverId);
+  },
 
   resetChatStore: () => {
     set({
@@ -34,19 +47,43 @@ export const useChatStore = create((set, get) => ({
       set({ isConnected: true });
     });
 
+    socket.on("onlineParticipants", (participants) => {
+      set({ chatParticipants: new Set(participants) });
+    });
+
+    socket.on("userJoinedChat", (userId) => {
+      set((state) => {
+        const updated = new Set(state.chatParticipants);
+        updated.add(userId);
+        return { chatParticipants: updated };
+      });
+    });
+
+    socket.on("userLeftChat", (userId) => {
+      set((state) => {
+        const updated = new Set(state.chatParticipants);
+        updated.delete(userId);
+        return { chatParticipants: updated };
+      });
+    });
+
+
     socket.on("receiveMessage", async (message) => {
-  const { activeConversation, conversations } = get();
-  console.log(message, "receiveMessage");
+      const { activeConversation } = get();
+      console.log(message, "receiveMessage");
 
-  if (message.conversationId === activeConversation?._id) {
-    // belongs to active conversation → just append message
-    set({ messages: [...get().messages, message] });
-  } else {
-     const { hydrateUser } = useUserStore.getState();
-     await hydrateUser();
-    }
-  });
+      if (message.conversationId === activeConversation?._id) {
+        // belongs to active conversation → just append message
+        set({ messages: [...get().messages, message] });
+      } else {
+         const { hydrateUser } = useUserStore.getState();
+         await hydrateUser();
+      }
+    });
 
+    socket.on("onlineMembers", (onlineNumber) => {
+      set({ onlineMembers: onlineNumber });
+    });
 
     set({ socket });
   },
@@ -71,5 +108,6 @@ export const useChatStore = create((set, get) => ({
 
     socket.emit("sendMessage", messageData);
     set({ messages: [...get().messages, messageData] });
-  },
+  }
+
 }));

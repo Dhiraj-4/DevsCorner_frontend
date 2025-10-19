@@ -58,10 +58,6 @@ export default function PublicProfilePage() {
         console.log(res);
       } catch (err) {
         console.error("Error fetching user:", err); 
-        if(err.response.status == 401) {
-          // let x = refreshToken();
-          // if(x) fetchUser();
-        }
         setError(err.response.data.message);
       }finally{
         setIsLoading(false);

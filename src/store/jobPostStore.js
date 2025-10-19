@@ -23,6 +23,18 @@ export const useJobStore = create((set,get) => ({
     text: "",
     setText: (text) => set({ text }),
 
+    location: "",
+    setLocation: (location) => set({ location }),
+
+    locationType: "",
+    setLocationType: (type) => set({ locationType: type }),
+
+    salary: "",
+    setSalary: (salary) => set({ salary }),
+
+    experience: 0,
+    setExperience: (experience) => set({ experience }),
+
     hasMore: true,
     setHasMore: (bool) => set({ hasMore: bool }),
 

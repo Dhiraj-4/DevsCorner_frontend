@@ -14,6 +14,9 @@ import { useUserStore } from "../store/userStore.js";
 import { useAuthStore } from "../store/authStore.js";
 import { checkAccessToken } from "../utils/checkAccessToken.js";
 import { NavbarProfileImage } from "../components/profile image/navbarProfileImage.jsx";
+import { io } from "socket.io-client";
+import { SOCKET_URL } from "../../config/envConfig.js";
+
 
 export default function UserNavbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,6 +30,16 @@ export default function UserNavbar() {
   const {
     isLoggedIn
   } = useAuthStore();
+
+  useEffect(() => {
+    if(!user._id) return;
+
+    io(SOCKET_URL, {
+      withCredentials: true,
+      autoConnect: true,
+      query: { userId: user._id }
+    });
+  },[user])
   
   const naviagte = useNavigate();
   useEffect( () => {

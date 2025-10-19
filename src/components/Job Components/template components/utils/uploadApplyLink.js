@@ -23,7 +23,7 @@ export async function uploadApplyLink(applyLinkState, jobId) {
         return { status: 200, applyLinkState }
     } catch (error) {
         console.log(error);
-        if(error.response?.status == 403 || error.response?.status == 401) {
+        if(error.response?.status == 401) {
             let res = refreshToken();
             if (res) return uploadApplyLink(textState, jobId);
         }else if(error.response?.status == 400) {

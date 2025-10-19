@@ -76,6 +76,10 @@ export function MyJobsPage() {
                             applyLink={job.applyLink}
                             role={job.role}
                             jobId={job.jobId}
+                            salary={job.salary}
+                            location={job.location}
+                            locationType={job.locationType}
+                            experience={job.experience}
                         />
                     })
                 }

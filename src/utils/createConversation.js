@@ -3,6 +3,7 @@ import { BACKEND_URL } from "../../config/envConfig.js"
 import { useAuthStore } from "../store/authStore.js"
 import { refreshToken } from "./refreshToken.js";
 import { useUserStore } from "../store/userStore.js";
+import { useChatStore } from "../store/chatStore.js";
 
 export const createConversation = async({ receiverId }) => {
     try {
@@ -11,6 +12,8 @@ export const createConversation = async({ receiverId }) => {
         const { accessToken } = useAuthStore.getState();
 
         const { user } = useUserStore.getState();
+
+        const { setActiveConversation } = useChatStore.getState();
 
         const response = await axios.post(
             `${BACKEND_URL}chat/conversations`,
@@ -26,6 +29,7 @@ export const createConversation = async({ receiverId }) => {
         );
 
         console.log(response);
+        setActiveConversation(response.data.info);
         if(response.status == 201) {
             return { status: 200 };
         }

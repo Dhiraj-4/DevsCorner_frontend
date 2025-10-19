@@ -9,7 +9,11 @@ export async function createJobHandler() {
         text,
         role,
         applyLink,
-        companyName
+        companyName,
+        salary,
+        location,
+        locationType,
+        experience
     } = useJobStore.getState();
 
     const {
@@ -24,12 +28,17 @@ export async function createJobHandler() {
 
         const body = {
             text,
-            role
+            role,
+            location,
+            locationType
         }
 
         if(applyLink) body.applyLink = applyLink;
         if(companyName) body.companyName = companyName;
+        if(salary) body.salary = salary;
+        if(experience) body.experience = parseInt(experience);
 
+        console.log(body);
         const response = await axios.post(
             `${BACKEND_URL}job/post`,
             body,
@@ -49,12 +58,12 @@ export async function createJobHandler() {
         }
     } catch (error) {
         console.log(error);
-        if(error.response?.status == 403 || error.response?.status == 401) {
+        if(error.response?.status == 401) {
             let res = refreshToken();
             if (res) createJobHandler();
         }
         else if(error.response?.status == 400) {
-            setError( error.response.data?.error?.issues[0].code || error.response.data.message);
+            setError( error.response.data?.error?.issues[0].message || error.response.data?.error?.issues[0].code || error.response.data.message);
         }
         return false;
     }finally {
