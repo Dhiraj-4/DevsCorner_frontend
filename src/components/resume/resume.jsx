@@ -2,8 +2,6 @@ import { FileText, Trash2  } from "lucide-react";
 import { useUserStore } from "../../store/userStore.js"
 import { uploadResume } from "./uploadResume.js";
 import { deleteResume } from "./deleteResume.js";
-import { getResume } from "./getResume.js";
-
 
 export function Resume() {
 

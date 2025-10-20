@@ -1,4 +1,4 @@
-import { Mail, MapPin, User } from "lucide-react";
+import { FileText, Mail, MapPin, User } from "lucide-react";
 import { PublicSkillItem } from "../components/skills/public skill items.jsx";
 import { PublicSocialLinkItem } from "../components/social links/public socialLink item.jsx";
 import { useNavigate, useParams } from "react-router-dom";
@@ -199,6 +199,27 @@ export default function PublicProfilePage() {
       </div>
 
 
+      {/* Resume */}
+      <div className="flex items-center gap-3 text-gray-300">
+            <FileText className="w-5 h-5 text-gray-400" />
+            {otherUser.resume ? (
+              <div className="flex gap-2 text-xl justify-center items-center">
+                <a
+                href={user.resume}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-indigo-400 hover:text-indigo-300 transition"
+              >
+                View Resume
+              </a>
+
+              </div>
+            ) : (
+              <span className="italic text-gray-500 text-xl">
+                No resume
+              </span>
+            )}
+          </div>
       </div>
 
         {/* Skills */}
