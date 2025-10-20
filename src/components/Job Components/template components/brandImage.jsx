@@ -35,14 +35,6 @@ export function BrandImage({ brandImage, owner, jobId }) {
    
                 <div>
                     <img src={brandImageState} alt="Brand image"/>
-
-                    <Trash2 className=" w-5 h-5 hover:text-red-500"
-                        onClick={async() => {
-                            let res = await deleteBrandImage(jobId);
-                            if(res.status == 200) setBrandImageState("");
-                            else setError("Something went wrong");
-                        }}
-                    />
                 </div>
                 :
                 "Brand Image"
@@ -65,13 +57,27 @@ export function BrandImage({ brandImage, owner, jobId }) {
 
             {
                 (owner == "YOU") &&
+                <div className="flex items-center gap-2">
                 <div
-                className=" flex cursor-pointer rounded-full w-[30px] h-[30px] bg-black/60 hover:bg-black/80 items-center justify-center shadow-md"
-                onClick={() => { 
-                    document.getElementById(`brandImageUploader-${jobId}`).click();
-                }}
+                    className=" flex cursor-pointer rounded-full w-[30px] h-[30px] bg-black/60 hover:bg-black/80 items-center justify-center shadow-md"
+                    onClick={() => { 
+                        document.getElementById(`brandImageUploader-${jobId}`).click();
+                    }}
                 >
                     <Pencil size={20} color="white" />
+
+                </div>
+                    {
+                        (brandImageState) &&
+
+                        <Trash2 className=" w-5 h-5 hover:text-red-500"
+                            onClick={async() => {
+                                let res = await deleteBrandImage(jobId);
+                                if(res.status == 200) setBrandImageState("");
+                                else setError("Something went wrong");
+                            }}
+                        />
+                    }
                 </div>
             }
             </div>
@@ -79,19 +85,3 @@ export function BrandImage({ brandImage, owner, jobId }) {
         </>
     )
 }
-
-{/* <div className="flex flex-wrap items-center gap-3">
-                
-                    <div className="text-lg font-semibold text-gray-800">Company : {company}</div>
-
-                    {
-                        (owner == "YOU") &&
-
-                        <div
-                        className=" flex cursor-pointer rounded-full w-[30px] h-[30px] bg-black/60 hover:bg-black/80 items-center justify-center shadow-md"
-                        onClick={() => { setIsEditing(true) }}
-                        >
-                            <Pencil size={20} color="white" />
-                        </div>
-                    }
-                </div> */}
