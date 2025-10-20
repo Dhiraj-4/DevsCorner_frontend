@@ -67,6 +67,9 @@ export const useChatStore = create((set, get) => ({
       });
     });
 
+    socket.on("authError", (response) => {
+      console.log(response.message);
+    });
 
     socket.on("receiveMessage", async (message) => {
       const { activeConversation } = get();

@@ -77,6 +77,7 @@ export function AllJobsPage() {
               location={job.location}
               locationType={job.locationType}
               experience={job.experience}
+              brandImage={job.brandImage}
             />
           ))}
 

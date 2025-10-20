@@ -10,11 +10,12 @@ import { Location } from "./template components/location.jsx";
 import { LocationType } from "./template components/locationType.jsx";
 import { Salary } from "./template components/salary.jsx";
 import { Experience } from "./template components/experience.jsx";
+import { BrandImage } from "./template components/brandImage.jsx";
 
 export function JobTemplate({ 
   applyLink = "", companyName = "Indie", 
   text, role, owner, jobId, isFollowing, location,
-  locationType, salary, experience = 0
+  locationType, salary, experience = 0, brandImage
 }) {
 
 
@@ -56,6 +57,8 @@ export function JobTemplate({
 
       {/* experience */}
       <Experience owner={owner} jobId={jobId} experience={experience} />
+
+      <BrandImage owner={owner} jobId={jobId} brandImage={brandImage}/>
 
       <ApplyLink applyLink={applyLink} owner={owner} jobId={jobId}/>
 

@@ -18,12 +18,7 @@ export function Resume() {
             {user.resume ? (
               <div className="flex gap-2 text-xl justify-center items-center">
                 <a
-                href="#"
-                onClick={async(e) => {
-                    e.preventDefault();
-                    await getResume();
-
-                }}
+                href={user.resume}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-indigo-400 hover:text-indigo-300 transition"
