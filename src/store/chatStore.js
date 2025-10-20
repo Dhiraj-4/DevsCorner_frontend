@@ -7,7 +7,18 @@ import { useUserStore } from "./userStore.js";
 
 export const useChatStore = create((set, get) => ({
   socket: null,
+
   messages: [],
+  setMessages: (newMessages, replace = false) => {
+    console.log("📨 setMessages called", newMessages);
+    if (replace) {
+      set({ messages: newMessages.reverse() });
+    } else {
+      set({ messages: [...newMessages.reverse(), ...get().messages] });
+    }
+  },
+
+
   activeConversation: null,
   conversations: [],
   onlineMembers: 0,
@@ -17,6 +28,9 @@ export const useChatStore = create((set, get) => ({
   pageNumber: 1,
   setPageNumber: () => set({ pageNumber: get().pageNumber + 1 }),
   reset_pageNumber: () => set({ pageNumber: 1 }), 
+
+  hasMore: true,
+  setHasMore: (bool) => set({ hasMore: bool }),
 
   chatParticipants: new Set(),
 
@@ -92,11 +106,15 @@ export const useChatStore = create((set, get) => ({
   },
 
   setActiveConversation: async (conversation) => {
-    set({ activeConversation: conversation, messages: [] });
-    let res = await getMessages({conversationId: conversation._id});
-
-    set({ messages: res.data.info[0] });
+    set({ activeConversation: conversation, messages: [], pageNumber: 1, hasMore: true });
+    const res = await getMessages({ conversationId: conversation._id });
+    if (res?.data?.info) {
+      const [msgs, more] = res.data.info;
+      set({ hasMore: more });
+      get().setMessages(msgs, true); // replace = true
+    }
   },
+
 
   sendMessage: (text, senderId, receiverId) => {
     const { socket, activeConversation } = get();
@@ -110,6 +128,7 @@ export const useChatStore = create((set, get) => ({
     };
 
     socket.emit("sendMessage", messageData);
+
     set({ messages: [...get().messages, messageData] });
   }
 

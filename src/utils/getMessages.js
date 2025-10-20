@@ -2,14 +2,18 @@ import axios from "axios";
 import { useAuthStore } from "../store/authStore.js";
 import { BACKEND_URL } from "../../config/envConfig.js";
 import { refreshToken } from "./refreshToken.js";
+import { useChatStore } from "../store/chatStore.js";
 
 export const getMessages = async({conversationId}) => {
     try {
     const { accessToken } = useAuthStore.getState();
+
+    const { pageNumber } = useChatStore.getState();
+
       const res = await axios.get(
       `${BACKEND_URL}chat/messages`,
       {
-        params: { conversationId, page: 1 },
+        params: { conversationId, page: pageNumber },
         headers: {
             Authorization: `Bearer ${accessToken}`
         },
