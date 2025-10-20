@@ -49,12 +49,13 @@ useEffect(() => {
   
 
   useEffect(() => {
-  if (!activeConversation || !messagesTopRef.current || !hasMore) return;
+  if (!activeConversation || !messagesTopRef.current || !hasMore ) return;
 
   let observer;
   let loading = false;
 
   const handleIntersect = async (entries) => {
+    if(isLoading) return;
     setIsLoading(true);
     const entry = entries[0];
     if (entry.isIntersecting && !loading) {
