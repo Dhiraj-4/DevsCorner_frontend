@@ -3,7 +3,7 @@ import { User } from "lucide-react";
 export function NavbarProfileImage({ profileImage }) {
 
     return (
-        <div className="w-16 h-16 relative rounded-full bg-zinc-800 overflow-hidden flex items-center justify-center shadow-md">
+        <div className="w-16 h-16 border-4 border-gray-300 relative rounded-full bg-zinc-800 overflow-hidden flex items-center justify-center shadow-md">
 
             {profileImage ? (
                 <img

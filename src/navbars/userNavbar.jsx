@@ -8,105 +8,247 @@ import {
   MessageCircle,
   Menu,
   X,
+  Sun,
+  Moon,
+  Laptop,
 } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useUserStore } from "../store/userStore.js";
 import { useAuthStore } from "../store/authStore.js";
 import { checkAccessToken } from "../utils/checkAccessToken.js";
 import { NavbarProfileImage } from "../components/profile image/navbarProfileImage.jsx";
 import { io } from "socket.io-client";
 import { SOCKET_URL } from "../../config/envConfig.js";
-
+import { useTheme } from "../theme-provider.jsx";
 
 export default function UserNavbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const toggleMenu = () => setIsOpen(!isOpen);
-  
-  const {
-    hydrateUser,
-    user
-  } = useUserStore();
+  const toggleMenu = () => setIsOpen((prev) => !prev);
+  const closeMenu = () => setIsOpen(false);
 
-  const {
-    isLoggedIn
-  } = useAuthStore();
+  const { hydrateUser, user } = useUserStore();
+  const { isLoggedIn } = useAuthStore();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { theme, setTheme } = useTheme();
+  const [isHydrating, setIsHydrating] = useState(false);
 
+  // Socket connection
   useEffect(() => {
-    if(!user._id) return;
-
+    if (!user._id) return;
     io(SOCKET_URL, {
       withCredentials: true,
       autoConnect: true,
-      query: { userId: user._id }
+      query: { userId: user._id },
     });
-  },[user])
-  
-  const naviagte = useNavigate();
-  useEffect( () => {
-    
-    const checkUserLogin = async() => {
+  }, [user]);
+
+  // Hydrate user
+  useEffect(() => {
+    const init = async () => {
+      setIsHydrating(true);
       await checkAccessToken();
-      hydrateUser();
-    }
-    checkUserLogin();
-  },[]);
+      await hydrateUser();
+      setIsHydrating(false);
+    };
+    init();
+  }, []);
 
-  if(!isLoggedIn) {
-      naviagte("/login");
-  }
+  // Redirect if logged out
+  if (!isLoggedIn) navigate("/login");
 
+  // Theme toggle logic
+  const toggleTheme = () => {
+    if (theme === "light") setTheme("dark");
+    else if (theme === "dark") setTheme("system");
+    else setTheme("light");
+  };
+
+  const nextLabel =
+    theme === "light" ? "Dark" : theme === "dark" ? "System" : "Light";
+
+  const icon =
+    theme === "light" ? (
+      <Sun className="w-5 h-5 text-yellow-500" />
+    ) : theme === "dark" ? (
+      <Moon className="w-5 h-5 text-blue-400" />
+    ) : (
+      <Laptop className="w-5 h-5 text-muted-foreground" />
+    );
+
+  // Close dropdown when navigating (mobile)
+  useEffect(() => {
+    closeMenu();
+  }, [location.pathname]);
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 bg-gray-800 backdrop-blur-md text-white py-2 shadow-md">
+    <nav
+      className={`
+        fixed top-0 left-0 w-full z-50 
+        backdrop-blur-md border-b border-border transition-colors
+        ${theme === "light" 
+          ? "bg-white shadow-sm" 
+          : theme === "dark" 
+          ? "bg-zinc-900/60" 
+          : "bg-background/60"}
+      `}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16 gap-5">
-          {/* Logo or brand area */}
-          <Link to="/feed" className="flex items-center space-x-1 text-lg font-bold hover:text-blue-300 transition-colors duration-300">
-            <Home className="w-5 h-5" />
-            <span>Home</span>
-          </Link>
+        <div className="flex justify-between items-center h-16 gap-4">
+          {/* Home as NavItem so active styling is consistent */}
+          <NavItem to="/feed" icon={<Home />} label="Home" isHome />
 
-          {/* Desktop menu */}
-          <div className="hidden md:flex space-x-6 items-center text-lg font-bold">
-            <NavItem to="/jobs" icon={<Briefcase className="w-5 h-5" />} label="Jobs" />
-            <NavItem to="/post" icon={<PlusSquare className="w-5 h-5" />} label="Post" />
-            <NavItem to="/chat" icon={<MessageCircle className="w-5 h-5" />} label="Chat" />
-            <NavItem to="/notifications" icon={<Bell className="w-5 h-5" />} label="Notifications" />
-            <NavItem to="/me" icon={<User className="w-5 h-5" />} label="Profile" />
-            <NavbarProfileImage profileImage={user?.profileImage}/>
-          </div>
+          {/* Desktop Menu */}
+          <div className="hidden md:flex items-center space-x-6 text-sm font-medium">
+            {isHydrating ? (
+              <div className="animate-pulse text-muted-foreground">Loading...</div>
+            ) : (
+              <>
+                <NavItem to="/jobs" icon={<Briefcase />} label="Jobs" />
+                <NavItem to="/post" icon={<PlusSquare />} label="Post" />
+                <NavItem to="/chat" icon={<MessageCircle />} label="Chat" />
+                <NavItem to="/notifications" icon={<Bell />} label="Notifications" />
+                <NavItem to="/me" icon={<User />} label="Profile" />
+                <NavbarProfileImage profileImage={user?.profileImage} />
+              </>
+            )}
 
-          {/* Mobile hamburger */}
-          <div className="md:hidden">
-            <button onClick={toggleMenu} className="focus:outline-none">
-              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {/* Theme Toggle */}
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-md border border-border hover:bg-muted transition-colors flex items-center justify-center"
+              title={`Switch to ${nextLabel} mode`}
+            >
+              {icon}
             </button>
           </div>
+
+          {/* Mobile Menu Toggle */}
+          <button
+            onClick={toggleMenu}
+            className="md:hidden p-2 rounded-md hover:bg-muted transition-colors"
+          >
+            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
         </div>
       </div>
 
-      {/* Mobile dropdown menu */}
+      {/* Mobile Dropdown */}
       {isOpen && (
-        <div className="md:hidden z-10 bg-black backdrop-blur-md px-4 py-4 space-y-4 text-sm font-medium shadow-md">
+        <div className="md:hidden bg-background border-t border-border py-4 px-4 space-y-3 shadow-md">
           <NavbarProfileImage profileImage={user?.profileImage} />
-          <NavItem to="/jobs" icon={<Briefcase className="w-5 h-5" />} label="Jobs" />
-          <NavItem to="/post" icon={<PlusSquare className="w-5 h-5" />} label="Post" />
-          <NavItem to="/chat" icon={<MessageCircle className="w-5 h-5" />} label="Chat" />
-          <NavItem to="/notifications" icon={<Bell className="w-5 h-5" />} label="Notifications" />
-          <NavItem to="/me" icon={<User className="w-5 h-5" />} label="Profile" />
+          <MobileNavItem to="/jobs" icon={<Briefcase />} label="Jobs" onClick={closeMenu} />
+          <MobileNavItem to="/post" icon={<PlusSquare />} label="Post" onClick={closeMenu} />
+          <MobileNavItem to="/chat" icon={<MessageCircle />} label="Chat" onClick={closeMenu} />
+          <MobileNavItem to="/notifications" icon={<Bell />} label="Notifications" onClick={closeMenu} />
+          <MobileNavItem to="/me" icon={<User />} label="Profile" onClick={closeMenu} />
+
+          <button
+            onClick={() => {
+              toggleTheme();
+              closeMenu();
+            }}
+            className="flex items-center gap-2 p-2 border border-border rounded-md hover:bg-muted transition-colors w-full justify-center"
+          >
+            {icon}
+            <span className="text-sm">{`Switch to ${nextLabel}`}</span>
+          </button>
         </div>
       )}
     </nav>
   );
 }
 
-function NavItem({ to, icon, label }) {
+/**
+ * NavItem: desktop link that highlights when active.
+ * - active class: dark -> text-blue-400, light -> text-primary
+ * - applies same class to icon and label
+ */
+
+function NavItem({ to, icon, label, isHome = false }) {
+  const location = useLocation();
+  const { theme } = useTheme();
+
+  const path = location.pathname || "/";
+  const isActive =
+    path === to || path.startsWith(to) || (isHome && (path === "/" || path === "/feed"));
+
+  // consistent colors across themes
+  const activeColor =
+    theme === "dark"
+      ? "text-blue-400"
+      : "text-blue-600"; // brighter in light mode for visibility
+
+  const inactiveColor = "text-foreground";
+
+  // hover states match dark mode behavior
+  const hoverClasses =
+    theme === "dark"
+      ? "hover:bg-zinc-800 hover:text-blue-400"
+      : theme === "light"
+      ? "hover:bg-zinc-200 hover:text-blue-600"
+      : "hover:bg-zinc-800 hover:text-blue-600";
+
   return (
     <Link
       to={to}
-      className="flex items-center space-x-1 hover:text-blue-300 transition-colors duration-300"
+      className={`flex items-center gap-1 px-2 py-1 rounded-md transition-all duration-150 ${hoverClasses} ${
+        isActive ? activeColor : inactiveColor
+      }`}
     >
-      {icon}
+      <span
+        className={`flex items-center transition-colors ${
+          isActive ? activeColor : inactiveColor
+        }`}
+      >
+        {icon}
+      </span>
+      <span>{label}</span>
+    </Link>
+  );
+}
+
+
+/**
+ * MobileNavItem: same active behavior, closes menu on click via onClick prop
+ */
+
+function MobileNavItem({ to, icon, label, onClick }) {
+  const location = useLocation();
+  const { theme } = useTheme();
+
+  const path = location.pathname || "/";
+  const isActive = path === to || path.startsWith(to);
+
+  const activeColor =
+    theme === "dark"
+      ? "text-blue-400"
+      : "text-blue-600";
+
+  const inactiveColor = "text-foreground";
+
+  const hoverClasses =
+    theme === "dark"
+      ? "hover:bg-zinc-800 hover:text-blue-400"
+      : theme === "light"
+      ? "hover:bg-zinc-200 hover:text-blue-600"
+      : "hover:bg-zinc-800 hover:text-blue-600";
+
+  return (
+    <Link
+      to={to}
+      onClick={onClick}
+      className={`flex items-center gap-2 p-2 rounded-md transition-all duration-150 ${hoverClasses} ${
+        isActive ? activeColor : inactiveColor
+      }`}
+    >
+      <span
+        className={`flex items-center transition-colors ${
+          isActive ? activeColor : inactiveColor
+        }`}
+      >
+        {icon}
+      </span>
       <span>{label}</span>
     </Link>
   );

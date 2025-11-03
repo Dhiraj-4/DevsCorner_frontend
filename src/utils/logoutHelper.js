@@ -7,7 +7,7 @@ import { useJobStore } from "../store/jobPostStore.js";
 async function logoutHelper() {
     const {
         reset_authStore,
-        setIsLogggedIn,
+        setIsLoggedIn,
     } = useAuthStore.getState();
 
     const {
@@ -22,7 +22,7 @@ async function logoutHelper() {
     reset_authStore();
     reset_jobStore();
     resetChatStore();
-    setIsLogggedIn(false);
+    setIsLoggedIn(false);
     console.log(response);
     return;
 }

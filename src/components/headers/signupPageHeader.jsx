@@ -1,42 +1,42 @@
 import { motion } from "framer-motion";
 import { Typewriter } from "react-simple-typewriter";
+import { useTheme } from "../../theme-provider.jsx";
 
 export function SignupHeader() {
+  const { theme } = useTheme();
+  const subtitleClass = theme === "dark" ? "text-zinc-300" : "text-zinc-600";
+  const titleClass = theme === "dark" ? "text-white" : "text-zinc-900";
+
   return (
     <motion.header
-      initial={{ opacity: 0, y: -30 }}
+      initial={{ opacity: 0, y: -18 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-      className="text-center"
+      transition={{ duration: 0.5 }}
+      className="text-center pt-10"
     >
+      <motion.p className={`uppercase tracking-wide text-sm ${subtitleClass} mb-2`}>
+        Join DevsCorner
+      </motion.p>
 
-      {/* Main Title */}
-      <motion.h1
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5, duration: 0.7 }}
-        className="text-4xl md:text-5xl font-semibold text-white tracking-tight"
-      >
-        Your talent network starts here
+      <motion.h1 className={`text-3xl sm:text-4xl font-semibold ${titleClass}`}>
+        Create your developer profile
       </motion.h1>
 
-      {/* Typing effect with dual messaging */}
-      <motion.p
-  initial={{ opacity: 0 }}
-  animate={{ opacity: 1 }}
-  transition={{ delay: 1, duration: 0.8 }}
-  className="text-[#7f5af0] mt-6 text-2xl md:text-4xl font-mono font-semibold tracking-wide"
->
-  <Typewriter
-    words={['Showcase your skills.', 'Hire top developers.']}
-    loop={0}
-    cursor
-    cursorStyle="|"
-    typeSpeed={70}
-    deleteSpeed={50}
-    delaySpeed={2000}
-  />
-</motion.p>
+      <motion.p className="text-[#7f5af0] mt-3 text-lg sm:text-xl font-mono font-semibold">
+        <Typewriter
+          words={[
+            "Showcase your skills.",
+            "Connect with devs & teams.",
+            "Get noticed for what you build.",
+          ]}
+          loop={0}
+          cursor
+          cursorStyle="|"
+          typeSpeed={60}
+          deleteSpeed={40}
+          delaySpeed={2000}
+        />
+      </motion.p>
     </motion.header>
   );
 }

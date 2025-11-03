@@ -1,33 +1,25 @@
 import { motion } from "framer-motion";
+import { useTheme } from "../../theme-provider.jsx";
 
 export function ForgotPasswordHeader() {
+  const { theme } = useTheme();
+  const subtitleClass = theme === "dark" ? "text-zinc-300" : "text-zinc-600";
+  const titleClass = theme === "dark" ? "text-white" : "text-zinc-900";
+
   return (
     <motion.header
-      initial={{ opacity: 0, y: -30 }}
+      initial={{ opacity: 0, y: -18 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-      className="text-center mb-12"
+      transition={{ duration: 0.5 }}
+      className="text-center pt-10"
     >
-      {/* Tagline */}
-      <motion.p
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3, duration: 0.6 }}
-        className="text-sm md:text-base text-gray-500 tracking-wide uppercase mb-2"
-      >
+      <motion.p className={`uppercase tracking-wide text-sm ${subtitleClass} mb-2`}>
         DevsCorner
       </motion.p>
 
-      {/* Title */}
-      <motion.h1
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5, duration: 0.7 }}
-        className="text-4xl md:text-5xl font-semibold text-white tracking-tight"
-      >
-        Reset your account password
+      <motion.h1 className={`text-3xl sm:text-4xl font-semibold ${titleClass}`}>
+        Reset your password
       </motion.h1>
-
     </motion.header>
   );
 }

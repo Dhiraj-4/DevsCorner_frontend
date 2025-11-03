@@ -35,7 +35,7 @@ export async function refreshToken() {
     } catch (error) {
         console.log("failed: ", error);
         console.log("status:", error.status)
-        if(error.status == 403 || 401) {
+        if(error.status === 401) {
             reset_authStore();
             setIsLoggedIn(false);
         }

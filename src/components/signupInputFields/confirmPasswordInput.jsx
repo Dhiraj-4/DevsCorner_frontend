@@ -31,7 +31,7 @@ export function ConfirmPasswordInput() {
       <button
         type="button"
         onClick={() => setConfirmPasswordShow(!confirmPasswordShow)}
-        className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white transition"
+        className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-blue-400 transition"
         tabIndex={-1}
       >
         {confirmPasswordShow ? <EyeOff size={18} /> : <Eye size={18} />}
