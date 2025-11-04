@@ -14,6 +14,7 @@ export default function PublicNavbar() {
   const { isLoading, setIsLoading } = useAuthStore();
   
 
+  // Theme toggle logic
   const toggleTheme = () => {
     if (theme === "light") setTheme("dark");
     else if (theme === "dark") setTheme("system");
@@ -61,6 +62,7 @@ export default function PublicNavbar() {
 
   const inactiveColor = "text-foreground";
 
+  // hover states match dark mode behavior
   const hoverClasses =
     theme === "dark"
       ? "hover:bg-zinc-800 hover:text-blue-400"
@@ -73,11 +75,11 @@ export default function PublicNavbar() {
       className={`
         fixed top-0 left-0 w-full z-50 
         backdrop-blur-md border-b border-border transition-colors
-        ${theme === "light"
-          ? "bg-white shadow-sm"
-          : theme === "dark"
-          ? "bg-zinc-900/60"
-          : "bg-background"}
+        ${theme === "light" 
+          ? "bg-white shadow-sm" 
+          : theme === "dark" 
+          ? "bg-zinc-900/60" 
+          : "bg-background/60"}
       `}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

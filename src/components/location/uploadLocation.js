@@ -10,8 +10,6 @@ export async function uploadLocation(location) {
             accessToken
         } = useAuthStore.getState();
 
-        const { hydrateUser } = useUserStore.getState();
-
         let res = await axios.post(
             `${BACKEND_URL}user/upload-location`,
             {
@@ -24,11 +22,10 @@ export async function uploadLocation(location) {
             }
         );
 
-        await hydrateUser();
-        return { status: 200, message: "location uploaded" };
+        return { status: 200, message: "location uploaded", location };
     } catch (error) {
         console.log(error);
-    if(err.response?.status == 403 || err.response?.status == 401) {
+    if(err.response?.status == 401) {
       let res = await refreshToken();
       if(res) return await uploadLocation(location);
     }else if(err.response?.status == 400) {

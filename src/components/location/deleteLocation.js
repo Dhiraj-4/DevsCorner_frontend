@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useAuthStore } from "../../store/authStore";
 import { BACKEND_URL } from "../../../config/envConfig";
-import { useUserStore } from "../../store/userStore";
 import { refreshToken } from "../../utils/refreshToken";
 
 export async function deleteLocation() {
@@ -9,8 +8,6 @@ export async function deleteLocation() {
         const {
             accessToken
         } = useAuthStore.getState();
-
-        const { hydrateUser } = useUserStore.getState();
 
         let res = await axios.delete(
             `${BACKEND_URL}user/delete-location`,
@@ -21,7 +18,6 @@ export async function deleteLocation() {
             }
         );
 
-        await hydrateUser();
         return { status: 200, message: "location uploaded" };
     } catch (error) {
         console.log(error);

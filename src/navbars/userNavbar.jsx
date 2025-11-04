@@ -27,11 +27,11 @@ export default function UserNavbar() {
   const closeMenu = () => setIsOpen(false);
 
   const { hydrateUser, user } = useUserStore();
-  const { isLoggedIn } = useAuthStore();
+  const { isLoggedIn, isLoading } = useAuthStore();
   const navigate = useNavigate();
   const location = useLocation();
   const { theme, setTheme } = useTheme();
-  const [isHydrating, setIsHydrating] = useState(false);
+  // const [isHydrating, setIsHydrating] = useState(false);
 
   // Socket connection
   useEffect(() => {
@@ -46,10 +46,10 @@ export default function UserNavbar() {
   // Hydrate user
   useEffect(() => {
     const init = async () => {
-      setIsHydrating(true);
+      // setIsHydrating(true);
       await checkAccessToken();
       await hydrateUser();
-      setIsHydrating(false);
+      // setIsHydrating(false);
     };
     init();
   }, []);
@@ -100,7 +100,7 @@ export default function UserNavbar() {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-6 text-sm font-medium">
-            {isHydrating ? (
+            {isLoading ? (
               <div className="animate-pulse text-muted-foreground">Loading...</div>
             ) : (
               <>

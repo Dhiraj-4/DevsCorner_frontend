@@ -6,7 +6,6 @@ import { refreshToken } from "../../utils/refreshToken";
 
 export async function uploadResume(file) {
     const { accessToken } = useAuthStore.getState();
-    const { hydrateUser } = useUserStore.getState();
   try {
     // 1. Ask backend for a pre-signed URL
     const res = await axios.post(
@@ -42,11 +41,11 @@ export async function uploadResume(file) {
       },
     }
     );
-    await hydrateUser();
     console.log(response);
-    
+    return { res: 200, fileUrl };
+
   } catch (err) {
-    if(err.response?.status == 403 || err.response?.status == 401) {
+    if(err.response?.status == 401) {
       let res = await refreshToken();
       if(res) await uploadResume(file);
     }

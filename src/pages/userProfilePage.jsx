@@ -13,71 +13,111 @@ import { useUserStore } from "../store/userStore.js";
 import { Mail } from "lucide-react";
 import { CoolButton } from "../components/Buttons/button.jsx";
 import { logoutHelper } from "../utils/logoutHelper.js";
+import { useTheme } from "../theme-provider.jsx";
+import { refreshToken } from "../utils/refreshToken.js";
+import { IsLoadingSvg } from "../components/loaders/isLoadingSvg.jsx";
 
 export default function ProfilePage() {
-  const { accessToken } = useAuthStore();
+  const { accessToken, isLoading } = useAuthStore();
   const { user } = useUserStore();
+  const { activeTheme } = useTheme();
 
-  if (!accessToken) return null;
+  if (!accessToken) {
+    const success = refreshToken();
+    if (!success && !isLoading) {
+      logoutHelper();
+    }
+  }
+
+  const isDark = activeTheme === "dark";
+  const pageBg = isDark ? "bg-zinc-950 text-zinc-100" : "bg-zinc-50 text-zinc-900";
+
+  if (isLoading) {
+    return (
+      <div className={` ${pageBg} min-h-screen flex items-center justify-center`}>
+        <IsLoadingSvg />
+      </div>
+    );
+  }
+
 
   return (
-    <div className="flex justify-center items-center h-screen pt-20 bg-black">
-      <div className="max-w-4xl w-full m-auto p-8 rounded-2xl bg-zinc-900 shadow-xl">
-        {/* Top Section */}
-        <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
-          {/* Profile Image */}
-          <ProfileImage />
+    <div
+      className={`
+        flex justify-center items-start min-h-screen pt-24 px-4 sm:px-6 lg:px-8 transition-colors duration-300
+        ${activeTheme === "dark" ? "bg-zinc-950 text-gray-100" : "bg-gray-50 text-gray-900"}
+      `}
+    >
+      <div
+        className={`
+          w-full max-w-4xl rounded-2xl shadow-lg border transition-colors duration-300
+          ${activeTheme === "dark" ? "bg-zinc-900/90 border-zinc-800" : "bg-white border-gray-200"}
+        `}
+      >
+        {/* Inner Container */}
+        <div className="p-6 sm:p-8 flex flex-col gap-8">
+          {/* ──────── Top Section ──────── */}
+          <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
+            {/* Profile Image */}
+            <ProfileImage />
 
-          {/* User Info */}
-          <div className="flex-1 text-center md:text-left">
+            {/* User Info */}
+            <div className="flex-1 text-center md:text-left">
+              <FullName />
+              <p
+                className={`text-sm sm:text-base ${
+                  activeTheme === "dark" ? "text-gray-400" : "text-gray-600"
+                }`}
+              >
+                @{user.userName}
+              </p>
+              <p
+                className={`text-xs sm:text-sm mt-1 ${
+                  activeTheme === "dark" ? "text-gray-500" : "text-gray-500"
+                }`}
+              >
+                Joined {new Date(user.createdAt).toLocaleDateString()}
+              </p>
 
-            <FullName/>
-            <p className="text-gray-400">@{user.userName}</p>
-            <p className="text-sm text-gray-500 mt-1">
-              Joined {new Date(user.createdAt).toLocaleDateString()}
-            </p>
-
-            {/* Followers / Following */}
-            <FollowersAndFollowing/>
-
+              <FollowersAndFollowing />
+            </div>
           </div>
-        </div>
 
-        {/* Bio */}
-        <Bio />
+          {/* ──────── Bio ──────── */}
+          <Bio />
 
-        {/* Contact + Links */}
-        <div className="mt-8 space-y-3">
+          {/* ──────── Contact & Links ──────── */}
+          <div className="space-y-4">
+            {/* Email */}
+            <div
+              className={`flex items-center gap-3 text-sm sm:text-base ${
+                activeTheme === "dark" ? "text-gray-300" : "text-gray-700"
+              }`}
+            >
+              <Mail className="w-5 h-5 text-muted-foreground" />
+              <span>{user.email}</span>
+            </div>
 
-          {/* Email */}
-          <div className="flex items-center gap-3 text-gray-300">
-            <Mail className="w-5 h-5 text-gray-400" />
-            <span>{user.email}</span>
+            <Location onSave={uploadLocation} />
+            <Resume />
           </div>
 
-          {/* Location */}
-          <Location onSave={uploadLocation}/>
+          {/* ──────── Skills ──────── */}
+          <Skills />
 
-          {/* Resume */}
-          <Resume />
-        </div>
+          {/* ──────── Social Links ──────── */}
+          <SocialLinks />
 
-        {/* Skills */}
-        <Skills/>
-
-        {/* Social Links */}
-        <SocialLinks />
-
-
-        {/* logout button */}
-        <div className="flex mt-5">
-        <Link to='/login'>
-            <CoolButton text={"Logout"} clickHandler={logoutHelper}/>
-        </Link>
+          {/* ──────── Logout Button ──────── */}
+          <div className="flex justify-center sm:justify-start mt-6">
+            <Link to="/login">
+              <CoolButton text={"Logout"} clickHandler={logoutHelper} />
+            </Link>
+          </div>
         </div>
 
         {/* Footer Spacer */}
-        <div className="h-10"></div>
+        <div className="h-8 sm:h-10"></div>
       </div>
     </div>
   );

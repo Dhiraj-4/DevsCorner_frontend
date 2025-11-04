@@ -33,11 +33,13 @@ export const useUserStore = create((set) => ({
     set((state) => ({ user: { ...state.user, ...updates } })),
   hydrateUser: async () => {
     const {
-        accessToken
+        accessToken,
+        setIsLoading
     } = useAuthStore.getState();
     
     try{
-      const response = await axios.get(`${BACKEND_URL}user/me`, {
+    setIsLoading(true);
+    const response = await axios.get(`${BACKEND_URL}user/me`, {
     headers: {
     Authorization: `Bearer ${accessToken}`, // standard convention
     },
@@ -52,6 +54,8 @@ export const useUserStore = create((set) => ({
       }else if(err.status == 404) {
         logoutHelper();
       }
+    } finally {
+      setIsLoading(false);
     }
   },
   clearUser: () =>

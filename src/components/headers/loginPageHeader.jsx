@@ -4,22 +4,28 @@ import { Typewriter } from "react-simple-typewriter";
 import { useTheme } from "../../theme-provider.jsx";
 
 export function LoginHeader() {
-  const { theme } = useTheme();
-  const subtitleClass = theme === "dark" ? "text-zinc-300" : "text-zinc-600";
-  const titleClass = theme === "dark" ? "text-white" : "text-zinc-900";
+  const { activeTheme } = useTheme(); // ✅ use activeTheme instead of theme
+  const isDark = activeTheme === "dark";
+
+  const subtitleClass = isDark ? "text-zinc-300" : "text-zinc-600";
+  const titleClass = isDark ? "text-white" : "text-zinc-900";
 
   return (
     <motion.header
       initial={{ opacity: 0, y: -18 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="text-center"
+      className="text-center transition-colors duration-500"
     >
-      <motion.p className={`uppercase tracking-wide text-sm ${subtitleClass} mb-2`}>
+      <motion.p
+        className={`uppercase tracking-wide text-sm ${subtitleClass} mb-2 transition-colors duration-500`}
+      >
         Welcome back to DevsCorner
       </motion.p>
 
-      <motion.h1 className={`text-3xl sm:text-4xl font-semibold ${titleClass}`}>
+      <motion.h1
+        className={`text-3xl sm:text-4xl font-semibold ${titleClass} transition-colors duration-500`}
+      >
         Log in to your account
       </motion.h1>
 

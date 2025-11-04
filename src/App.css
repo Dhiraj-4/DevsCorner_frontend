@@ -17,7 +17,7 @@ body {
 }
 
 .primary-input {
-    @apply w-full px-4 py-2 rounded-lg placeholder-zinc-500 border border-zinc-300 focus:outline-none focus:ring ring-offset-2 ring-offset-zinc-900 transition duration-200;
+    @apply w-full pr-10 pl-4 py-2 rounded-lg placeholder-zinc-500 border border-zinc-300 focus:outline-none focus:ring ring-offset-2 ring-offset-zinc-900 transition duration-200;
 }
 
 .tile {

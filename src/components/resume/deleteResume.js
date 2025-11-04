@@ -6,7 +6,6 @@ import { refreshToken } from "../../utils/refreshToken";
 
 export const deleteResume = async() => {
     const { accessToken } = useAuthStore.getState();
-    const { hydrateUser } = useUserStore.getState();
   try {
     
     const res = await axios.delete(
@@ -18,7 +17,7 @@ export const deleteResume = async() => {
         }
     );
 
-    await hydrateUser();
+    return { res: 200 };
   }catch(err) {
     if(err.response?.status == 403 || err.response?.status == 401) {
       let res = await refreshToken();
