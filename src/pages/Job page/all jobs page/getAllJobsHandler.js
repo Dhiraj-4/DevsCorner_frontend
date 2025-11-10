@@ -12,9 +12,11 @@ export async function getAllJobsHandler() {
     const {
         pageNumber,
         setHasMore,
-        setAllJobs
+        setAllJobs,
+        setIsLoading
     } = useJobStore.getState();
     try {
+        setIsLoading(true);
         const response = await axios.get(
             `${BACKEND_URL}job?page=${pageNumber}`,
             {
@@ -34,5 +36,7 @@ export async function getAllJobsHandler() {
             let res = await refreshToken();
             if(res) getAllJobsHandler();
         }
+    }finally {
+        setIsLoading(false);
     }
 }

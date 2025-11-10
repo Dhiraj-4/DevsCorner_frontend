@@ -24,12 +24,12 @@ export async function uploadApplyLink(applyLinkState, jobId) {
     } catch (error) {
         console.log(error);
         if(error.response?.status == 401) {
-            let res = refreshToken();
-            if (res) return uploadApplyLink(textState, jobId);
+            let res = await refreshToken();
+            if (res) return await uploadApplyLink(applyLinkState, jobId);
         }else if(error.response?.status == 400) {
             return {
                 status: 400,
-                message: (error.response.data.error.issues[0].message || error.response.data.message)
+                message: ( error.response.data.message || error.response.data.error.issues[0].message || error.response.data.error.issues[0].code )
             }
         }else {
             return { status: 500 }

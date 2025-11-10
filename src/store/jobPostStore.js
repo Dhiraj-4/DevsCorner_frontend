@@ -2,6 +2,9 @@ import { create } from "zustand";
 
 export const useJobStore = create((set,get) => ({
 
+    isLoading: false,
+    setIsLoading: (bool) => set({ isLoading: bool }),
+    
     allJobsArray: [],
     setAllJobs: (jobs) => set(() => ({ allJobsArray: [...get().allJobsArray, ...jobs] })),
 

@@ -1,13 +1,11 @@
 import axios from "axios";
 import { useAuthStore } from "../../store/authStore";
-import { useUserStore } from "../../store/userStore";
 import { BACKEND_URL } from "../../../config/envConfig";
 import { refreshToken } from "../../utils/refreshToken";
 
 export async function uploadFullname(fullName) {
     try {
         const { accessToken } = useAuthStore.getState();
-        const { hydrateUser } = useUserStore.getState();
 
         await axios.patch(
             `${BACKEND_URL}user/update-bio-fullname`,
@@ -20,14 +18,14 @@ export async function uploadFullname(fullName) {
                 }
             }
         );
-
-        await hydrateUser();
-        return { status: 200 }
+        console.log("updated fullname");
+        
+        return { status: 200, fullName }
     } catch (error) {
         console.log(error);
-        if(error.response?.status == 403 || error.response?.status == 401) {
-            let res = refreshToken();
-            if (res) return uploadFullname(fullName);
+        if(error.response?.status == 401) {
+            let res = await refreshToken();
+            if (res) return await uploadFullname(fullName);
         }else if(error.response?.status == 400) {
             return {
                 status: 400,

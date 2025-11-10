@@ -1,79 +1,66 @@
 import { useState } from "react";
-import { useUserStore } from "../../store/userStore";
+import { useUserStore } from "../../store/userStore.js";
 import { Pencil } from "lucide-react";
-import { uploadFullname } from "./uploadFullname";
+import { uploadFullname } from "./uploadFullname.js";
 import { useTheme } from "../../theme-provider.jsx";
+import { OnSaveButton } from "../Buttons/onSaveButton.jsx";
+import { OnCancelButton } from "../Buttons/onCancelButton.jsx";
+import { UpdateField } from "../Inputs/updateFieldInput";
 
 export function FullName() {
-  const { user, setUser } = useUserStore();
+  const fullNameStore = useUserStore((state) => state.user.fullName);
+  const { updateUser } = useUserStore();
   const [isEditing, setIsEditing] = useState(false);
-  const [fullName, setFullName] = useState(user.fullName);
+  const [fullName, setFullName] = useState(fullNameStore|| "");
   const [error, setError] = useState("");
   const { activeTheme } = useTheme();
 
   const handleSave = async () => {
-    if (!fullName.trim()) {
-      setError("Full name cannot be empty");
-      return;
-    }
+  if (!fullName.trim()) {
+    setError("Full name cannot be empty");
+    return;
+  }
 
-    try {
-      let res = await uploadFullname(fullName);
+  try {
+    let res = await uploadFullname(fullName.trim());
 
-      if (res.status == 200) {
-        setError("");
-        setIsEditing(false);
-      } else if (res.status == 400) {
-        setError(res.message);
-      } else {
-        setError("Something went wrong");
-      }
-      setUser({ ...user, fullName });
-    } catch (err) {
-      setError("Failed to update full name. Try again.");
+    if (res.status == 200) {
+      setError("");
+      setFullName(res.fullName);
+      updateUser({ fullName: res.fullName });
+      setIsEditing(false);
+    } else if (res.status == 400) {
+      setError(res.message);
+    } else {
+      setError("Something went wrong");
     }
-  };
+  } catch {
+    setError("Failed to update full name. Try again.");
+  }
+};
+
 
   const handleCancel = () => {
-    setFullName(user.fullName);
+    setFullName(fullNameStore || "");
     setIsEditing(false);
     setError("");
   };
-
-  const inputBg =
-    activeTheme === "dark"
-      ? "bg-zinc-800 text-white placeholder:text-zinc-500"
-      : activeTheme === "light"
-      ? "bg-zinc-100 text-zinc-900 placeholder:text-zinc-500"
-      : "bg-background text-foreground";
 
   return (
     <div className="flex flex-wrap items-center gap-3">
       {isEditing ? (
         <div className="flex flex-col gap-2 w-full sm:w-auto">
-          <input
-            type="text"
+          <UpdateField
             value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
-            className={`w-full rounded-xl px-4 py-2 text-sm md:text-base bg-background text-foreground border border-border focus:outline-none focus:ring-2 focus:ring-ring/50 resize-none shadow-sm`}
-            placeholder="Enter your full name"
+            onChange={(val) => setFullName(val)}
+            placeholder={"Enter your full name"}
           />
           {error && (
             <span className="text-red-500 text-sm font-medium">{error}</span>
           )}
           <div className="flex gap-2 mt-1">
-            <button
-              onClick={handleSave}
-              className={`px-4 py-1.5 rounded-lg text-sm font-medium px-4 py-1.5 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition`}
-            >
-              Save
-            </button>
-            <button
-              onClick={handleCancel}
-              className={`px-4 py-1.5 rounded-lg bg-muted text-muted-foreground hover:bg-muted/80 transition`}
-            >
-              Cancel
-            </button>
+            <OnSaveButton text="Save" onClick={handleSave} />
+            <OnCancelButton text="Cancel" onClick={handleCancel} />
           </div>
         </div>
       ) : (
@@ -87,7 +74,7 @@ export function FullName() {
                 : "text-foreground"
             }`}
           >
-            {user.fullName}
+            {fullNameStore}
           </h1>
           <div
             className="flex cursor-pointer rounded-full w-9 h-9 bg-muted hover:bg-muted/70 items-center justify-center shadow-sm transition"

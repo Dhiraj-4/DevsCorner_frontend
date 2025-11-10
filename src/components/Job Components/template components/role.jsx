@@ -2,85 +2,81 @@ import { useState } from "react"
 import { Pencil } from "lucide-react";
 import { uploadRole } from "./utils/uploadRole.js";
 import { Input } from "../../Inputs/input.jsx";
-import { CoolButton } from "../../Buttons/button.jsx";
+import { OnCancelButton } from "../../../components/Buttons/onCancelButton.jsx";
+import { OnSaveButton } from "../../../components/Buttons/onSaveButton.jsx";
 
 export function Role({ role, owner, jobId }) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [jobRole, setJobRole] = useState(role);
+  const [roleState, setRoleState] = useState(jobRole);
+  const [error, setError] = useState("");
 
-    const [isEditing, setIsEditing] = useState(false);
-    const [roleState, setRoleState] = useState(role);
-    const [error, setError] = useState("");
+  const handleSave = async () => {
+    if (!roleState.trim()) {
+      setError("Role cannot be empty");
+      return;
+    }
 
-    const handleSave = async () => {
-      if (!roleState.trim()) {
-        setError("Role cannot be empty");
-        return;
-      }
-
-      try {
-        let res = await uploadRole(roleState, jobId);
-          
-        if(res.status == 200) {
-            setError("");
-            setRoleState(res.roleState);
-            setIsEditing(false);
-        }else if(res.status == 400) {
-            setError(res.message);
-        }else {
-            setError("Something went wrong");
-        }
-        
-      } catch (err) {
-        setError("Failed to update role . Try again.");
-      }
-    };
-
-    const handleCancel = () => {
-        setRoleState(role);
-        setIsEditing(false);
+    try {
+      const res = await uploadRole(roleState, jobId);
+      if (res.status === 200) {
         setError("");
-    };
-    return (
-        <div className="flex items-center gap-2">
-            {
-                (owner == "YOU" && isEditing) ?
-                
-                <div>
-                    <Input 
-                        type={"text"}
-                        name={"role"}
-                        minLength={3}
-                        placeholder={"Role"}
-                        value={roleState}
-                        set={setRoleState}
-                        autoComplete={"role"}
-                        required={true}
-                    />
-                    {error && <span className="text-red-400 text-base font-bold">{error}</span>}
+        setJobRole(res.roleState);
+        setIsEditing(false);
+      } else if (res.status === 400) {
+        setError(res.message);
+      } else {
+        setError("Something went wrong");
+      }
+    } catch {
+      setError("Failed to update role. Try again.");
+    }
+  };
 
-                    <div className="flex gap-2">
-                        <CoolButton text={"Save"} clickHandler={handleSave}/>
-                        <CoolButton text={"Cancel"} clickHandler={handleCancel}/>
-                    </div>
-                </div>
-                
-                :
-                
-                <div className="flex flex-wrap items-center gap-3">
-                
-                    <div className="text-xl font-bold text-gray-900">Role: {roleState}</div>
+  const handleCancel = () => {
+    setRoleState(jobRole);
+    setIsEditing(false);
+    setError("");
+  };
 
-                    {
-                        (owner == "YOU") &&
-
-                        <div
-                        className=" flex cursor-pointer rounded-full w-[30px] h-[30px] bg-black/60 hover:bg-black/80 items-center justify-center shadow-md"
-                        onClick={() => { setIsEditing(true) }}
-                        >
-                            <Pencil size={20} color="white" />
-                        </div>
-                    }
-                </div>
-            }
+  return (
+    <div className="w-full flex flex-col sm:flex-row sm:items-center sm:justify-between p-4 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm transition-colors duration-300">
+      {owner === "YOU" && isEditing ? (
+        <div className="flex flex-col gap-3 w-full">
+          <Input
+            type="text"
+            name="role"
+            minLength={3}
+            placeholder="Role"
+            value={roleState}
+            set={setRoleState}
+            autoComplete="role"
+            required={true}
+          />
+          {error && (
+            <span className="text-red-500 text-sm font-medium">{error}</span>
+          )}
+          <div className="flex gap-2">
+            <OnSaveButton text={"Save"} onClick={handleSave} />
+            <OnCancelButton text={"Cancel"} onClick={handleCancel} />
+          </div>
         </div>
-    )
+      ) : (
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-gray-100">
+            Role: <span className="font-normal">{jobRole}</span>
+          </div>
+
+          {owner === "YOU" && (
+            <div
+              onClick={() => setIsEditing(true)}
+              className="flex cursor-pointer rounded-full w-[32px] h-[32px] border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 items-center justify-center transition-colors duration-300"
+            >
+              <Pencil size={18} className="text-gray-800 dark:text-gray-100" />
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
 }

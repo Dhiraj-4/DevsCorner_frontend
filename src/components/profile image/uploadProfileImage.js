@@ -2,11 +2,9 @@ import axios from "axios";
 import { useAuthStore } from "../../store/authStore";
 import { BACKEND_URL } from "../../../config/envConfig";
 import { refreshToken } from "../../utils/refreshToken";
-import { useUserStore } from "../../store/userStore";
 
 export async function uploadProfileImage(file) {
     const { accessToken } = useAuthStore.getState();
-    const { hydrateUser } = useUserStore.getState();
   try {
     // 1. Ask backend for a pre-signed URL
     const res = await axios.post(
@@ -42,11 +40,10 @@ export async function uploadProfileImage(file) {
       },
     }
     );
-    await hydrateUser();
     console.log(response);
-    
+    return { status: 200, fileUrl  };
   } catch (err) {
-    if(err.response?.status == 403 || err.response?.status == 401) {
+    if(err.response?.status == 401) {
       let res = await refreshToken();
       if(res) return await uploadProfileImage(file);
     }

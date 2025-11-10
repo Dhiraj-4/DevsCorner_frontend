@@ -26,8 +26,8 @@ export async function uploadText(textState, jobId) {
     } catch (error) {
         console.log(error);
         if(error.response?.status == 401) {
-            let res = refreshToken();
-            if (res) return uploadText(textState, jobId);
+            let res = await refreshToken();
+            if (res) return await uploadText(textState, jobId);
         }else if(error.response?.status == 400) {
             return {
                 status: 400,

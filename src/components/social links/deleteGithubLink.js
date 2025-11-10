@@ -1,18 +1,16 @@
 import axios from "axios";
 import { useAuthStore } from "../../store/authStore";
 import { BACKEND_URL } from "../../../config/envConfig";
-import { useUserStore } from "../../store/userStore";
 import { refreshToken } from "../../utils/refreshToken";
+import { useUserStore } from "../../store/userStore";
 
 export async function deleteGithubLink() {
   const {
       accessToken
   } = useAuthStore.getState();
 
-  const {
-      hydrateUser,
-      user
-  } = useUserStore.getState();
+  const { user } = useUserStore.getState();
+  
     try {
 
         await axios.delete(
@@ -29,13 +27,15 @@ export async function deleteGithubLink() {
             }
         );
          
-        await hydrateUser();
+        return { status: 200 };
     } catch (err) {
-        if(err.response?.status == 403 || err.response?.status == 401) {
+        if(err.response?.status == 401) {
               let res = await refreshToken();
-              if(res) await deleteGithubLink();
+              if(res) return await deleteGithubLink();
         }
-        console.error("failed:", err);
-        throw err;
+        else {
+            console.error("Failed to delete GitHub link:", err);
+            return { status: 500 };
+        }
     }
 }

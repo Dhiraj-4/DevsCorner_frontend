@@ -5,7 +5,7 @@ import { deleteProfileImage } from "./deleteProfileImage";
 import { useTheme } from "../../theme-provider.jsx";
 
 export function ProfileImage() {
-  const { user } = useUserStore();
+  const { user, setUser } = useUserStore();
   const { activeTheme } = useTheme();
 
   const borderColor =
@@ -22,13 +22,24 @@ export function ProfileImage() {
       ? "bg-zinc-200"
       : "bg-background";
 
+  async function handleFileChange(file) {  
+    
+    if (file) {
+      const res = await uploadProfileImage(file);
+      if (res.status === 200) {
+        user.profileImage = res.fileUrl;
+        setUser(user);
+      }
+    }
+  }
+
   return (
     <>
       {/* Profile Image */}
       <div
         className={`relative w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden flex items-center justify-center shadow-lg border-5 ${borderColor} ${bgColor} transition-all duration-300`}
       >
-        {user?.profileImage ? (
+        {user.profileImage ? (
           <img
             src={user.profileImage}
             alt="profile"
@@ -60,7 +71,13 @@ export function ProfileImage() {
         {user?.profileImage && (
           <div
             className="absolute bottom-3 right-3 flex cursor-pointer rounded-full w-[34px] h-[34px] bg-red-600/70 hover:bg-red-600/90 items-center justify-center shadow-md transition-colors"
-            onClick={deleteProfileImage}
+            onClick={async () => {
+              let res = await deleteProfileImage();
+              if(res.status === 200){
+                user.profileImage = "";
+                setUser(user);
+              }
+            }}
           >
             <Trash2 size={18} className="text-white" />
           </div>
@@ -74,7 +91,7 @@ export function ProfileImage() {
         className="hidden"
         onChange={(e) => {
           const file = e.target.files?.[0];
-          if (file) uploadProfileImage(file);
+          if (file) handleFileChange(file);
           e.target.value = "";
         }}
       />

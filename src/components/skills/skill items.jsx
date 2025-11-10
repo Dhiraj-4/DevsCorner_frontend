@@ -1,10 +1,18 @@
 import { useState } from "react";
-import { CoolButton } from "../Buttons/button";
 import { X } from "lucide-react";
+import { useTheme } from "../../theme-provider.jsx";
+import { OnSaveButton } from "../Buttons/onSaveButton.jsx";
+import { OnCancelButton } from "../Buttons/onCancelButton.jsx";
+import { UpdateField } from "../Inputs/updateFieldInput.jsx";
 
 export function SkillItem({ skillKey, onSave, onDelete }) {
   const [isInput, setIsInput] = useState(false);
   const [error, setError] = useState("");
+  const { activeTheme } = useTheme();
+
+  const isDark = activeTheme === "dark";
+  const chipBg = isDark ? "bg-zinc-800" : "bg-zinc-200";
+  const textColor = isDark ? "text-zinc-100" : "text-zinc-800";
 
   const handleSave = async () => {
     const input = document
@@ -36,9 +44,9 @@ export function SkillItem({ skillKey, onSave, onDelete }) {
   };
 
   return (
-    <div className="flex items-center gap-2 text-white">
+    <div className={`flex items-center gap-2 ${textColor}`}>
       {skillKey ? (
-        <div className="flex justify-center items-center gap-2 bg-black rounded-2xl p-2">
+        <div className={`flex justify-center items-center gap-2 ${chipBg} rounded-2xl p-2 shadow-sm`}>
           <span>{skillKey}</span>
           <X
             className="w-4 h-4 hover:text-red-400 cursor-pointer"
@@ -49,28 +57,23 @@ export function SkillItem({ skillKey, onSave, onDelete }) {
         <div className="flex flex-col">
           {isInput ? (
             <div className="flex flex-wrap items-center gap-2">
-              <input
+              <UpdateField
                 id={`skill-input-${skillKey || "new"}`}
                 required
-                className="px-2 py-1 rounded bg-gray-900 text-white text-sm border border-gray-700 focus:outline-none"
-                placeholder="Enter skill"
                 onChange={() => setError("")}
+                placeholder={"Enter skill"}
               />
               <div className="flex gap-2">
-                <CoolButton text="save" clickHandler={handleSave} />
-              <CoolButton
-                text="cancel"
-                clickHandler={() => {
-                  setIsInput(false);
-                  setError("");
-                }}
-              />
+                <OnSaveButton text="Save" onClick={handleSave} />
+                <OnCancelButton text="Cancel" onClick={() => { setIsInput(false); setError(""); }} />
               </div>
             </div>
           ) : (
-            <CoolButton text="Add Skill" clickHandler={() => setIsInput(true)} />
+            <OnSaveButton text="Add Skill" onClick={() => setIsInput(true)} />
           )}
-          {error && <span className="text-red-400 text-base font-bold">{error}</span>}
+          {error && (
+            <span className="text-red-400 text-base font-bold">{error}</span>
+          )}
         </div>
       )}
     </div>

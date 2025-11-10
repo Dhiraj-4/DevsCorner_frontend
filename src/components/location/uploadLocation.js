@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useAuthStore } from "../../store/authStore";
 import { BACKEND_URL } from "../../../config/envConfig";
-import { useUserStore } from "../../store/userStore";
 import { refreshToken } from "../../utils/refreshToken";
 
 export async function uploadLocation(location) {
@@ -23,8 +22,8 @@ export async function uploadLocation(location) {
         );
 
         return { status: 200, message: "location uploaded", location };
-    } catch (error) {
-        console.log(error);
+    } catch (err) {
+        console.log(err);
     if(err.response?.status == 401) {
       let res = await refreshToken();
       if(res) return await uploadLocation(location);

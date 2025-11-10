@@ -1,7 +1,3 @@
-import { useState } from "react";
-import { CoolButton } from "../Buttons/button";
-import { X } from "lucide-react";
-
 export function PublicSkillItem({ skillKey }) {
 
   return (

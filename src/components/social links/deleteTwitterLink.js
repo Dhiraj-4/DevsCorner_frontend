@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useAuthStore } from "../../store/authStore";
 import { BACKEND_URL } from "../../../config/envConfig";
-import { useUserStore } from "../../store/userStore";
 import { refreshToken } from "../../utils/refreshToken";
+import { useUserStore } from "../../store/userStore";
 
 export async function deleteTwitterLink() {
     try {
@@ -10,12 +10,7 @@ export async function deleteTwitterLink() {
             accessToken
         } = useAuthStore.getState();
 
-        const {
-            hydrateUser,
-            user,
-            setError,
-            clearError,
-        } = useUserStore.getState();
+        const { user } = useUserStore.getState();
 
         await axios.delete(
             `${BACKEND_URL}user/delete-social-links`,
@@ -31,14 +26,15 @@ export async function deleteTwitterLink() {
             }
         );
 
-
-        await hydrateUser();
+        return { status: 200 };
     } catch (err) {
-        if(err.response?.status == 403 || err.response?.status == 401) {
+        if(err.response?.status == 401) {
               let res = await refreshToken();
-              if(res) await deleteTwitterLink();
+              if(res) return await deleteTwitterLink();
         }
-        console.error("failed:", err);
-        throw err;
+        else {
+            console.error("Failed to delete Twitter link:", err);
+            return { status: 500 };
+        }
     }
 }

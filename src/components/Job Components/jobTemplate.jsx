@@ -11,6 +11,7 @@ import { LocationType } from "./template components/locationType.jsx";
 import { Salary } from "./template components/salary.jsx";
 import { Experience } from "./template components/experience.jsx";
 import { BrandImage } from "./template components/brandImage.jsx";
+import { useTheme } from "../../theme-provider.jsx";
 
 export function JobTemplate({ 
   applyLink = "", companyName = "Indie", 
@@ -18,11 +19,18 @@ export function JobTemplate({
   locationType, salary, experience = 0, brandImage
 }) {
 
+  const { activeTheme } = useTheme();
+  const isDark = activeTheme === "dark";
+
+  const cardBg = isDark ? "bg-zinc-900 text-zinc-100" : "bg-white text-zinc-900";
+  const border = isDark ? "border-zinc-800" : "border-zinc-200";
+  const shadow = isDark ? "shadow-black/40" : "shadow-zinc-300/50";
+
 
   return (
     <div id={jobId}
-    className="flex flex-col gap-4 max-w-md mx-auto p-6 mb-4 bg-white shadow-md rounded-2xl border border-gray-200">
-      
+      className={`flex flex-col gap-4 max-w-md mx-auto p-6 mb-4 rounded-2xl border ${border} ${cardBg} shadow-md ${shadow} transition-all duration-500`}
+    >      
         {(owner != "YOU") ? (
             <Owner owner={owner} isFollowing={isFollowing}/>
         ) : (

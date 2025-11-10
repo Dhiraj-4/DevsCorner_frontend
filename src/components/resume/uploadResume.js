@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useAuthStore } from "../../store/authStore";
-import { useUserStore } from "../../store/userStore";
 import { BACKEND_URL } from "../../../config/envConfig";
 import { refreshToken } from "../../utils/refreshToken";
 
@@ -47,9 +46,10 @@ export async function uploadResume(file) {
   } catch (err) {
     if(err.response?.status == 401) {
       let res = await refreshToken();
-      if(res) await uploadResume(file);
+      if(res) return await uploadResume(file);
+    }else {
+      console.error("upload failed:", err);
+      return { status: 500, message: "Upload failed" };
     }
-    console.error("Upload failed:", err);
-    throw err;
   }
 }

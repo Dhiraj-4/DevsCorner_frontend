@@ -14,20 +14,12 @@ import { Mail } from "lucide-react";
 import { CoolButton } from "../components/Buttons/button.jsx";
 import { logoutHelper } from "../utils/logoutHelper.js";
 import { useTheme } from "../theme-provider.jsx";
-import { refreshToken } from "../utils/refreshToken.js";
 import { IsLoadingSvg } from "../components/loaders/isLoadingSvg.jsx";
 
 export default function ProfilePage() {
-  const { accessToken, isLoading } = useAuthStore();
+  const { isLoading } = useAuthStore();
   const { user } = useUserStore();
   const { activeTheme } = useTheme();
-
-  if (!accessToken) {
-    const success = refreshToken();
-    if (!success && !isLoading) {
-      logoutHelper();
-    }
-  }
 
   const isDark = activeTheme === "dark";
   const pageBg = isDark ? "bg-zinc-950 text-zinc-100" : "bg-zinc-50 text-zinc-900";

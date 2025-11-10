@@ -24,8 +24,8 @@ export async function uploadExperience(experienceState, jobId) {
     } catch (error) {
         console.log(error);
         if(error.response?.status == 401) {
-            let res = refreshToken();
-            if (res) return uploadExperience(experienceState, jobId);
+            let res = await refreshToken();
+            if (res) return await uploadExperience(experienceState, jobId);
         }else if(error.response?.status == 400) {
             return {
                 status: 400,

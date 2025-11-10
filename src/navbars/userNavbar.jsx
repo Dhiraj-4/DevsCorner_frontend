@@ -31,7 +31,6 @@ export default function UserNavbar() {
   const navigate = useNavigate();
   const location = useLocation();
   const { theme, setTheme } = useTheme();
-  // const [isHydrating, setIsHydrating] = useState(false);
 
   // Socket connection
   useEffect(() => {
@@ -46,10 +45,8 @@ export default function UserNavbar() {
   // Hydrate user
   useEffect(() => {
     const init = async () => {
-      // setIsHydrating(true);
       await checkAccessToken();
       await hydrateUser();
-      // setIsHydrating(false);
     };
     init();
   }, []);

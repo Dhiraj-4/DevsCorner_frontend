@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useAuthStore } from "../../store/authStore";
-import { useUserStore } from "../../store/userStore";
 import { BACKEND_URL } from "../../../config/envConfig";
 import { refreshToken } from "../../utils/refreshToken";
 
@@ -19,9 +18,9 @@ export const deleteResume = async() => {
 
     return { res: 200 };
   }catch(err) {
-    if(err.response?.status == 403 || err.response?.status == 401) {
+    if(err.response?.status == 401) {
       let res = await refreshToken();
-      if(res) await deleteResume();
+      if(res) return await deleteResume();
     }
     console.error("deletion failed:", err);
     throw err;

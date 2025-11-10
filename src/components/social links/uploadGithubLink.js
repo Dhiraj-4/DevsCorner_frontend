@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useAuthStore } from "../../store/authStore";
 import { BACKEND_URL } from "../../../config/envConfig";
-import { useUserStore } from "../../store/userStore";
 import { refreshToken } from "../../utils/refreshToken";
 
 export async function uploadGithubLink(link) {
@@ -9,9 +8,6 @@ export async function uploadGithubLink(link) {
         accessToken
     } = useAuthStore.getState();
 
-    const {
-        hydrateUser
-    } = useUserStore.getState();
     try {
 
         await axios.post(
@@ -28,14 +24,11 @@ export async function uploadGithubLink(link) {
             }
         );
 
-        await hydrateUser();
-        return {
-            status: 200
-        }
+        return { status: 200, link }
     } catch (err) {
-        if(err.response?.status == 403 || err.response?.status == 401) {
+        if(err.response?.status == 401) {
               let res = await refreshToken();
-              if(res) await uploadGithubLink(link);
+              if(res) return await uploadGithubLink(link);
         }else if(err.response?.status == 400) {
           return {
             status: 400,
@@ -47,7 +40,5 @@ export async function uploadGithubLink(link) {
                 message: "Something went wrong"
             }
         }
-        console.error("failed:", err);
-        throw err;
     }
 }

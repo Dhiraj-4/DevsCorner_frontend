@@ -1,15 +1,19 @@
 import { useState } from "react";
 import { MapPin, X } from "lucide-react";
-import { useUserStore } from "../../store/userStore";
-import { deleteLocation } from "./deleteLocation";
+import { useUserStore } from "../../store/userStore.js";
+import { deleteLocation } from "./deleteLocation.js";
 import { useTheme } from "../../theme-provider.jsx";
+import { OnSaveButton } from "../Buttons/onSaveButton.jsx";
+import { OnCancelButton } from "../Buttons/onCancelButton.jsx";
+import { UpdateField } from "../Inputs/updateFieldInput.jsx";
 
 export function Location({ onSave }) {
   const [isInput, setIsInput] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [error, setError] = useState("");
-  const { user } = useUserStore();
-  const [location, setLocation] = useState(user.location || "");
+  const userLocation = useUserStore((state) => state.user.location);
+  const updateUser = useUserStore((state) => state.updateUser);
+  const [location, setLocation] = useState(userLocation || "");
   const { activeTheme } = useTheme();
 
   const handleSave = async () => {
@@ -26,6 +30,7 @@ export function Location({ onSave }) {
       const res = await onSave(inputValue.trim());
       if (res.status === 200) {
         setLocation(res.location);
+        updateUser({ location: res.location });
         setIsInput(false);
         setError("");
       } else {
@@ -42,6 +47,7 @@ export function Location({ onSave }) {
       const res = await deleteLocation();
       if (res.status === 200) {
         setLocation("");
+        updateUser({ location: "" });
         setError("");
       } else {
         setError(res.message || "Failed to delete");
@@ -87,32 +93,15 @@ export function Location({ onSave }) {
       ) : isInput ? (
         <div className="flex flex-col gap-1 w-full sm:w-auto">
           <div className="flex flex-wrap items-center gap-2">
-            <input
-              type="text"
-              value={inputValue}
-              onChange={(e) => {
-                setInputValue(e.target.value);
-                setError("");
-              }}
-              placeholder="Enter location (e.g., City, Country)"
-              className={`w-full rounded-xl px-4 py-2 text-sm md:text-base bg-background text-foreground border border-border focus:outline-none focus:ring-2 focus:ring-ring/50 resize-none shadow-sm${inputBg}`}
+            <UpdateField 
+              value={inputValue} 
+              onChange={(val) => { setInputValue(val); if (error) setError(""); }} 
+              placeholder={"Enter location (e.g., City, State, Country)"}
+              rows={2}
             />
             <div className="flex gap-2">
-              <button
-              onClick={handleSave}
-              className="px-4 py-1.5 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition"
-            >
-              Save
-            </button>
-            <button
-              onClick={() => {
-                setIsInput(false);
-                setError("");
-              }}
-              className="px-4 py-1.5 rounded-lg bg-muted text-muted-foreground hover:bg-muted/80 transition"
-            >
-              Cancel
-            </button>
+              <OnSaveButton text="Save" onClick={handleSave} />
+              <OnCancelButton text="Cancel" onClick={() => { setIsInput(false); setError(""); }} />
             </div>
           </div>
           {error && (

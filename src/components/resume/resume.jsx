@@ -6,16 +6,16 @@ import { useState } from "react";
 
 export function Resume() {
 
-    const {
-        user
-    } = useUserStore();
-    const [resume, setResume] = useState(user.resume || null);
+    const userResume = useUserStore((state) => state.user.resume);
+    const updateUser = useUserStore((state) => state.updateUser);
+    const [resume, setResume] = useState(userResume || null);
 
     async function handleUpload(file) {
         try {
             const response = await uploadResume(file);
             if(response.res === 200) {
                 setResume(response.fileUrl);
+                updateUser({ resume: response.fileUrl });
             }
         } catch (error) {
             console.error("Error uploading resume:", error);
@@ -26,6 +26,7 @@ export function Resume() {
         try {
             const response = await deleteResume();
             if(response.res === 200) {
+                updateUser({ resume: "" });
                 setResume(null);
             }
         } catch (error) {

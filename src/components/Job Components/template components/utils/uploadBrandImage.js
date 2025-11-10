@@ -48,9 +48,10 @@ export async function uploadBrandImage(file, jobId) {
   } catch (err) {
     if(err.response?.status == 401) {
       let res = await refreshToken();
-      if(res) return uploadBrandImage(file, jobId);
+      if(res) return await uploadBrandImage(file, jobId);
     }
-    console.error("Upload failed:", err);
-    throw err;
+    else {
+      return { status: 500 };
+    }
   }
 }

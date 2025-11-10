@@ -1,86 +1,86 @@
-import { useState } from "react"
+import { useState } from "react";
 import { Pencil } from "lucide-react";
 import { Input } from "../../Inputs/input.jsx";
-import { CoolButton } from "../../Buttons/button.jsx";
 import { uploadLocationType } from "./utils/uploadLocationType.js";
+import { OnSaveButton } from "../../../components/Buttons/onSaveButton.jsx";
+import { OnCancelButton } from "../../../components/Buttons/onCancelButton.jsx";
 
 export function LocationType({ locationType, owner, jobId }) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [jobLocationType, setJobLocationType] = useState(locationType); 
+  const [locationTypeState, setLocationTypeState] = useState(jobLocationType);
+  const [error, setError] = useState("");
 
-    const [isEditing, setIsEditing] = useState(false);
-    const [locationTypeState, setLocationTypeState] = useState(locationType);
-    const [error, setError] = useState("");
+  const handleSave = async () => {
+    if (!locationTypeState.trim()) {
+      setError("Location type cannot be empty");
+      return;
+    }
 
-    const handleSave = async () => {
-      if (!locationTypeState.trim()) {
-        setError("location type cannot be empty");
-        return;
-      }
+    try {
+      const res = await uploadLocationType(locationTypeState, jobId);
 
-      try {
-        let res = await uploadLocationType(locationTypeState, jobId);
-          
-        if(res.status == 200) {
-            setError("");
-            setLocationTypeState(res.locationTypeState);
-            setIsEditing(false);
-        }else if(res.status == 400) {
-            setError(res.message);
-        }else {
-            setError("Something went wrong");
-        }
-        
-      } catch (err) {
-        setError("Failed to update location type. Try again.");
-      }
-    };
-
-    const handleCancel = () => {
-        setLocationTypeState(locationType);
-        setIsEditing(false);
+      if (res.status === 200) {
         setError("");
-    };
-    return (
-        <div className="flex gap-2">
-            {
-                (owner == "YOU" && isEditing) ?
-                
-                <div>
-                    <Input 
-                        type={"text"}
-                        name={"location type"}
-                        minLength={6}
-                        placeholder={"fulltime / remote / hybrid"}
-                        value={locationTypeState}
-                        set={setLocationTypeState}
-                        autoComplete={"location type"}
-                        required={true}
-                    />
-                    {error && <span className="text-red-400 text-base font-bold">{error}</span>}
+        setJobLocationType(res.locationTypeState);
+        setIsEditing(false);
+      } else if (res.status === 400) {
+        setError(res.message);
+      } else {
+        setError("Something went wrong");
+      }
+    } catch {
+      setError("Failed to update location type. Try again.");
+    }
+  };
 
-                    <div className="flex gap-2">
-                        <CoolButton text={"Save"} clickHandler={handleSave}/>
-                        <CoolButton text={"Cancel"} clickHandler={handleCancel}/>
-                    </div>
-                </div>
-                
-                :
-                
-                <div className="flex flex-wrap items-center gap-3">
-                
-                    <div className="text-lg font-semibold text-gray-800">Location type : {locationTypeState}</div>
+  const handleCancel = () => {
+    setLocationTypeState(jobLocationType);
+    setIsEditing(false);
+    setError("");
+  };
 
-                    {
-                        (owner == "YOU") &&
+  return (
+    <div className="w-full flex flex-col gap-3 p-4 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm transition-colors duration-300">
+      {owner === "YOU" && isEditing ? (
+        <div className="flex flex-col gap-3">
+          <Input
+            type="text"
+            name="locationType"
+            minLength={3}
+            placeholder="Remote / Hybrid / On-site"
+            value={locationTypeState}
+            set={setLocationTypeState}
+            autoComplete="locationType"
+            required={true}
+          />
 
-                        <div
-                        className=" flex cursor-pointer rounded-full w-[30px] h-[30px] bg-black/60 hover:bg-black/80 items-center justify-center shadow-md"
-                        onClick={() => { setIsEditing(true) }}
-                        >
-                            <Pencil size={20} color="white" />
-                        </div>
-                    }
-                </div>
-            }
+          {error && (
+            <span className="text-red-500 text-sm font-medium">{error}</span>
+          )}
+
+          <div className="flex flex-wrap gap-2">
+            <OnSaveButton text={"Save"} onClick={handleSave} />
+            <OnCancelButton text={"Cancel"} onClick={handleCancel} />
+          </div>
         </div>
-    )
+      ) : (
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="text-base sm:text-lg text-gray-800 dark:text-gray-100 font-medium">
+            <span className="font-semibold">Location Type:</span>{" "}
+            {jobLocationType}
+          </div>
+
+          {owner === "YOU" && (
+            <div
+              onClick={() => setIsEditing(true)}
+              className="flex cursor-pointer rounded-full w-[32px] h-[32px] border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 items-center justify-center transition-colors duration-300"
+            >
+              <Pencil size={18} className="text-gray-800 dark:text-gray-100" />
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
 }

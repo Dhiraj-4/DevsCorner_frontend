@@ -24,12 +24,12 @@ export async function uploadRole(roleState, jobId) {
     } catch (error) {
         console.log(error);
         if(error.response?.status == 401) {
-            let res = refreshToken();
-            if (res) return uploadRole(roleState, jobId);
+            let res = await refreshToken();
+            if (res) return await uploadRole(roleState, jobId);
         }else if(error.response?.status == 400) {
             return {
                 status: 400,
-                message: error.response.data.error.issues[0].code
+                message: error.response.data.message ||error.response.data.error.issues[0].message || error.response.data.error.issues[0].code
             }
         }else {
             return { status: 500 }
