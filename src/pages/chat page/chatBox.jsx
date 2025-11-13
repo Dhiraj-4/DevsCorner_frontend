@@ -101,11 +101,22 @@ export const ChatBox = ({ sidebarOpen, setSidebarOpen }) => {
   if (!activeConversation) {
     return (
       <div
-        className={`flex h-full items-center justify-center font-medium ${
+        className={`flex flex-col gap-4 h-full items-center justify-center font-medium ${
           isDark ? "text-gray-300" : "text-gray-600"
         }`}
       >
         Select a chat to start messaging
+
+        <button
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          className={`md:hidden px-3 py-2 rounded-lg font-medium ${
+            isDark
+              ? "bg-zinc-800 hover:bg-zinc-700 text-white"
+              : "bg-zinc-300 hover:bg-zinc-400 text-black"
+          }`}
+        >
+          {sidebarOpen ? "Close" : "Chats"}
+        </button>
       </div>
     );
   }
@@ -174,7 +185,7 @@ export const ChatBox = ({ sidebarOpen, setSidebarOpen }) => {
             }`}
           >
             <span
-              className={`px-4 py-2 rounded-2xl text-sm max-w-[80%] break-words ${
+              className={`px-4 py-2 rounded-2xl text-sm max-w-[80%] wrap-break-word ${
                 m.sender === user._id
                   ? isDark
                     ? "bg-indigo-600 text-white"
