@@ -10,6 +10,9 @@ export const usePostStore = create((set,get) => ({
     text: "",
     setText: (text) => set({ text }),
 
+    isLoading: false,
+    setIsLoading: (bool) => set({ isLoading: bool }),
+
     hasMore: true,
     setHasMore: (bool) => set({ hasMore: bool }),
 

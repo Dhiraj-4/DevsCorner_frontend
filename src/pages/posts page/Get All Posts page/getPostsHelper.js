@@ -13,9 +13,12 @@ export async function getPostsHandler() {
         setPosts,
         pageNumber,
         setHasMore,
-        reset_postStore
+        reset_postStore,
+        setIsLoading
     } = usePostStore.getState();
     try {
+        setIsLoading(true);
+
         const response = await axios.get(
             `${BACKEND_URL}post?page=${pageNumber}`,
             {
@@ -37,5 +40,7 @@ export async function getPostsHandler() {
             let res = await refreshToken();
             if(res) getPostsHandler();
         }
+    } finally {
+        setIsLoading(false);
     }
 }

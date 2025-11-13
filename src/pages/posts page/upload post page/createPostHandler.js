@@ -6,13 +6,13 @@ import { BACKEND_URL } from "../../../../config/envConfig.js";
 
 export async function createPostHandler() {
     const {
-        text
+        text,
+        setIsLoading
     } = usePostStore.getState();
 
     const {
         setError,
         clearError,
-        setIsLoading,
         accessToken
     } = useAuthStore.getState();
 
@@ -41,8 +41,8 @@ export async function createPostHandler() {
     } catch (error) {
         console.log(error);
         if(error.response?.status == 401) {
-            let res = refreshToken();
-            if (res) createPostHandler();
+            let res = await refreshToken();
+            if (res) return await createPostHandler();
         }
         else if(error.response?.status == 400) {
             setError( error.response.data?.error?.issues[0].message || error.response.data?.error?.issues[0].code || error.response.data.message);

@@ -35,7 +35,7 @@ export const useJobStore = create((set,get) => ({
     salary: "",
     setSalary: (salary) => set({ salary }),
 
-    experience: 0,
+    experience: "",
     setExperience: (experience) => set({ experience }),
 
     hasMore: true,

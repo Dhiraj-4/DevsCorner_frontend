@@ -66,7 +66,7 @@ export function AllJobsPage() {
   const cardBg = isDark ? "bg-zinc-900" : "bg-white";
   const emptyText = isDark ? "text-zinc-400" : "text-zinc-600";
 
-  if (isLoading && allJobsArray.length === 0)
+  if (isLoading || (allJobsArray.length === 0 && hasMore) )
     return (
       <div className="min-h-screen flex items-center justify-center">
         <IsLoadingSvg />

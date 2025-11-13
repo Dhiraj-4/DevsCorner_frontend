@@ -13,13 +13,13 @@ export async function createJobHandler() {
         salary,
         location,
         locationType,
-        experience
+        experience,
+        setIsLoading
     } = useJobStore.getState();
 
     const {
         setError,
         clearError,
-        setIsLoading,
         accessToken
     } = useAuthStore.getState();
 
@@ -59,8 +59,8 @@ export async function createJobHandler() {
     } catch (error) {
         console.log(error);
         if(error.response?.status == 401) {
-            let res = refreshToken();
-            if (res) createJobHandler();
+            let res = await refreshToken();
+            if (res) return await createJobHandler();
         }
         else if(error.response?.status == 400) {
             setError( error.response.data?.error?.issues[0].message || error.response.data?.error?.issues[0].code || error.response.data.message);

@@ -20,6 +20,7 @@ import { NavbarProfileImage } from "../components/profile image/navbarProfileIma
 import { io } from "socket.io-client";
 import { SOCKET_URL } from "../../config/envConfig.js";
 import { useTheme } from "../theme-provider.jsx";
+import { useChatStore } from "../store/chatStore.js";
 
 export default function UserNavbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,6 +28,7 @@ export default function UserNavbar() {
   const closeMenu = () => setIsOpen(false);
 
   const { hydrateUser, user } = useUserStore();
+  const { setSocket } = useChatStore();
   const { isLoggedIn, isLoading } = useAuthStore();
   const navigate = useNavigate();
   const location = useLocation();
@@ -35,11 +37,13 @@ export default function UserNavbar() {
   // Socket connection
   useEffect(() => {
     if (!user._id) return;
-    io(SOCKET_URL, {
+    const socket = io(SOCKET_URL, {
       withCredentials: true,
       autoConnect: true,
       query: { userId: user._id },
     });
+
+    setSocket(socket);
   }, [user]);
 
   // Hydrate user

@@ -82,7 +82,7 @@ export function Location({ onSave }) {
         <div
           className={`flex items-center gap-2 px-3 py-1 border rounded-2xl ${bgPill}`}
         >
-          <span className="truncate max-w-[160px] sm:max-w-[220px]">
+          <span className="max-w-[160px] sm:max-w-[220px]">
             {location}
           </span>
           <X

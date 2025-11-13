@@ -41,7 +41,7 @@ export function Description({ text, owner, jobId }) {
   };
 
   return (
-    <div className="w-full flex flex-col gap-3 p-4 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm transition-colors duration-300">
+    <div className="w-full flex flex-col gap-3 p-4 overflow-auto rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm transition-colors duration-300">
       {owner === "YOU" && isEditing ? (
         <div className="flex flex-col gap-3">
           <TextArea
@@ -70,7 +70,7 @@ export function Description({ text, owner, jobId }) {
           {owner === "YOU" && (
             <div
               onClick={() => setIsEditing(true)}
-              className="flex cursor-pointer rounded-full w-[32px] h-[32px] border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 items-center justify-center transition-colors duration-300"
+              className="flex cursor-pointer rounded-full w-8 h-8 border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 items-center justify-center transition-colors duration-300"
             >
               <Pencil size={18} className="text-gray-800 dark:text-gray-100" />
             </div>

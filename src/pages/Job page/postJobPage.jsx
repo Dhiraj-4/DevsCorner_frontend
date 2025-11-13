@@ -4,163 +4,150 @@ import { useJobStore } from "../../store/jobPostStore.js";
 import { CreateJobHeader } from "../../components/headers/createJobHeader.jsx";
 import { createJobHandler } from "../../utils/createJobHandler.js";
 import { Error } from "../../components/errors/error.jsx";
-import { useAuthStore } from "../../store/authStore.js";
 import { IsLoadingSvg } from "../../components/loaders/isLoadingSvg.jsx";
 import { useNavigate } from "react-router-dom";
 import { TextArea } from "../../components/Inputs/textArea.jsx";
 
 export function PostJobPage() {
+  const {
+    text,
+    setText,
+    role,
+    setRole,
+    companyName,
+    setCompanyName,
+    applyLink,
+    setApplyLink,
+    experience,
+    setExperience,
+    salary,
+    setSalary,
+    location,
+    setLocation,
+    locationType,
+    setLocationType,
+    isLoading,
+  } = useJobStore();
 
-    const {
-        text,
-        setText,
+  const navigate = useNavigate();
 
-        role,
-        setRole,
+  return (
+    <div className="min-h-screen pt-20 w-full bg-neutral-50 dark:bg-neutral-900 transition-colors duration-300">
+      {/* Header */}
+      <CreateJobHeader />
 
-        companyName,
-        setCompanyName,
+      <form
+        action="/jobs"
+        onSubmit={async (e) => {
+          e.preventDefault();
+          let success = await createJobHandler();
+          if (success) {
+            navigate("/jobs");
+          }
+        }}
+        className="max-w-2xl mx-auto p-6 sm:p-8 flex flex-col gap-5 bg-white/60 dark:bg-neutral-800/60 backdrop-blur-md rounded-2xl shadow-lg border border-neutral-200 dark:border-neutral-700 mt-10"
+      >
+        {/* Error */}
+        <Error />
 
-        applyLink,
-        setApplyLink,
+        {/* Company Name */}
+        <Input
+          placeholder="Company Name (optional)"
+          value={companyName}
+          set={setCompanyName}
+          required={false}
+          minLength={1}
+          name="companyName"
+          type="text"
+          autoComplete="companyName"
+        />
 
-        experience,
-        setExperience,
+        {/* Role */}
+        <Input
+          placeholder="Role"
+          value={role}
+          set={setRole}
+          minLength={5}
+          name="Role"
+          type="text"
+          autoComplete="Role"
+        />
 
-        salary,
-        setSalary,
+        {/* Experience */}
+        <Input
+          placeholder="Experience"
+          value={experience}
+          set={setExperience}
+          minLength={1}
+          name="Experience"
+          type="number"
+          autoComplete="Experience"
+          required={false}
+        />
 
-        location,
-        setLocation,
+        {/* Location */}
+        <Input
+          placeholder="City, State, Country"
+          value={location}
+          set={setLocation}
+          minLength={1}
+          name="Location"
+          type="text"
+          autoComplete="Location"
+        />
 
-        locationType,
-        setLocationType
-    } = useJobStore();
+        {/* Location Type */}
+        <Input
+          placeholder="Fulltime / Remote / Hybrid"
+          value={locationType}
+          set={setLocationType}
+          minLength={6}
+          name="Location type"
+          type="text"
+          autoComplete="Location type"
+        />
 
-    const {
-        isLoading
-    } = useAuthStore();
+        {/* Salary */}
+        <Input
+          placeholder="Salary"
+          value={salary}
+          set={setSalary}
+          minLength={1}
+          name="Salary"
+          type="text"
+          autoComplete="Salary"
+          required={false}
+        />
 
-    const navigate = useNavigate();
-    return (
-        <div className="primary-bg">
+        {/* Apply Link */}
+        <Input
+          placeholder="Apply Link (optional)"
+          value={applyLink}
+          set={setApplyLink}
+          required={false}
+          minLength={0}
+          name="applyLink"
+          type="text"
+          autoComplete="applyLink"
+        />
 
-            {/* Header */}
-            <CreateJobHeader/>
-            <form
-                action="/jobs"
-                onSubmit={async(e) => {
-                e.preventDefault();
-                let success = await createJobHandler();
-                if(success) {
-                    navigate("/jobs");
-                }
-                }}
-                className="primary-form"
-            >
+        {/* Description */}
+        <TextArea
+          placeholder="Description"
+          value={text}
+          set={setText}
+          minLength={50}
+          name="Description"
+          type="text"
+          autoComplete="Description"
+        />
 
-                {/* Error */}
-                <Error />
-
-                {/* Company Name */}
-                <Input 
-                    placeholder={"Company Name (optional)"}
-                    value={companyName}
-                    set={setCompanyName}
-                    required={false}
-                    minLength={1}
-                    name={"companyName"}
-                    type={"text"}
-                    autoComplete={"companyName"}
-                />
-
-                {/* Role */}
-                <Input 
-                    placeholder={"Role"}
-                    value={role}
-                    set={setRole}
-                    minLength={5}
-                    name={"Role"}
-                    type={"text"}
-                    autoComplete={"Role"}
-                />
-
-                {/* experience */}
-                <Input 
-                    placeholder={"Experience"}
-                    value={experience}
-                    set={setExperience}
-                    minLength={1}
-                    name={"Experience"}
-                    type={"number"}
-                    autoComplete={"Experience"}
-                    required={false}
-                />
-
-                {/* location */}
-                <Input 
-                    placeholder={"City, State, Country"}
-                    value={location}
-                    set={setLocation}
-                    minLength={1}
-                    name={"Location"}
-                    type={"text"}
-                    autoComplete={"Location"}
-                />
-
-
-                {/* location type */}
-                <Input 
-                    placeholder={"fulltime / remote / hybrid"}
-                    value={locationType}
-                    set={setLocationType}
-                    minLength={6}
-                    name={"Location type"}
-                    type={"text"}
-                    autoComplete={"Location type"}
-                />
-
-                {/* salary */}
-                <Input 
-                    placeholder={"Salary"}
-                    value={salary}
-                    set={setSalary}
-                    minLength={1}
-                    name={"Salary"}
-                    type={"text"}
-                    autoComplete={"Salary"}
-                    required={false}
-                />
-
-                {/* Apply Link */}
-                <Input 
-                    placeholder={"Apply Link (optional)"}
-                    value={applyLink}
-                    set={setApplyLink}
-                    required={false}
-                    minLength={0}
-                    name={"applyLink"}
-                    type={"text"}
-                    autoComplete={"applyLink"}
-                />
-
-
-                {/* Description */}
-                <TextArea 
-                    placeholder={"Description"}
-                    value={text}
-                    set={setText}
-                    minLength={50}
-                    name={"Description"}
-                    type={"text"}
-                    autoComplete={"Description"}
-                />
-
-                <CoolButton text={
-                    (isLoading) ? <IsLoadingSvg/> : "Post Job"
-                }/>
-
-            </form>
+        <div className="flex justify-end">
+          <CoolButton
+            text={isLoading ? <IsLoadingSvg /> : "Post Job"}
+          />
         </div>
-    )
+      </form>
+    </div>
+  );
 }

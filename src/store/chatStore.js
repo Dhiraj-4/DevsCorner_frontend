@@ -7,7 +7,8 @@ import { useUserStore } from "./userStore.js";
 
 export const useChatStore = create((set, get) => ({
   socket: null,
-
+  setSocket: (socket) => set({ socket }),
+  
   messages: [],
   setMessages: (newMessages, replace = false) => {
     console.log("📨 setMessages called", newMessages);
@@ -17,7 +18,6 @@ export const useChatStore = create((set, get) => ({
       set({ messages: [...newMessages.reverse(), ...get().messages] });
     }
   },
-
 
   activeConversation: null,
   conversations: [],
@@ -41,6 +41,7 @@ export const useChatStore = create((set, get) => ({
   },
 
   resetChatStore: () => {
+    get().socket?.emit("logout");
     set({
       socket: null,
       message: [],

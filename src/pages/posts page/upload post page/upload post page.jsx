@@ -5,57 +5,67 @@ import { CoolButton } from "../../../components/Buttons/button.jsx";
 import { IsLoadingSvg } from "../../../components/loaders/isLoadingSvg.jsx";
 import { Error } from "../../../components/errors/error.jsx";
 import { Input } from "../../../components/Inputs/input.jsx";
-import { useAuthStore } from "../../../store/authStore.js";
 import { CreatePostHeader } from "../../../components/headers/createPostHeader.jsx";
+import { useTheme } from "../../../theme-provider.jsx";
 
 export function UploadPostPage() {
+  const { text, setText, isLoading } = usePostStore();
+  const navigate = useNavigate();
+  const { activeTheme } = useTheme();
 
-    const {
-        text,
-        setText
-    } = usePostStore();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const success = await createPostHandler();
+    if (success) navigate("/feed");
+  };
 
-    const {
-        isLoading
-    } = useAuthStore();
+  // theme-dependent styles
+  const bgColor =
+    activeTheme === "dark" ? "bg-neutral-950 text-neutral-100" : "bg-neutral-100 text-neutral-900";
+  const cardBg =
+    activeTheme === "dark"
+      ? "bg-neutral-900/80 border-neutral-800"
+      : "bg-white/80 border-neutral-300";
+  const inputTheme =
+    activeTheme === "dark"
+      ? "bg-neutral-950 border-neutral-700 text-neutral-100 placeholder-neutral-500"
+      : "bg-white border-neutral-300 text-neutral-900 placeholder-neutral-400";
+  const buttonTheme =
+    activeTheme === "dark"
+      ? "bg-indigo-600 hover:bg-indigo-500 text-white"
+      : "bg-indigo-500 hover:bg-indigo-600 text-white";
 
-    const navigate = useNavigate();
-    return (
-        <div className="primary-bg">
+  return (
+    <div
+      className={`min-h-screen pt-20 flex flex-col items-center px-4 sm:px-6 lg:px-8 py-6 transition-colors duration-300 ${bgColor}`}
+    >
+      {/* Header */}
+      <CreatePostHeader />
 
-            {/* Header */}
-            <CreatePostHeader />
-            <form
-                action="/feed"
-                onSubmit={async(e) => {
-                e.preventDefault();
-                let success = await createPostHandler();
-                if(success) {
-                    navigate("/feed");
-                }
-                }}
-                className="primary-form"
-            >
+      <form
+        onSubmit={handleSubmit}
+        className={`w-full max-w-md backdrop-blur-sm border rounded-2xl shadow-md p-6 mt-8 flex flex-col gap-5 transition-colors duration-300 ${cardBg}`}
+      >
+        {/* Error */}
+        <Error />
 
-                {/* Error */}
-                <Error />
+        <Input
+          type="text"
+          name="text"
+          required
+          minLength={1}
+          placeholder="What's on your mind?"
+          value={text}
+          set={setText}
+          autoComplete="off"
+          className={`w-full ${inputTheme}`}
+        />
 
-                <Input 
-                    type={"text"}
-                    name={"text"}
-                    required={true}
-                    minLength={1}
-                    placeholder={"Post text"}
-                    value={text}
-                    set={setText}
-                    autoComplete={"text"}
-                />
-
-                <CoolButton text={
-                    (isLoading) ? <IsLoadingSvg/> : "Create Post"
-                }/>
-
-            </form>
-        </div>
-    )
+        <CoolButton
+          text={isLoading ? <IsLoadingSvg /> : "Create Post"}
+          className={`w-full text-base font-medium transition-colors ${buttonTheme}`}
+        />
+      </form>
+    </div>
+  );
 }

@@ -48,7 +48,7 @@ export function LocationType({ locationType, owner, jobId }) {
             type="text"
             name="locationType"
             minLength={3}
-            placeholder="Remote / Hybrid / On-site"
+            placeholder="Remote / Hybrid / Fulltime"
             value={locationTypeState}
             set={setLocationTypeState}
             autoComplete="locationType"
