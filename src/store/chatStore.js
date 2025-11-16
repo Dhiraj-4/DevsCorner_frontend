@@ -5,6 +5,7 @@ import { getMessages } from "../utils/getMessages.js";
 import { SOCKET_URL } from "../../config/envConfig.js";
 import { useUserStore } from "./userStore.js";
 import { useAuthStore } from "./authStore.js";
+import { useNotifStore } from "./notificationStore.js";
 
 export const useChatStore = create((set, get) => ({
   socket: null,
@@ -54,6 +55,7 @@ export const useChatStore = create((set, get) => ({
   // connect socket
   connectSocket: (userId) => {
     const { accessToken } = useAuthStore.getState();
+    const { addNotification } = useNotifStore.getState();
 
     const socket = io(`${SOCKET_URL}`, {
       withCredentials: true,
@@ -106,8 +108,19 @@ export const useChatStore = create((set, get) => ({
       set({ onlineMembers: onlineNumber });
     });
 
-    socket.on("notification:newJob", (payload) => {
-      console.log("notification recived:", payload);
+    socket.on("notification:newJob", (notif) => {
+      console.log("notification recived:", notif);
+      addNotification(notif);
+    });
+
+    socket.on("notification:post", (notif) => {
+      console.log("notification recived:", notif);
+      addNotification(notif);
+    });
+
+    socket.on("notification:message", (notif) => {
+      console.log("notification recived:", notif);
+      addNotification(notif);
     });
 
     set({ socket });

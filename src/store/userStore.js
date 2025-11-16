@@ -5,7 +5,7 @@ import { useAuthStore } from "./authStore.js";
 import { refreshToken } from "../utils/refreshToken.js";
 import { logoutHelper } from "../utils/logoutHelper.js";
 
-export const useUserStore = create((set) => ({
+export const useUserStore = create((set, get) => ({
   user: {
     _id: "",
     userName: "",
@@ -50,7 +50,7 @@ export const useUserStore = create((set) => ({
       console.log(err);
       if(err.status == 401) {
         let res = await refreshToken();
-        if(res) hydrateUser();
+        if(res) await get().hydrateUser();
       }else if(err.status == 404) {
         logoutHelper();
       }

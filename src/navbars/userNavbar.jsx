@@ -21,6 +21,7 @@ import { io } from "socket.io-client";
 import { SOCKET_URL } from "../../config/envConfig.js";
 import { useTheme } from "../theme-provider.jsx";
 import { useChatStore } from "../store/chatStore.js";
+import { useNotifStore } from "../store/notificationStore.js";
 
 export default function UserNavbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,6 +29,7 @@ export default function UserNavbar() {
   const closeMenu = () => setIsOpen(false);
 
   const { hydrateUser, user } = useUserStore();
+  const { notifications } = useNotifStore();
   const { connectSocket } = useChatStore();
   const { isLoggedIn, isLoading, accessToken } = useAuthStore();
   const navigate = useNavigate();
@@ -102,11 +104,19 @@ export default function UserNavbar() {
                 <NavItem to="/jobs" icon={<Briefcase />} label="Jobs" />
                 <NavItem to="/post" icon={<PlusSquare />} label="Post" />
                 <NavItem to="/chat" icon={<MessageCircle />} label="Chat" />
-                <NavItem to="/notifications" icon={<Bell />} label="Notifications" />
+                <span className="relative">
+                  <NavItem to="/notifications" icon={<Bell />} label="Notifications" /> 
+                  <div 
+                  className="w-5 h-5 bg-red-500 text-white text-lg absolute top-0 flex justify-center items-center rounded-full"
+                  >
+                    {notifications.length}
+                  </div>
+                </span>
                 <NavItem to="/me" icon={<User />} label="Profile" />
                 <NavbarProfileImage profileImage={user?.profileImage} />
               </>
             )}
+
 
             {/* Theme Toggle */}
             <button
@@ -123,7 +133,19 @@ export default function UserNavbar() {
             onClick={toggleMenu}
             className="md:hidden p-2 rounded-md hover:bg-muted transition-colors"
           >
-            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {isOpen ? 
+            
+            <X className="w-6 h-6" /> : 
+            
+            <span className="relative">
+              <Menu className="w-6 h-6" />
+            <div 
+            className="w-4 h-4 bg-red-500 text-white p-1 absolute top-0 left-0 flex justify-center items-center rounded-full"
+            >
+              {notifications.length}
+            </div>
+            </span>
+            }
           </button>
         </div>
       </div>
@@ -135,7 +157,14 @@ export default function UserNavbar() {
           <MobileNavItem to="/jobs" icon={<Briefcase />} label="Jobs" onClick={closeMenu} />
           <MobileNavItem to="/post" icon={<PlusSquare />} label="Post" onClick={closeMenu} />
           <MobileNavItem to="/chat" icon={<MessageCircle />} label="Chat" onClick={closeMenu} />
-          <MobileNavItem to="/notifications" icon={<Bell />} label="Notifications" onClick={closeMenu} />
+          <div className="relative">
+            <MobileNavItem to="/notifications" icon={<Bell />} label="Notifications" onClick={closeMenu} />
+            <span 
+            className="w-5 h-5 bg-red-500 text-white text-lg absolute top-0 flex justify-center items-center rounded-full"
+            >
+              {notifications.length}
+            </span>
+          </div>
           <MobileNavItem to="/me" icon={<User />} label="Profile" onClick={closeMenu} />
 
           <button

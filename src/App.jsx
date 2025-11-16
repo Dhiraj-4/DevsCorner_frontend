@@ -13,6 +13,7 @@ import PublicProfilePage from './pages/publicProfilePage.jsx';
 import { PostPage } from './pages/posts page/Get All Posts page/postPage.jsx';
 import { UploadPostPage } from './pages/posts page/upload post page/upload post page.jsx';
 import { ChatPage } from './pages/chat page/chatPage.jsx';
+import Notifications from './pages/Notifications.jsx';
 
 function App() {
 
@@ -22,6 +23,7 @@ function App() {
     {/* Private/User routes (with shared layout) */}
     <Route element={<UserLayout />}>
        {/* <Route index element={<UserHome />} /> */}
+       <Route path='/notifications' element={<Notifications/>} />
        <Route path='/feed' element={<PostPage />} />
        <Route path='/post' element={<UploadPostPage />} />
        <Route path="/user/:userName" element={<PublicProfilePage />} />
