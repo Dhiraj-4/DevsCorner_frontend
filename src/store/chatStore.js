@@ -4,6 +4,7 @@ import { io } from "socket.io-client";
 import { getMessages } from "../utils/getMessages.js";
 import { SOCKET_URL } from "../../config/envConfig.js";
 import { useUserStore } from "./userStore.js";
+import { useAuthStore } from "./authStore.js";
 
 export const useChatStore = create((set, get) => ({
   socket: null,
@@ -52,9 +53,11 @@ export const useChatStore = create((set, get) => ({
   },
   // connect socket
   connectSocket: (userId) => {
+    const { accessToken } = useAuthStore.getState();
+
     const socket = io(`${SOCKET_URL}`, {
       withCredentials: true,
-      query: { userId },
+      query: { userId, accessToken }
     });
     
     socket.on("connect", () => {
@@ -101,6 +104,10 @@ export const useChatStore = create((set, get) => ({
 
     socket.on("onlineMembers", (onlineNumber) => {
       set({ onlineMembers: onlineNumber });
+    });
+
+    socket.on("notification:newJob", (payload) => {
+      console.log("notification recived:", payload);
     });
 
     set({ socket });

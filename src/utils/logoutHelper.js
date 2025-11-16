@@ -15,7 +15,6 @@ async function logoutHelper() {
     } = useJobStore.getState();
 
     const { resetChatStore } = useChatStore.getState();
-    resetChatStore();
     
     const response = await api.post(
         `${BACKEND_URL}auth/logout`
@@ -24,6 +23,7 @@ async function logoutHelper() {
     reset_authStore();
     reset_jobStore();
     setIsLoggedIn(false);
+    resetChatStore();
     console.log(response);
     return;
 }

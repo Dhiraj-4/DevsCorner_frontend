@@ -28,22 +28,16 @@ export default function UserNavbar() {
   const closeMenu = () => setIsOpen(false);
 
   const { hydrateUser, user } = useUserStore();
-  const { setSocket } = useChatStore();
-  const { isLoggedIn, isLoading } = useAuthStore();
+  const { connectSocket } = useChatStore();
+  const { isLoggedIn, isLoading, accessToken } = useAuthStore();
   const navigate = useNavigate();
   const location = useLocation();
   const { theme, setTheme } = useTheme();
 
   // Socket connection
   useEffect(() => {
-    if (!user._id) return;
-    const socket = io(SOCKET_URL, {
-      withCredentials: true,
-      autoConnect: true,
-      query: { userId: user._id },
-    });
-
-    setSocket(socket);
+    if (!user._id || !accessToken) return;
+    connectSocket(user._id);
   }, [user]);
 
   // Hydrate user
