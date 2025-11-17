@@ -23,6 +23,9 @@ export const ChatPage = () => {
   const { activeTheme } = useTheme();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  const isDark = activeTheme === "dark";
+  const pageBg = isDark ? "bg-zinc-950 text-zinc-100" : "bg-zinc-50 text-zinc-900";
+
   useEffect(() => {
     if (user?._id) connectSocket(user._id);
 
@@ -40,11 +43,9 @@ export const ChatPage = () => {
     fetchConversations();
   }, [user]);
 
-  const isDark = activeTheme === "dark";
-
   if(isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className={`${pageBg} min-h-screen flex items-center justify-center`}>
         <IsLoadingSvg />
       </div>
     );

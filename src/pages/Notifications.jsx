@@ -21,6 +21,9 @@ export default function Notifications() {
   } =
     useNotifStore();
 
+  const isDark = activeTheme === "dark";
+  const pageBg = isDark ? "bg-zinc-950 text-zinc-100" : "bg-zinc-50 text-zinc-900";
+
   // DELETE HANDLER
   const handleDelete = async (id) => {
     await deleteNotif(id);
@@ -51,7 +54,7 @@ export default function Notifications() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen text-lg font-medium">
+      <div className={`flex ${pageBg} items-center justify-center min-h-screen text-lg font-medium`}>
         <IsLoadingSvg />
       </div>
     );
