@@ -3,6 +3,9 @@ import { create } from "zustand";
 export const useNotifStore = create((set, get) => ({
   notifications: [],
 
+  notifType: "all",
+  setNotifType: (type) => set({ notifType: type }),
+
   // append (socket)
   addNotification: (notif) =>
     set({ notifications: [notif, ...get().notifications] }),

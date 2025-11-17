@@ -17,11 +17,10 @@ import { useUserStore } from "../store/userStore.js";
 import { useAuthStore } from "../store/authStore.js";
 import { checkAccessToken } from "../utils/checkAccessToken.js";
 import { NavbarProfileImage } from "../components/profile image/navbarProfileImage.jsx";
-import { io } from "socket.io-client";
-import { SOCKET_URL } from "../../config/envConfig.js";
 import { useTheme } from "../theme-provider.jsx";
 import { useChatStore } from "../store/chatStore.js";
 import { useNotifStore } from "../store/notificationStore.js";
+import { fetchNotifications } from "../utils/fetchNotifications.js";
 
 export default function UserNavbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -40,6 +39,7 @@ export default function UserNavbar() {
   useEffect(() => {
     if (!user._id || !accessToken) return;
     connectSocket(user._id);
+    fetchNotifications()
   }, [user]);
 
   // Hydrate user
