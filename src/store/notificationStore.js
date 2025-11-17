@@ -6,6 +6,9 @@ export const useNotifStore = create((set, get) => ({
   notifType: "all",
   setNotifType: (type) => set({ notifType: type }),
 
+  isLoading: false,
+  setIsLoading: (bool) => set({ isLoading: bool }),
+
   // append (socket)
   addNotification: (notif) =>
     set({ notifications: [notif, ...get().notifications] }),

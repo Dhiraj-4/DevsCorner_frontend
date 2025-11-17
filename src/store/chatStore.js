@@ -11,6 +11,9 @@ export const useChatStore = create((set, get) => ({
   socket: null,
   setSocket: (socket) => set({ socket }),
   
+  isLoading: false,
+  setIsLoading: (bool) => set({ isLoading: bool }),
+  
   messages: [],
   setMessages: (newMessages, replace = false) => {
     console.log("📨 setMessages called", newMessages);

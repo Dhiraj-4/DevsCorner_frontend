@@ -5,6 +5,7 @@ import { ChatBox } from "./chatBox.jsx";
 import { getConversationsHandler } from "./utils/getConversationsHandler.js";
 import { NavbarProfileImage } from "../../components/profile image/navbarProfileImage.jsx";
 import { useTheme } from "../../theme-provider.jsx";
+import { IsLoadingSvg } from "../../components/loaders/isLoadingSvg.jsx";
 
 export const ChatPage = () => {
   const {
@@ -14,6 +15,8 @@ export const ChatPage = () => {
     setActiveConversation,
     onlineMembers,
     activeConversation,
+    isLoading,
+    setIsLoading
   } = useChatStore();
 
   const { user } = useUserStore();
@@ -24,14 +27,28 @@ export const ChatPage = () => {
     if (user?._id) connectSocket(user._id);
 
     async function fetchConversations() {
-      const response = await getConversationsHandler();
-      setConversations(response.conversations);
+      try {
+        const response = await getConversationsHandler();
+        setConversations(response.conversations);
+      } catch (error) {
+        console.log("Error fetching conversations: ", error);
+      }finally {
+        setIsLoading(false);
+      }
     }
+    setIsLoading(true);
     fetchConversations();
   }, [user]);
 
   const isDark = activeTheme === "dark";
 
+  if(isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <IsLoadingSvg />
+      </div>
+    );
+  }
   return (
     <div
       className={`flex flex-col h-[calc(100vh)]  pt-16 transition-colors duration-300 ${
