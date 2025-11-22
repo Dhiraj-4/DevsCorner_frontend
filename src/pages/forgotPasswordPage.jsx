@@ -16,16 +16,21 @@ import {
 } from "../utils/forgotPasswordHandler.js";
 import { ForgotPasswordHeader } from "../components/headers/forgotPasswordPageHeader.jsx";
 import { IsLoadingSvg } from "../components/loaders/isLoadingSvg.jsx";
+import { useEffect } from "react";
 
 export function ForgotPasswordPage() {
   const navigate = useNavigate();
-  const { passwordResetToken, otpVerificationToken, isLoading } = useAuthStore();
+  const { passwordResetToken, otpVerificationToken, isLoading, reset_authStore } = useAuthStore();
   const { activeTheme } = useTheme();
 
   const isDark = activeTheme === "dark";
   const containerBg = isDark ? "bg-zinc-900/60 backdrop-blur-sm" : "bg-white/80";
   const containerBorder = isDark ? "border-zinc-800" : "border-zinc-200";
   const pageBg = isDark ? "bg-zinc-950 text-zinc-100" : "bg-zinc-50 text-zinc-900";
+
+  useEffect(() => {
+      reset_authStore();
+    },[]);
 
   if (isLoading) {
     return (

@@ -47,12 +47,39 @@ export const forgotPasswordHandler = async() => {
         console.log(error);
         console.log(error.response.data.message);
         reset_authStore();
-        if(error.status == 429) {
-            setError(error.response?.data);
+
+        if (error.response?.status === 400) {
+            const issue = error.response.data?.error?.issues?.[0];
+            const path = issue?.path?.[0];
+            const rawMsg = issue?.message;
+                
+            let clean = rawMsg;
+            if (rawMsg && rawMsg.startsWith("String")) {
+                clean = rawMsg.slice("String".length).trim();
+            }
+        
+            let errStr = "";
+            if (path) {
+                errStr = `${path} ${clean}`;
+            } else if (clean) {
+                errStr = clean;
+            }
+        
+            setError(errStr || error.response?.data?.message || "Bad Request");
         }
-        else if(error.response?.data?.message == "Validation failed") setError(error.response.data.message);
-        else if(error.response?.data) setError(error.response.data.message);
-        else setError(error.message);
+        
+        else if (error.response?.status === 429) {
+            setError("Too Many Requests 😮");
+        }
+        
+        else if (error.response?.status === 409) {
+            setError(error.response?.data?.message);
+        }
+        
+        else {
+            setError("something went wrong 🥺");
+        }
+
         setIsLoggedIn(false);
     } finally {
         setIsLoading(false);
@@ -104,12 +131,37 @@ export const resetPasswordInitiate = async() => {
         console.log(error);
         console.log(error.response.data.message);
         reset_authStore();
-        if(error.status == 429) {
-            setError(error.response?.data);
+        if (error.response?.status === 400) {
+            const issue = error.response.data?.error?.issues?.[0];
+            const path = issue?.path?.[0];
+            const rawMsg = issue?.message;
+                
+            let clean = rawMsg;
+            if (rawMsg && rawMsg.startsWith("String")) {
+                clean = rawMsg.slice("String".length).trim();
+            }
+        
+            let errStr = "";
+            if (path) {
+                errStr = `${path} ${clean}`;
+            } else if (clean) {
+                errStr = clean;
+            }
+        
+            setError(errStr || error.response?.data?.message || "Bad Request");
         }
-        else if(error.response?.data?.message == "Validation failed") setError(error.response.data.message);
-        else if(error.response?.data) setError(error.response.data.message);
-        else setError(error.message);
+        
+        else if (error.response?.status === 429) {
+            setError("Too Many Requests 😮");
+        }
+        
+        else if (error.response?.status === 409) {
+            setError(error.response?.data?.message);
+        }
+        
+        else {
+            setError("something went wrong 🥺");
+        }
         setIsLoggedIn(false);
     } finally {
         setIsLoading(false);
@@ -160,12 +212,37 @@ export const updatePassword = async() => {
         console.log(error);
         console.log(error.response.data.message);
         reset_authStore();
-        if(error.status == 429) {
-            setError(error.response?.data);
+        if (error.response?.status === 400) {
+            const issue = error.response.data?.error?.issues?.[0];
+            const path = issue?.path?.[0];
+            const rawMsg = issue?.message;
+                
+            let clean = rawMsg;
+            if (rawMsg && rawMsg.startsWith("String")) {
+                clean = rawMsg.slice("String".length).trim();
+            }
+        
+            let errStr = "";
+            if (path) {
+                errStr = `${path} ${clean}`;
+            } else if (clean) {
+                errStr = clean;
+            }
+        
+            setError(errStr || error.response?.data?.message || "Bad Request");
         }
-        else if(error.response?.data?.message == "Validation failed") setError(error.response.data.message);
-        else if(error.response?.data) setError(error.response.data.message);
-        else setError(error.message);
+        
+        else if (error.response?.status === 429) {
+            setError("Too Many Requests 😮");
+        }
+        
+        else if (error.response?.status === 409) {
+            setError(error.response?.data?.message);
+        }
+        
+        else {
+            setError("something went wrong 🥺");
+        }
         setIsLoggedIn(false);
     } finally {
         setIsLoading(false);

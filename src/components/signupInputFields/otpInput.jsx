@@ -42,7 +42,7 @@ export function OtpInput() {
           type="button"
           onClick={handleResend}
           disabled={!resending}
-          className={`${classes} ${textClass} transition-colors duration-300`}>
+          className={`${classes} ${textClass} transition-colors duration-300 hover:text-blue-400`}>
             resend  
           </button>
           <Timer/>

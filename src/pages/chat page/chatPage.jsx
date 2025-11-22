@@ -77,7 +77,8 @@ export const ChatPage = () => {
 
           {/* Scrollable Conversations */}
           <div className="flex flex-col overflow-y-auto h-[calc(100%-3.5rem)]">
-            {conversations.map((c) => {
+            { conversations.length ? 
+              conversations.map((c) => {
               const participant = c.participants.find(
                 (p) => p._id.toString() !== user._id.toString()
               );
@@ -104,7 +105,13 @@ export const ChatPage = () => {
                   <span className="truncate">@{participant.userName}</span>
                 </div>
               );
-            })}
+            })
+            :
+
+            <div className="flex justify-center items-center h-full font-bold text-2xl">
+              No chats :(
+            </div>
+            }
           </div>
         </div>
 

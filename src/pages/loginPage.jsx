@@ -11,16 +11,21 @@ import { GoogleAuth } from "../components/googleAuth/googleLogin.jsx"; // don't 
 import { loginHandler } from "../utils/loginPageHandlers.js";
 import { useAuthStore } from "../store/authStore.js";
 import { IsLoadingSvg } from "../components/loaders/isLoadingSvg.jsx";
+import { useEffect } from "react";
 
 export function LoginPage() {
   const navigate = useNavigate();
   const { activeTheme } = useTheme(); // ✅ use activeTheme instead of theme
-  const { isLoading } = useAuthStore();
+  const { isLoading, reset_authStore } = useAuthStore();
 
   const isDark = activeTheme === "dark";
   const containerBg = isDark ? "bg-zinc-900/60 backdrop-blur-sm" : "bg-white/80";
   const containerBorder = isDark ? "border-zinc-800" : "border-zinc-200";
   const pageBg = isDark ? "bg-zinc-950 text-zinc-100" : "bg-zinc-50 text-zinc-900";
+
+  useEffect(() => {
+    reset_authStore();
+  },[]);
 
   if (isLoading) {
     return (

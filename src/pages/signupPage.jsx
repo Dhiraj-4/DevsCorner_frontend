@@ -13,6 +13,7 @@ import { GoogleAuth } from "../components/googleAuth/googleLogin.jsx"; // untouc
 import { getOtpHandler, submitHandler } from "../utils/signupPageHandlers.js";
 import { useAuthStore } from "../store/authStore.js";
 import { IsLoadingSvg } from "../components/loaders/isLoadingSvg.jsx";
+import { useEffect } from "react";
 
 export function SignupPage() {
   const {
@@ -24,6 +25,7 @@ export function SignupPage() {
     fullName,
     setFullName,
     isLoading,
+    reset_authStore
   } = useAuthStore();
 
   const navigate = useNavigate();
@@ -34,6 +36,10 @@ export function SignupPage() {
   const containerBg = isDark ? "bg-zinc-900/60 backdrop-blur-sm" : "bg-white/80";
   const containerBorder = isDark ? "border-zinc-800" : "border-zinc-200";
   const pageBg = isDark ? "bg-zinc-950 text-zinc-100" : "bg-zinc-50 text-zinc-900";
+
+  useEffect(() => {
+      reset_authStore();
+    },[]);
 
   if (isLoading) {
     return (
