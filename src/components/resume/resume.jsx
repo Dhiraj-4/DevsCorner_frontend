@@ -35,6 +35,7 @@ export function Resume() {
                 updateUser({ resume: "" });
                 setResume(null);
             }
+            return;
         } catch (error) {
             console.error("Error deleting resume:", error);
         }finally {
@@ -46,7 +47,10 @@ export function Resume() {
         <>
             {/* Resume */}
           {isLoading ? 
-            <SkeletonBlock width="20%" height="3rem" />
+            <div className="flex items-center gap-3 text-gray-300">
+              <FileText className="w-5 h-5 text-gray-400" />
+              <SkeletonBlock width="12rem" height="3rem" />
+            </div>
             :
 
             <div className="flex items-center gap-3 text-gray-300">

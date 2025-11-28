@@ -9,9 +9,9 @@ import { SkeletonBlock } from "../loaders/skeletonLoaders.jsx";
 
 export function Bio() {
   const userBio = useUserStore((state) => state.user.bio);
-  const updateUser = useUserStore((state) => state.updateUser);
+  const { updateUser } = useUserStore();
   const [isInput, setIsInput] = useState(false);
-  const [bio, setBio] = useState(userBio || null);
+  const [bio, setBio] = useState(userBio || "");
   const [error, setError] = useState("");
   const [ isLoading, setIsLoading ] = useState(false);
 
@@ -71,7 +71,7 @@ export function Bio() {
       ) : bio ? (
         <div className="flex flex-wrap gap-4 items-start">
           <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-[600px] wrap-break-word">
-            {bio}
+            {userBio}
           </p>
           <div
             className="flex cursor-pointer rounded-full w-9 h-9 bg-muted hover:bg-muted/70 items-center justify-center shadow-sm transition"

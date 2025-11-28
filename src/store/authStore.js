@@ -17,7 +17,7 @@ export const useAuthStore = create((set, get) => ({
     passwordShow: false,
     setPasswordShow: (bool) => set({ passwordShow: bool }),
 
-    isLoading: false,
+    isLoading: true,
     setIsLoading: (bool) => set({ isLoading: bool }),
 
     fullName: '',

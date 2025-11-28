@@ -7,11 +7,9 @@ export async function refreshToken() {
     const {
         setAccessToken,
         reset_authStore,
-        setIsLoading,
         setIsLoggedIn
     } = useAuthStore.getState();
 
-    setIsLoading(true);
     try {
         const response = await api.post(
             `${BACKEND_URL}auth/refresh`
@@ -40,7 +38,5 @@ export async function refreshToken() {
             setIsLoggedIn(false);
         }
         return false;
-    } finally {
-        setIsLoading(false);
     }
 }
