@@ -9,7 +9,8 @@ export function GoogleAuth() {
 
     const {
         setAccessToken,
-        setIsLoggedIn
+        setIsLoggedIn,
+        setIsLoading
     } = useAuthStore();
 
     const navigate = useNavigate();
@@ -18,6 +19,7 @@ export function GoogleAuth() {
       <GoogleLogin
         onSuccess={async (credentialResponse) => {
           try {
+            setIsLoading(true);
             const { data } = await api.post(`${BACKEND_URL}auth/google`, {
               token: credentialResponse.credential,
             });
@@ -31,6 +33,8 @@ export function GoogleAuth() {
               "Error while sending token:",
               error.response?.data || error.message
             );
+          }finally {
+            setIsLoading(false);
           }
         }}
         onError={() => console.log("Login Failed")}
