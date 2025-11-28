@@ -154,6 +154,13 @@ body {
     transform: scale(1.05);
   }
 }
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
 .animate-pulse-slow {
   animation: pulse-slow 6s ease-in-out infinite;
 }

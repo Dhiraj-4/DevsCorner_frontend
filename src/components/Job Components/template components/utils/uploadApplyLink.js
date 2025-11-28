@@ -23,16 +23,52 @@ export async function uploadApplyLink(applyLinkState, jobId) {
         return { status: 200, applyLinkState }
     } catch (error) {
         console.log(error);
+
         if(error.response?.status == 401) {
             let res = await refreshToken();
             if (res) return await uploadApplyLink(applyLinkState, jobId);
-        }else if(error.response?.status == 400) {
-            return {
-                status: 400,
-                message: ( error.response.data.message || error.response.data.error.issues[0].message || error.response.data.error.issues[0].code )
+        }
+
+        else if (error.response?.status === 400) {
+            const issue = error.response.data?.error?.issues?.[0];
+            const path = issue?.path?.[0];
+            const rawMsg = issue?.message;
+
+            let clean = rawMsg;
+            if (rawMsg && rawMsg.startsWith("String")) {
+                clean = rawMsg.slice("String".length).trim();
             }
-        }else {
-            return { status: 500 }
+        
+            let errStr = "";
+            if (path) {
+                errStr = `${path} ${clean}`;
+            } else if (clean) {
+                errStr = clean;
+            }
+
+            return { 
+                status: 400,
+                message: errStr || error.response?.data?.message || "Bad Request"
+             };
+        }
+
+        else if (error.response?.status === 429) {
+            
+            return {
+                status: 429,
+                message: "Too Many Requests 😮"
+            };
+        }
+
+        else if (error.response?.status === 409) {
+            return {
+                status: 409,
+                message: error.response?.data?.message
+            };
+        }
+
+        else {
+            return { status: 500 };
         }
     }
 }

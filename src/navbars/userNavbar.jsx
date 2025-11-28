@@ -97,7 +97,7 @@ export default function UserNavbar() {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-6 text-sm font-medium">
-            {isLoading ? (
+            {(isLoading && !accessToken) ? (
               <div className="animate-pulse text-muted-foreground">Loading...</div>
             ) : (
               <>

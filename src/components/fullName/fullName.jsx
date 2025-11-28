@@ -6,6 +6,7 @@ import { useTheme } from "../../theme-provider.jsx";
 import { OnSaveButton } from "../Buttons/onSaveButton.jsx";
 import { OnCancelButton } from "../Buttons/onCancelButton.jsx";
 import { UpdateField } from "../Inputs/updateFieldInput";
+import { SkeletonBlock } from "../loaders/skeletonLoaders.jsx";
 
 export function FullName() {
   const fullNameStore = useUserStore((state) => state.user.fullName);
@@ -14,6 +15,7 @@ export function FullName() {
   const [fullName, setFullName] = useState(fullNameStore|| "");
   const [error, setError] = useState("");
   const { activeTheme } = useTheme();
+  const [ isLoading, setIsLoading ] = useState(false);
 
   const handleSave = async () => {
   if (!fullName.trim()) {
@@ -22,6 +24,7 @@ export function FullName() {
   }
 
   try {
+    setIsLoading(true);
     let res = await uploadFullname(fullName.trim());
 
     if (res.status == 200) {
@@ -36,6 +39,8 @@ export function FullName() {
     }
   } catch {
     setError("Failed to update full name. Try again.");
+  } finally {
+    setIsLoading(false);
   }
 };
 
@@ -47,7 +52,10 @@ export function FullName() {
   };
 
   return (
-    <div className="flex flex-wrap items-center gap-3">
+    <>
+     {isLoading ? <SkeletonBlock width="150px" height="40px" /> :
+     
+      <div className="flex flex-wrap items-center gap-3">
       {isEditing ? (
         <div className="flex flex-col gap-2 w-full sm:w-auto">
           <UpdateField
@@ -85,5 +93,7 @@ export function FullName() {
         </div>
       )}
     </div>
+     }
+    </>
   );
 }

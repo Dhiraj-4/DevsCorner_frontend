@@ -3,10 +3,13 @@ import { useUserStore } from "../../store/userStore";
 import { uploadProfileImage } from "./uploadProfileImage";
 import { deleteProfileImage } from "./deleteProfileImage";
 import { useTheme } from "../../theme-provider.jsx";
-
+import { SkeletonCircle, SkeletonBlock } from "../loaders/skeletonLoaders.jsx";
+import { useState } from "react";
+  
 export function ProfileImage() {
   const { user, setUser } = useUserStore();
   const { activeTheme } = useTheme();
+  const [ isLoading, setIsLoading ] = useState(false);
 
   const borderColor =
     activeTheme === "dark"
@@ -25,17 +28,22 @@ export function ProfileImage() {
   async function handleFileChange(file) {  
     
     if (file) {
+      setIsLoading(true);
       const res = await uploadProfileImage(file);
       if (res.status === 200) {
         user.profileImage = res.fileUrl;
         setUser(user);
       }
+      setIsLoading(false);
     }
   }
 
   return (
     <>
       {/* Profile Image */}
+      {isLoading ?
+          <SkeletonCircle width="8rem" height="8rem" />
+       :
       <div
         className={`relative w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden flex items-center justify-center shadow-lg border-5 ${borderColor} ${bgColor} transition-all duration-300`}
       >
@@ -83,6 +91,7 @@ export function ProfileImage() {
           </div>
         )}
       </div>
+      }
 
       <input
         id="profileFileInput"

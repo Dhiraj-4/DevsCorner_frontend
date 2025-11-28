@@ -3,6 +3,8 @@ import { Pencil } from "lucide-react";
 import { CoolButton } from "../../Buttons/button.jsx";
 import { Input } from "../../Inputs/input.jsx";
 import { uploadApplyLink } from "./utils/uploadApplyLink.js";
+import { OnSaveButton } from "../../../components/Buttons/onSaveButton.jsx";
+import { OnCancelButton } from "../../../components/Buttons/onCancelButton.jsx";
 
 export function ApplyLink({ applyLink, owner, jobId }) {
 
@@ -57,8 +59,8 @@ export function ApplyLink({ applyLink, owner, jobId }) {
                     {error && <span className="text-red-400 text-base font-bold">{error}</span>}
 
                     <div className="flex flex-wrap gap-2">
-                        <CoolButton text={"Save"} clickHandler={handleSave}/>
-                        <CoolButton text={"Cancel"} clickHandler={handleCancel}/>
+                        <OnSaveButton text={"Save"} onClick={handleSave}/>
+                        <OnCancelButton text={"Cancel"} onClick={handleCancel}/>
                     </div>
                 </div>
                 
@@ -69,7 +71,7 @@ export function ApplyLink({ applyLink, owner, jobId }) {
                 
                     <div className="flex items-center gap-2">
                       <a
-                        href={applyLink}
+                        href={applyLinkState}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-block px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-lg shadow hover:bg-green-700 transition"

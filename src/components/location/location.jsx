@@ -6,6 +6,7 @@ import { useTheme } from "../../theme-provider.jsx";
 import { OnSaveButton } from "../Buttons/onSaveButton.jsx";
 import { OnCancelButton } from "../Buttons/onCancelButton.jsx";
 import { UpdateField } from "../Inputs/updateFieldInput.jsx";
+import { SkeletonBlock } from "../loaders/skeletonLoaders.jsx";
 
 export function Location({ onSave }) {
   const [isInput, setIsInput] = useState(false);
@@ -15,6 +16,7 @@ export function Location({ onSave }) {
   const updateUser = useUserStore((state) => state.updateUser);
   const [location, setLocation] = useState(userLocation || "");
   const { activeTheme } = useTheme();
+  const [ isLoading, setIsLoading ] = useState(false);
 
   const handleSave = async () => {
     if (!inputValue.trim()) {
@@ -27,6 +29,7 @@ export function Location({ onSave }) {
     }
 
     try {
+      setIsLoading(true);
       const res = await onSave(inputValue.trim());
       if (res.status === 200) {
         setLocation(res.location);
@@ -39,11 +42,14 @@ export function Location({ onSave }) {
     } catch (err) {
       setError("Error saving location");
       console.error(err);
+    }finally {
+      setIsLoading(false);
     }
   };
 
   const handleDelete = async () => {  
     try {
+      setIsLoading(true);
       const res = await deleteLocation();
       if (res.status === 200) {
         setLocation("");
@@ -55,6 +61,8 @@ export function Location({ onSave }) {
     } catch (err) {
       setError("Error deleting location");
       console.error(err);
+    }finally {
+      setIsLoading(false);
     }
   };
 
@@ -75,14 +83,22 @@ export function Location({ onSave }) {
       : "bg-white border-gray-300 text-gray-800";
 
   return (
-    <div className={`flex items-center gap-3 ${textColor}`}>
+    <>
+      {isLoading ? 
+        <div className={`flex items-center gap-3 ${textColor}`}>
+          <MapPin className={`w-5 h-5 ${iconColor}`} />
+          <SkeletonBlock height="2rem" width="14rem" />
+        </div>
+      :
+
+        <div className={`flex items-center gap-3 ${textColor}`}>
       <MapPin className={`w-5 h-5 ${iconColor}`} />
 
       {location && !isInput ? (
         <div
           className={`flex items-center gap-2 px-3 py-1 border rounded-2xl ${bgPill}`}
         >
-          <span className="max-w-[160px] sm:max-w-[220px]">
+          <span className="max-w-40 sm:max-w-[220px]">
             {location}
           </span>
           <X
@@ -124,5 +140,7 @@ export function Location({ onSave }) {
         </span>
       )}
     </div>
+      }
+    </>
   );
 }

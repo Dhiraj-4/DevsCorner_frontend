@@ -17,14 +17,14 @@ import { useTheme } from "../theme-provider.jsx";
 import { IsLoadingSvg } from "../components/loaders/isLoadingSvg.jsx";
 
 export default function ProfilePage() {
-  const { isLoading } = useAuthStore();
+  const { isLoading, accessToken } = useAuthStore();
   const { user } = useUserStore();
   const { activeTheme } = useTheme();
 
   const isDark = activeTheme === "dark";
   const pageBg = isDark ? "bg-zinc-950 text-zinc-100" : "bg-zinc-50 text-zinc-900";
 
-  if (isLoading) {
+  if (isLoading && !accessToken) {
     return (
       <div className={` ${pageBg} min-h-screen flex items-center justify-center`}>
         <IsLoadingSvg />

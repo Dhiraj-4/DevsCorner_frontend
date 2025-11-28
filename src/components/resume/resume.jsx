@@ -3,15 +3,18 @@ import { useUserStore } from "../../store/userStore.js"
 import { uploadResume } from "./uploadResume.js";
 import { deleteResume } from "./deleteResume.js";
 import { useState } from "react";
+import { SkeletonBlock } from "../loaders/skeletonLoaders.jsx";
 
 export function Resume() {
 
     const userResume = useUserStore((state) => state.user.resume);
     const updateUser = useUserStore((state) => state.updateUser);
     const [resume, setResume] = useState(userResume || null);
+    const [ isLoading, setIsLoading ] = useState(false);
 
     async function handleUpload(file) {
         try {
+            setIsLoading(true);
             const response = await uploadResume(file);
             if(response.res === 200) {
                 setResume(response.fileUrl);
@@ -19,11 +22,14 @@ export function Resume() {
             }
         } catch (error) {
             console.error("Error uploading resume:", error);
+        }finally {
+            setIsLoading(false);
         }
     }
 
     async function handleDelete() {
         try {
+            setIsLoading(true);
             const response = await deleteResume();
             if(response.res === 200) {
                 updateUser({ resume: "" });
@@ -31,13 +37,19 @@ export function Resume() {
             }
         } catch (error) {
             console.error("Error deleting resume:", error);
+        }finally {
+            setIsLoading(false);
         }
     }
 
     return (
         <>
             {/* Resume */}
-          <div className="flex items-center gap-3 text-gray-300">
+          {isLoading ? 
+            <SkeletonBlock width="20%" height="3rem" />
+            :
+
+            <div className="flex items-center gap-3 text-gray-300">
             <FileText className="w-5 h-5 text-gray-400" />
             {resume ? (
               <div className="flex gap-2 text-xl justify-center items-center">
@@ -65,6 +77,7 @@ export function Resume() {
                 </span>
             )}
           </div>
+          }
 
           <input 
           id="resumeUploader"

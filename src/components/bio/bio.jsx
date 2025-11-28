@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { useUserStore } from "../../store/userStore";
-import { uploadBio } from "./uploadBio";
+import { useUserStore } from "../../store/userStore.js";
+import { uploadBio } from "./uploadBio.js";
 import { Pencil } from "lucide-react";
-import { OnSaveButton } from "../Buttons/onSaveButton";
-import { OnCancelButton } from "../Buttons/onCancelButton";
-import { UpdateField } from "../Inputs/updateFieldInput";
+import { OnSaveButton } from "../Buttons/onSaveButton.jsx";
+import { OnCancelButton } from "../Buttons/onCancelButton.jsx";
+import { UpdateField } from "../Inputs/updateFieldInput.jsx";
+import { SkeletonBlock } from "../loaders/skeletonLoaders.jsx";
 
 export function Bio() {
   const userBio = useUserStore((state) => state.user.bio);
@@ -12,6 +13,7 @@ export function Bio() {
   const [isInput, setIsInput] = useState(false);
   const [bio, setBio] = useState(userBio || null);
   const [error, setError] = useState("");
+  const [ isLoading, setIsLoading ] = useState(false);
 
   const handleSave = async () => {
     if (!bio?.trim()) {
@@ -19,7 +21,9 @@ export function Bio() {
       return;
     }
 
+    setIsLoading(true);
     let res = await uploadBio(bio.trim());
+    setIsLoading(false);
 
     if (res.status === 500) {
       setError("Something went wrong");
@@ -36,7 +40,10 @@ export function Bio() {
   };
 
   return (
-    <div className="mt-6 w-full">
+    <>
+    {isLoading ? <SkeletonBlock height="4rem" /> : 
+    
+      <div className="mt-6 w-full">
       {isInput ? (
         <div className="flex flex-col gap-3">
           <UpdateField
@@ -63,7 +70,7 @@ export function Bio() {
         </div>
       ) : bio ? (
         <div className="flex flex-wrap gap-4 items-start">
-          <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-[600px] break-words">
+          <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-[600px] wrap-break-word">
             {bio}
           </p>
           <div
@@ -85,5 +92,7 @@ export function Bio() {
         </p>
       )}
     </div>
+    }
+    </>
   );
 }
