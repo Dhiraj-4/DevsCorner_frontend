@@ -4,11 +4,13 @@ import { useTheme } from "../../theme-provider.jsx";
 import { OnSaveButton } from "../Buttons/onSaveButton.jsx";
 import { OnCancelButton } from "../Buttons/onCancelButton.jsx";
 import { UpdateField } from "../Inputs/updateFieldInput.jsx";
+import { SkeletonBlock } from "../loaders/skeletonLoaders.jsx";
 
 export function SkillItem({ skillKey, onSave, onDelete }) {
   const [isInput, setIsInput] = useState(false);
   const [error, setError] = useState("");
   const { activeTheme } = useTheme();
+  const [ isLoading, setIsLoading ] = useState(false);
 
   const isDark = activeTheme === "dark";
   const chipBg = isDark ? "bg-zinc-800" : "bg-zinc-200";
@@ -29,6 +31,7 @@ export function SkillItem({ skillKey, onSave, onDelete }) {
     }
 
     try {
+      setIsLoading(true);
       let res = await onSave(input);
 
       if (res.status === 400 || res.status === 500) {
@@ -40,17 +43,30 @@ export function SkillItem({ skillKey, onSave, onDelete }) {
     } catch (err) {
       setError("Failed to save skill");
       console.error(err);
+    }finally {
+      setIsLoading(false);
     }
   };
 
+  async function onDeleteHandler() {
+    
+    setIsLoading(true);
+    await onDelete();
+    setIsLoading(false);         
+  }
+
   return (
-    <div className={`flex items-center gap-2 ${textColor}`}>
+    <>
+      {isLoading ? 
+        <SkeletonBlock width={100} height={32} className="rounded-full" />
+        :
+        <div className={`flex items-center gap-2 ${textColor}`}>
       {skillKey ? (
         <div className={`flex justify-center items-center gap-2 ${chipBg} rounded-2xl p-2 shadow-sm`}>
           <span>{skillKey}</span>
           <X
             className="w-4 h-4 hover:text-red-400 cursor-pointer"
-            onClick={() => onDelete(skillKey)}
+            onClick={() => onDeleteHandler()}
           />
         </div>
       ) : (
@@ -77,5 +93,7 @@ export function SkillItem({ skillKey, onSave, onDelete }) {
         </div>
       )}
     </div>
+      }
+    </>
   );
 }
