@@ -116,7 +116,7 @@ export function MyJobsPage() {
         <div
           className={`font-bold text-3xl text-center transition-colors duration-500 ${emptyText}`}
         >
-          You haven’t created any jobs yet 🙁
+          You have not created any jobs yet 🙁
         </div>
       )}
     </div>

@@ -41,7 +41,12 @@ export function JobTemplate({
 
             <Trash2 
                 className="w-7 h-7 text-gray-400 hover:text-red-400 cursor-pointer" 
-                onClick={async() => deleteJob(jobId)}
+                onClick={async() => {
+                  let job = document.getElementById(jobId);
+                  console.log("removed a job");
+                  if(job) job.remove();
+                  await deleteJob(jobId)
+                }}
             />
             </div>
         )}

@@ -17,10 +17,6 @@ export async function deleteJob(jobId) {
             }
         );
 
-        let job = document.getElementById(jobId);
-        console.log("removed a job");
-        if(job) job.remove();
-
         return { status: 200 }
 
     } catch (error) {
