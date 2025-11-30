@@ -26,8 +26,8 @@ export default function Notifications() {
 
   // DELETE HANDLER
   const handleDelete = async (id) => {
-    await deleteNotif(id);
     setAllNotifications(notifications.filter((n) => n._id !== id));
+    await deleteNotif(id);
   };
 
   useEffect(() => {

@@ -64,7 +64,7 @@ export function PostPage() {
   if (isLoading && postsArray.length === 0 && hasMore) {
     return (
       <div
-        className={`flex justify-center items-center h-full min-h-screen mt-20 pt-20 ${pageBg} transition-colors duration-300`}
+        className={`flex justify-center items-center h-full min-h-screen ${pageBg} transition-colors duration-300`}
       >
         <IsLoadingSvg />
       </div>
@@ -81,7 +81,7 @@ export function PostPage() {
           p-6 md:p-8 rounded-2xl ${containerBg} transition-colors duration-300`}
         >
           {postsArray.map((post) => (
-            <PostTemplate
+            <PostT  emplate
               key={post.postId}
               isFollowing={user.following.some(
                 (id) => id.toString() === post.owner._id.toString()

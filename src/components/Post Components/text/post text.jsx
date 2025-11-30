@@ -5,12 +5,14 @@ import { TextArea } from "../../Inputs/textArea.jsx";
 import { useTheme } from "../../../theme-provider.jsx";
 import { OnSaveButton } from "../../../components/Buttons/onSaveButton.jsx";
 import { OnCancelButton } from "../../../components/Buttons/onCancelButton.jsx";
+import { SkeletonBlock } from "../../../components/loaders/skeletonLoaders.jsx";
 
 export function PostText({ text, owner, postId }) {
   const [isEditing, setIsEditing] = useState(false);
   const [textState, setTextState] = useState(text);
   const [error, setError] = useState("");
   const { activeTheme } = useTheme();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSave = async () => {
     if (!textState.trim()) {
@@ -19,6 +21,7 @@ export function PostText({ text, owner, postId }) {
     }
 
     try {
+      setIsLoading(true);
       let res = await uploadText(textState, postId);
 
       if (res.status == 200) {
@@ -32,11 +35,14 @@ export function PostText({ text, owner, postId }) {
       }
     } catch (err) {
       setError("Failed to update post text. Try again.");
+    }finally {
+      setIsLoading(false);
     }
   };
 
   const handleCancel = () => {
     setIsEditing(false);
+    setTextState(text);
     setError("");
   };
 
@@ -49,7 +55,13 @@ export function PostText({ text, owner, postId }) {
   const editIconColor = activeTheme === "dark" ? "white" : "black";
 
   return (
-    <div className="flex flex-col gap-2 overflow-auto">
+    <>
+      {isLoading ? 
+        <SkeletonBlock height="6rem" width="100%" />
+
+        : 
+
+        <div className="flex flex-col gap-2 overflow-auto">
       {owner === "YOU" && isEditing ? (
         <div className="flex flex-col gap-2 w-full">
           <TextArea
@@ -90,5 +102,7 @@ export function PostText({ text, owner, postId }) {
         </div>
       )}
     </div>
+      }
+    </>
   );
 }

@@ -16,11 +16,6 @@ export async function deletePost(postId) {
                 data: { postId }
             }
         );
-
-        
-        let post = document.getElementById(postId);
-        console.log("remove a post");
-        if(post) post.remove();
     
         return { status: 200 }
 

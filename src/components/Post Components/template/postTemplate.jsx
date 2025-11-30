@@ -57,7 +57,12 @@ export function PostTemplate({
 
           <Trash2
             className="w-6 h-6 text-neutral-400 hover:text-red-500 cursor-pointer transition-colors duration-200"
-            onClick={async () => deletePost(postId)}
+            onClick={async () => {
+              let post = document.getElementById(postId);
+              console.log("remove a post");
+              if(post) post.remove();
+              await deletePost(postId);
+            }}
           />
         </div>
       )}
