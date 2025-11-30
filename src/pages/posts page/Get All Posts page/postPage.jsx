@@ -81,7 +81,7 @@ export function PostPage() {
           p-6 md:p-8 rounded-2xl ${containerBg} transition-colors duration-300`}
         >
           {postsArray.map((post) => (
-            <PostT  emplate
+            <PostTemplate  emplate
               key={post.postId}
               isFollowing={user.following.some(
                 (id) => id.toString() === post.owner._id.toString()
