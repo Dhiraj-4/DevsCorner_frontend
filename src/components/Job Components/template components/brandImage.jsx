@@ -1,103 +1,17 @@
-// import { useState } from "react"
-// import { Pencil, Trash2 } from "lucide-react";
-// import { uploadBrandImage } from "./utils/uploadBrandImage.js";
-// import { deleteBrandImage } from "./utils/deleteBrandImage.js";
-
-// export function BrandImage({ brandImage, owner, jobId }) {
-
-//     const [error, setError] = useState("");
-//     const [brandImageState, setBrandImageState] = useState(brandImage);
-
-//     const handleUpload = async (file) => {
-
-//       try {
-//         let res = await uploadBrandImage(file, jobId);
-          
-//         if(res.status == 200) {
-//             setError("");
-//             setBrandImageState(res.fileUrl);
-//         }else if(res.status == 400) {
-//             setError(res.message);
-//         }else {
-//             setError("Something went wrong");
-//         }
-        
-//       } catch (err) {
-//         setError("Failed to update brand image. Try again.");
-//       }
-//     };
-
-//     return (
-//         <>
-//             <div className="flex flex-wrap items-center gap-2">
-//             {
-//             (brandImageState) ?
-   
-//                 <div>
-//                     <img src={brandImageState} alt="Brand image"/>
-//                 </div>
-//                 :
-//                 "Brand Image"
-//             }
-
-//             <div className="flex flex-wrap gap-2">
-//                 {error && <span className="text-red-400 text-base font-bold">{error}</span>}
-                
-//             <input 
-//               id={`brandImageUploader-${jobId}`}
-//               type="file" 
-//               accept="image" 
-//               className="hidden"
-//               onChange={(e) => {
-//                 const file = e.target.files?.[0];
-//                 if (file) handleUpload(file);
-//                 e.target.value = "";
-//               }}
-//             />
-
-//             {
-//                 (owner == "YOU") &&
-//                 <div className="flex items-center gap-2">
-//                 <div
-//                     className=" flex cursor-pointer rounded-full w-[30px] h-[30px] bg-black/60 hover:bg-black/80 items-center justify-center shadow-md"
-//                     onClick={() => { 
-//                         document.getElementById(`brandImageUploader-${jobId}`).click();
-//                     }}
-//                 >
-//                     <Pencil size={20} color="white" />
-
-//                 </div>
-//                     {
-//                         (brandImageState) &&
-
-//                         <Trash2 className=" w-5 h-5 hover:text-red-500"
-//                             onClick={async() => {
-//                                 let res = await deleteBrandImage(jobId);
-//                                 if(res.status == 200) setBrandImageState("");
-//                                 else setError("Something went wrong");
-//                             }}
-//                         />
-//                     }
-//                 </div>
-//             }
-//             </div>
-//         </div>
-//         </>
-//     )
-// }
-
-
 import { useState } from "react";
 import { Pencil, Trash2 } from "lucide-react";
 import { uploadBrandImage } from "./utils/uploadBrandImage.js";
 import { deleteBrandImage } from "./utils/deleteBrandImage.js";
+import { SkeletonBlock } from "../../../components/loaders/skeletonLoaders.jsx";
 
 export function BrandImage({ brandImage, owner, jobId }) {
   const [error, setError] = useState("");
   const [brandImageState, setBrandImageState] = useState(brandImage);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleUpload = async (file) => {
     try {
+      setIsLoading(true);
       let res = await uploadBrandImage(file, jobId);
 
       if (res.status == 200) {
@@ -110,11 +24,16 @@ export function BrandImage({ brandImage, owner, jobId }) {
       }
     } catch (err) {
       setError("Failed to update brand image. Try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="flex flex-col gap-3">
+    <>
+      {isLoading ? <SkeletonBlock height="6rem" /> : 
+      
+        <div className="flex flex-col gap-3">
       <div className="flex flex-wrap items-center gap-3">
         {brandImageState ? (
           <img
@@ -135,7 +54,7 @@ export function BrandImage({ brandImage, owner, jobId }) {
               onClick={() =>
                 document.getElementById(`brandImageUploader-${jobId}`).click()
               }
-              className="flex cursor-pointer w-[32px] h-[32px] rounded-full 
+              className="flex cursor-pointer w-8 h-8 rounded-full 
                          bg-neutral-200 dark:bg-neutral-700 
                          hover:bg-neutral-300 dark:hover:bg-neutral-600 
                          items-center justify-center transition-all duration-200 shadow-sm"
@@ -152,9 +71,11 @@ export function BrandImage({ brandImage, owner, jobId }) {
                 size={20}
                 className="cursor-pointer text-neutral-600 dark:text-neutral-300 hover:text-red-500 transition-colors duration-150"
                 onClick={async () => {
+                  setIsLoading(true);
                   let res = await deleteBrandImage(jobId);
                   if (res.status == 200) setBrandImageState("");
                   else setError("Something went wrong");
+                  setIsLoading(false);
                 }}
               />
             )}
@@ -178,5 +99,7 @@ export function BrandImage({ brandImage, owner, jobId }) {
         }}
       />
     </div>
+      }
+    </>
   );
 }

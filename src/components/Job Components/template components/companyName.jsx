@@ -5,12 +5,14 @@ import { uploadCompanyName } from "./utils/uploadCompanyName.js";
 import { useTheme } from "../../../theme-provider.jsx";
 import { OnSaveButton } from "../../../components/Buttons/onSaveButton.jsx";
 import { OnCancelButton } from "../../../components/Buttons/onCancelButton.jsx";
+import { SkeletonBlock } from "../../../components/loaders/skeletonLoaders.jsx";
 
 export function CompanyName({ companyName, owner, jobId }) {
   const [isEditing, setIsEditing] = useState(false);
   const [jobCompany, setJobCompany] = useState(companyName);
   const [company, setCompany] = useState(jobCompany);
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const { activeTheme } = useTheme();
   const isDark = activeTheme === "dark";
@@ -29,6 +31,7 @@ export function CompanyName({ companyName, owner, jobId }) {
     }
 
     try {
+      setIsLoading(true);
       const res = await uploadCompanyName(company, jobId);
 
       if (res.status === 200) {
@@ -42,6 +45,8 @@ export function CompanyName({ companyName, owner, jobId }) {
       }
     } catch (err) {
       setError("Failed to update company name. Try again.");
+    }finally {
+      setIsLoading(false);
     }
   }
 
@@ -52,7 +57,11 @@ export function CompanyName({ companyName, owner, jobId }) {
   }
 
   return (
-    <div className="flex flex-col gap-2 transition-colors duration-300">
+    <>
+      {isLoading ? 
+      <SkeletonBlock height={"2rem"} width={"80%"} className="mb-2"/> :
+
+      <div className="flex flex-col gap-2 transition-colors duration-300">
       {owner === "YOU" && isEditing ? (
         <div className="flex flex-col gap-3">
           <Input
@@ -89,6 +98,8 @@ export function CompanyName({ companyName, owner, jobId }) {
           )}
         </div>
       )}
-    </div>
+      </div>
+      }
+    </>
   );
 }

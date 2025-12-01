@@ -4,12 +4,14 @@ import { Input } from "../../Inputs/input.jsx";
 import { uploadLocation } from "./utils/uploadLocation.js";
 import { OnSaveButton } from "../../../components/Buttons/onSaveButton.jsx";
 import { OnCancelButton } from "../../../components/Buttons/onCancelButton.jsx";
+import { SkeletonBlock } from "../../../components/loaders/skeletonLoaders.jsx";
 
 export function Location({ location, owner, jobId }) {
   const [isEditing, setIsEditing] = useState(false);
   const [jobLocation, setJobLocation] = useState(location); 
   const [locationState, setLocationState] = useState(jobLocation);
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSave = async () => {
     if (!locationState.trim()) {
@@ -18,6 +20,7 @@ export function Location({ location, owner, jobId }) {
     }
 
     try {
+      setIsLoading(true);
       const res = await uploadLocation(locationState, jobId);
 
       if (res.status === 200) {
@@ -31,6 +34,8 @@ export function Location({ location, owner, jobId }) {
       }
     } catch {
       setError("Failed to update location. Try again.");
+    }finally {
+      setIsLoading(false);
     }
   };
 
@@ -41,7 +46,9 @@ export function Location({ location, owner, jobId }) {
   };
 
   return (
-    <div className="w-full flex flex-col gap-3 p-4 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm transition-colors duration-300">
+    <>
+      {isLoading ? <SkeletonBlock height={"2rem"} width={"45%"} /> : 
+       <div className="w-full flex flex-col gap-3 p-4 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm transition-colors duration-300">
       {owner === "YOU" && isEditing ? (
         <div className="flex flex-col gap-3">
           <Input
@@ -72,7 +79,7 @@ export function Location({ location, owner, jobId }) {
           {owner === "YOU" && (
             <div
               onClick={() => setIsEditing(true)}
-              className="flex cursor-pointer rounded-full w-[32px] h-[32px] border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 items-center justify-center transition-colors duration-300"
+              className="flex cursor-pointer rounded-full w-8 h-8 border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 items-center justify-center transition-colors duration-300"
             >
               <Pencil size={18} className="text-gray-800 dark:text-gray-100" />
             </div>
@@ -80,5 +87,7 @@ export function Location({ location, owner, jobId }) {
         </div>
       )}
     </div>
+    }
+    </>
   );
 }

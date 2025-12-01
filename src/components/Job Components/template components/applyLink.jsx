@@ -5,12 +5,14 @@ import { Input } from "../../Inputs/input.jsx";
 import { uploadApplyLink } from "./utils/uploadApplyLink.js";
 import { OnSaveButton } from "../../../components/Buttons/onSaveButton.jsx";
 import { OnCancelButton } from "../../../components/Buttons/onCancelButton.jsx";
+import { SkeletonBlock } from "../../../components/loaders/skeletonLoaders.jsx";
 
 export function ApplyLink({ applyLink, owner, jobId }) {
 
     const [isEditing, setIsEditing] = useState(false);
     const [applyLinkState, setApplyLinkState] = useState(applyLink);
     const [error, setError] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleSave = async () => {
       if (!applyLinkState.trim()) {
@@ -19,6 +21,7 @@ export function ApplyLink({ applyLink, owner, jobId }) {
       }
 
       try {
+        setIsLoading(true);
         let res = await uploadApplyLink(applyLinkState, jobId);
           
         if(res.status == 200) {
@@ -33,6 +36,8 @@ export function ApplyLink({ applyLink, owner, jobId }) {
         
       } catch (err) {
         setError("Failed to update apply link. Try again.");
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -42,7 +47,10 @@ export function ApplyLink({ applyLink, owner, jobId }) {
         setError("");
     };
     return (
-        <div className="flex items-center gap-2">
+        <>
+            {isLoading ? <SkeletonBlock height={"2rem"} width={"10rem"} className="rounded-md"/> :
+
+            <div className="flex items-center gap-2">
             {
                 (owner == "YOU" && isEditing) ?
                 
@@ -104,5 +112,7 @@ export function ApplyLink({ applyLink, owner, jobId }) {
                 </>
             }
         </div>
+        }
+        </>
     )
 }

@@ -9,7 +9,7 @@ body {
     background-color: #09090b;
 }
 .primary-bg {
-    @apply flex justify-center items-center flex-col md:grid-cols-4 gap-6 p-10 bg-gradient-to-b from-black via-zinc-900 to-black min-h-screen;
+    @apply flex justify-center items-center flex-col md:grid-cols-4 gap-6 p-10 bg-linear-to-b from-black via-zinc-900 to-black min-h-screen;
 }
 
 .primary-form {

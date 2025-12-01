@@ -4,12 +4,14 @@ import { TextArea } from "../../Inputs/textArea.jsx";
 import { uploadText } from "./utils/uploadText.js";
 import { OnSaveButton } from "../../../components/Buttons/onSaveButton.jsx";
 import { OnCancelButton } from "../../../components/Buttons/onCancelButton.jsx";
+import { SkeletonBlock } from "../../../components/loaders/skeletonLoaders.jsx";
 
 export function Description({ text, owner, jobId }) {
   const [isEditing, setIsEditing] = useState(false);
   const [jobText, setJobText] = useState(text);
   const [textState, setTextState] = useState(jobText);
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSave = async () => {
     if (!textState.trim()) {
@@ -18,6 +20,7 @@ export function Description({ text, owner, jobId }) {
     }
 
     try {
+      setIsLoading(true);
       const res = await uploadText(textState, jobId);
 
       if (res.status === 200) {
@@ -31,6 +34,8 @@ export function Description({ text, owner, jobId }) {
       }
     } catch {
       setError("Failed to update description. Try again.");
+    }finally {
+      setIsLoading(false);
     }
   };
 
@@ -41,7 +46,10 @@ export function Description({ text, owner, jobId }) {
   };
 
   return (
-    <div className="w-full flex flex-col gap-3 p-4 overflow-auto rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm transition-colors duration-300">
+    <>
+      {isLoading ? <SkeletonBlock height={"6rem"} /> : 
+
+       <div className="w-full flex flex-col gap-3 p-4 overflow-auto rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm transition-colors duration-300">
       {owner === "YOU" && isEditing ? (
         <div className="flex flex-col gap-3">
           <TextArea
@@ -78,5 +86,7 @@ export function Description({ text, owner, jobId }) {
         </div>
       )}
     </div>
+    }
+    </>
   );
 }
