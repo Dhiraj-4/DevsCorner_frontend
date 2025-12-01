@@ -37,7 +37,7 @@ export default function UserNavbar() {
 
   // Socket connection
   useEffect(() => {
-    if (!user._id || !accessToken) return;
+    if (!user._id || !accessToken || !isLoggedIn) return;
     connectSocket(user._id);
     fetchNotifications()
   }, [user]);
