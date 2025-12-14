@@ -13,6 +13,9 @@ export const useChatStore = create((set, get) => ({
   
   isLoading: false,
   setIsLoading: (bool) => set({ isLoading: bool }),
+
+  scrollToBottom: true,
+  setScrollToBottom: (bool) => set({ scrollToBottom: bool }),
   
   messages: [],
   setMessages: (newMessages, replace = false) => {
@@ -101,6 +104,7 @@ export const useChatStore = create((set, get) => ({
       if (message.conversationId === activeConversation?._id) {
         // belongs to active conversation → just append message
         set({ messages: [...get().messages, message] });
+        set({ scrollToBottom: true });
       } else {
          const { hydrateUser } = useUserStore.getState();
          await hydrateUser();
@@ -130,13 +134,7 @@ export const useChatStore = create((set, get) => ({
   },
 
   setActiveConversation: async (conversation) => {
-    set({ activeConversation: conversation, messages: [], pageNumber: 1, hasMore: true });
-    const res = await getMessages({ conversationId: conversation._id });
-    if (res?.data?.info) {
-      const [msgs, more] = res.data.info;
-      set({ hasMore: more });
-      get().setMessages(msgs, true); // replace = true
-    }
+    set({ activeConversation: conversation, messages: [], pageNumber: 1, hasMore: true, scrollToBottom: true });
   },
 
 
@@ -154,6 +152,7 @@ export const useChatStore = create((set, get) => ({
     socket.emit("sendMessage", messageData);
 
     set({ messages: [...get().messages, messageData] });
+    set({ scrollToBottom: true });
   }
 
 }));

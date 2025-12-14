@@ -16,6 +16,8 @@ export const ChatBox = ({ sidebarOpen, setSidebarOpen }) => {
     setMessages,
     hasMore,
     setHasMore,
+    scrollToBottom,
+    setScrollToBottom
   } = useChatStore();
 
   const { user } = useUserStore();
@@ -27,15 +29,14 @@ export const ChatBox = ({ sidebarOpen, setSidebarOpen }) => {
   const [receiver, setReceiver] = useState("");
   const [isOnline, setIsOnline] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const prevMessageCount = useRef(0);
   const isDark = activeTheme === "dark";
 
   useEffect(() => {
-    if (messages.length > prevMessageCount.current) {
-      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    }
-    prevMessageCount.current = messages.length;
-  }, [messages]);
+  if (!scrollToBottom) return;
+  messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  setScrollToBottom(false);
+}, [messages.length]);
+
 
   useEffect(() => {
     if (!receiver) return;
@@ -49,9 +50,9 @@ export const ChatBox = ({ sidebarOpen, setSidebarOpen }) => {
         (p) => p._id.toString() !== user._id.toString()
       )
     );
-    setTimeout(() => {
-      messagesEndRef.current?.scrollIntoView({ behavior: "auto" });
-    }, 0);
+    requestAnimationFrame(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "auto" });
+  });
   }, [activeConversation]);
 
   const handleSend = () => {
@@ -60,43 +61,83 @@ export const ChatBox = ({ sidebarOpen, setSidebarOpen }) => {
     setText("");
   };
 
+  // useEffect(() => {
+  //   if (!activeConversation || !messagesTopRef.current || !hasMore) return;
+  //   let observer;
+  //   let loading = false;
+
+  //   const handleIntersect = async (entries) => {
+  //     if (isLoading) return;
+  //     setIsLoading(true);
+  //     const entry = entries[0];
+  //     if (entry.isIntersecting && !loading) {
+  //       loading = true;
+
+  //       const scrollContainer = messagesTopRef.current.parentElement;
+  //       const oldScrollHeight = scrollContainer.scrollHeight;
+
+  //       const res = await getMessages({
+  //         conversationId: activeConversation._id,
+  //       });
+  //       if (res?.data?.info) {
+  //         const [msgs, more] = res.data.info;
+  //         setMessages(msgs);
+  //         setHasMore(more);
+  //         setPageNumber();
+
+  //         const newScrollHeight = scrollContainer.scrollHeight;
+  //         scrollContainer.scrollTop = newScrollHeight - oldScrollHeight;
+  //       }
+
+  //       loading = false;
+  //       setIsLoading(false);
+  //     }
+  //   };
+
+  //   observer = new IntersectionObserver(handleIntersect, { threshold: 0.1 });
+  //   observer.observe(messagesTopRef.current);
+  //   return () => observer.disconnect();
+  // }, [activeConversation, messages.length, hasMore]);
+
   useEffect(() => {
-    if (!activeConversation || !messagesTopRef.current || !hasMore) return;
-    let observer;
-    let loading = false;
+  if (!activeConversation || !messagesTopRef.current || !hasMore) return;
 
-    const handleIntersect = async (entries) => {
-      if (isLoading) return;
-      setIsLoading(true);
-      const entry = entries[0];
-      if (entry.isIntersecting && !loading) {
-        loading = true;
+  let loading = false;
 
-        const scrollContainer = messagesTopRef.current.parentElement;
-        const oldScrollHeight = scrollContainer.scrollHeight;
+  const observer = new IntersectionObserver(async ([entry]) => {
+    if (!entry.isIntersecting || loading) return;
 
-        const res = await getMessages({
-          conversationId: activeConversation._id,
-        });
-        if (res?.data?.info) {
-          const [msgs, more] = res.data.info;
-          setMessages(msgs);
-          setHasMore(more);
-          setPageNumber();
+    loading = true;
+    setIsLoading(true);
 
-          const newScrollHeight = scrollContainer.scrollHeight;
-          scrollContainer.scrollTop = newScrollHeight - oldScrollHeight;
-        }
+    const container = messagesTopRef.current.parentElement;
+    const prevScrollHeight = container.scrollHeight;
 
-        loading = false;
-        setIsLoading(false);
-      }
-    };
+    const res = await getMessages({
+      conversationId: activeConversation._id,
+    });
 
-    observer = new IntersectionObserver(handleIntersect, { threshold: 0.1 });
-    observer.observe(messagesTopRef.current);
-    return () => observer.disconnect();
-  }, [activeConversation, messages.length, hasMore]);
+    if (res?.data?.info) {
+      const [msgs, more] = res.data.info;
+
+      setMessages(msgs);
+      setHasMore(more);
+      setPageNumber();
+
+      requestAnimationFrame(() => {
+        container.scrollTop =
+          container.scrollHeight - prevScrollHeight;
+      });
+    }
+
+    setIsLoading(false);
+    loading = false;
+  }, { threshold: 0 });
+
+  observer.observe(messagesTopRef.current);
+  return () => observer.disconnect();
+}, [activeConversation, hasMore]);
+
 
   if (!activeConversation) {
     return (
