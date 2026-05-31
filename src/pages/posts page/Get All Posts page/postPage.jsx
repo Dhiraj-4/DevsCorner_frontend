@@ -94,6 +94,7 @@ export function PostPage() {
               postId={post.postId}
               likes={post.countLikes}
               dislikes={post.countDislikes}
+              comments={post.countComments}
               isLiked={post.likes.some(
                 (id) => id.toString() === user._id.toString()
               )}
@@ -101,6 +102,7 @@ export function PostPage() {
                 (id) => id.toString() === user._id.toString()
               )}
             />
+            
           ))}
 
           <div

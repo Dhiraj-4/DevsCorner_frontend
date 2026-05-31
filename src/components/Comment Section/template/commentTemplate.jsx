@@ -1,31 +1,29 @@
 import { Trash2, ThumbsDown, ThumbsUp } from "lucide-react";
 import { Owner } from "../../Job Components/template components/owner.jsx";
-import { PostText } from "../text/post text.jsx";
-import { deletePost } from "./deletePost.js";
+import { CommentText } from "../text/comment text.jsx";
+import { deleteComment } from "./deleteComment.js";
 import { useState } from "react";
 import { toggleLikeHandler } from "./toggleLikeHandler.js";
 import { toggleDislikeHandler } from "./toggleDislikedHandler.js";
 import { useTheme } from "../../../theme-provider.jsx";
-import { CommentButton } from "../../Buttons/commentButton.jsx";
-import { CommentSection } from "../../Comment Section/commentSection.jsx";
 
-export function PostTemplate({
+export function CommentTemplate({
   text,
   owner,
-  postId,
+  commentId,
   isFollowing,
   likes,
   dislikes,
   isLiked,
   isDisliked,
-  comments
+  commentCount,
+  setCommentCount
 }) {
   const [isLikedState, setIsLikedState] = useState(isLiked);
   const [isDislikedState, setIsDislikedState] = useState(isDisliked);
   const [likesCount, setLikesCount] = useState(likes);
   const [dislikesCount, setDislikesCount] = useState(dislikes);
-  const [isCommentSection, setIsCommentSection] = useState(false);
-  const [commentCount, setCommentCount] = useState(comments);
+
   const { activeTheme } = useTheme();
 
   // dynamic colors based on theme
@@ -46,7 +44,7 @@ export function PostTemplate({
 
   return (
     <div
-      id={postId}
+      id={commentId}
       className={`flex flex-col gap-4 w-full mx-auto p-5 md:p-6 mb-5 rounded-2xl shadow-md transition-colors duration-300 ${containerStyle}`}
     >
       {owner !== "YOU" ? (
@@ -62,22 +60,22 @@ export function PostTemplate({
           <Trash2
             className="w-6 h-6 text-neutral-400 hover:text-red-500 cursor-pointer transition-colors duration-200"
             onClick={async () => {
-              let post = document.getElementById(postId);
-              console.log("remove a post");
-              if(post) post.remove();
-              await deletePost(postId);
+              let comment = document.getElementById(commentId);
+              console.log("remove a comment");
+              if(comment) comment.remove();
+              await deleteComment(commentId, commentCount, setCommentCount);
             }}
           />
         </div>
       )}
 
-      <PostText text={text} owner={owner} postId={postId} />
+      <CommentText text={text} owner={owner} commentId={commentId} />
 
       <div className="flex gap-4 pt-1">
         <button
           className="flex flex-col items-center justify-center hover:scale-105 transition-transform duration-150"
           onClick={async () => {
-            let res = await toggleLikeHandler(postId);
+            let res = await toggleLikeHandler(commentId);
             if (res.status == 200) {
               if (res.isLiked) {
                 setIsLikedState(true);
@@ -112,7 +110,7 @@ export function PostTemplate({
         <button
           className="flex flex-col items-center justify-center hover:scale-105 transition-transform duration-150"
           onClick={async () => {
-            let res = await toggleDislikeHandler(postId);
+            let res = await toggleDislikeHandler(commentId);
             if (res.status == 200) {
               if (res.isDisliked) {
                 setDislikesCount(dislikesCount + 1);
@@ -143,15 +141,7 @@ export function PostTemplate({
             {dislikesCount}
           </span>
         </button>
-
-        <CommentButton count = {commentCount} setIsCommentSection = {setIsCommentSection} />
       </div>
-
-      <>
-        {
-          isCommentSection && <CommentSection setIsCommentSection = {setIsCommentSection} postId = {postId} setCommentCount = {setCommentCount} commentCount = {commentCount} />
-        }
-      </>
     </div>
   );
 }
