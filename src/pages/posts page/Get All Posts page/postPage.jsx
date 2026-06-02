@@ -86,6 +86,7 @@ export function PostPage() {
               isFollowing={user.following.some(
                 (id) => id.toString() === post.owner._id.toString()
               )}
+              image={post.image}
               refresh={getPostsHandler}
               text={post.text}
               owner={

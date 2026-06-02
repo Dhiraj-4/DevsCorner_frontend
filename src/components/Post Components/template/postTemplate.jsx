@@ -8,6 +8,7 @@ import { toggleDislikeHandler } from "./toggleDislikedHandler.js";
 import { useTheme } from "../../../theme-provider.jsx";
 import { CommentButton } from "../../Buttons/commentButton.jsx";
 import { CommentSection } from "../../Comment Section/commentSection.jsx";
+import { Image } from "./image.jsx";
 
 export function PostTemplate({
   text,
@@ -18,7 +19,8 @@ export function PostTemplate({
   dislikes,
   isLiked,
   isDisliked,
-  comments
+  comments,
+  image
 }) {
   const [isLikedState, setIsLikedState] = useState(isLiked);
   const [isDislikedState, setIsDislikedState] = useState(isDisliked);
@@ -72,6 +74,8 @@ export function PostTemplate({
       )}
 
       <PostText text={text} owner={owner} postId={postId} />
+
+      <Image owner={owner} postId={postId} image={image}/>
 
       <div className="flex gap-4 pt-1">
         <button
